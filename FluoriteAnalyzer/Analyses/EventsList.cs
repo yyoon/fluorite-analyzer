@@ -121,7 +121,7 @@ namespace FluoriteAnalyzer.Analyses
             // Find the closest filtered event from the event list
             int index = FilteredEvents.BinarySearch(new DummyEvent(0) {ID = startingID},
                                                     new ComparisonComparer<Event>(
-                                                        (x, y) => (int) (x.ID - y.ID)));
+                                                        (x, y) => (x.ID - y.ID)));
             if (index < 0)
             {
                 ++index;

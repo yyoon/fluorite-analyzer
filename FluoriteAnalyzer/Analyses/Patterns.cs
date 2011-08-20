@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using FluoriteAnalyzer.Events;
 
@@ -26,6 +22,15 @@ namespace FluoriteAnalyzer.Analyses
         }
 
         private ILogProvider LogProvider { get; set; }
+
+        #region IRedrawable Members
+
+        public void Redraw()
+        {
+            listViewPatterns.Items.Clear();
+        }
+
+        #endregion
 
         public event PatternDoubleClickHandler PatternDoubleClick;
 
@@ -129,7 +134,7 @@ namespace FluoriteAnalyzer.Analyses
 
         private void listViewPatterns_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var item = this.listViewPatterns.GetItemAt(e.X, e.Y);
+            ListViewItem item = listViewPatterns.GetItemAt(e.X, e.Y);
             if (item == null)
             {
                 return;
@@ -144,14 +149,5 @@ namespace FluoriteAnalyzer.Analyses
                 }
             }
         }
-
-        #region IRedrawable Members
-
-        public void Redraw()
-        {
-            listViewPatterns.Items.Clear();
-        }
-
-        #endregion
     }
 }
