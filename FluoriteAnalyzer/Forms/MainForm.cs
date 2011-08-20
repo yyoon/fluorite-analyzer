@@ -223,5 +223,28 @@ namespace FluoriteAnalyzer.Forms
                     );
             }
         }
+
+        private void cascadeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LayoutMdi(MdiLayout.Cascade);
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            LayoutMdi(MdiLayout.TileVertical);
+        }
+
+        private void tileHorizontallyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LayoutMdi(MdiLayout.TileHorizontal);
+        }
+
+        private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Form child in MdiChildren)
+            {
+                child.Close();
+            }
+        }
     }
 }
