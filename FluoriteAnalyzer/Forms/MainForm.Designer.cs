@@ -40,6 +40,8 @@
             this.duplicateFixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolMain = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonOpen = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButtonLogMerger = new System.Windows.Forms.ToolStripButton();
             this.menuMain.SuspendLayout();
             this.toolMain.SuspendLayout();
             this.SuspendLayout();
@@ -105,6 +107,7 @@
             // 
             // logMergerToolStripMenuItem
             // 
+            this.logMergerToolStripMenuItem.Image = global::FluoriteAnalyzer.Properties.Resources.Merge;
             this.logMergerToolStripMenuItem.Name = "logMergerToolStripMenuItem";
             this.logMergerToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
             this.logMergerToolStripMenuItem.Text = "Log &Merger";
@@ -127,7 +130,9 @@
             // toolMain
             // 
             this.toolMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButtonOpen});
+            this.toolStripButtonOpen,
+            this.toolStripSeparator1,
+            this.toolStripButtonLogMerger});
             this.toolMain.Location = new System.Drawing.Point(0, 24);
             this.toolMain.Name = "toolMain";
             this.toolMain.Size = new System.Drawing.Size(947, 25);
@@ -143,6 +148,21 @@
             this.toolStripButtonOpen.Size = new System.Drawing.Size(23, 22);
             this.toolStripButtonOpen.Text = "toolStripButtonOpen";
             this.toolStripButtonOpen.Click += new System.EventHandler(this.toolStripButtonOpen_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripButtonLogMerger
+            // 
+            this.toolStripButtonLogMerger.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonLogMerger.Image = global::FluoriteAnalyzer.Properties.Resources.Merge;
+            this.toolStripButtonLogMerger.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonLogMerger.Name = "toolStripButtonLogMerger";
+            this.toolStripButtonLogMerger.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonLogMerger.Text = "toolStripButton1";
+            this.toolStripButtonLogMerger.Click += new System.EventHandler(this.logMergerToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -180,6 +200,8 @@
         private System.Windows.Forms.ToolStripMenuItem fixInsertStringCommandRepeatCountToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem duplicateFixToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripButton toolStripButtonLogMerger;
     }
 }
 
