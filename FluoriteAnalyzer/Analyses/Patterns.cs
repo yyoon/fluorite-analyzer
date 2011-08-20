@@ -67,6 +67,55 @@ namespace FluoriteAnalyzer.Analyses
                 }
 
                 // Insert - Replace - Insert*
+                if (dc is Insert)
+                {
+                    int offset = dc.Offset;
+                    int length = dc.Length;
+
+                    if (i + 1 < list.Count && list[i + 1] is Replace)
+                    {
+                        int offset2 = list[i + 1].Offset;
+                        int length2 = list[i + 1].Length;
+
+                        if (offset <= offset2 && offset2 + length2 <= offset + length)
+                        {
+                            if (i + 2 < list.Count && list[i + 2] is Insert)
+                            {
+                                int offset3 = list[i + 2].Offset;
+
+                                if (offset3 == offset2 + ((Replace) list[i + 1]).InsertionLength)
+                                {
+                                    var item = new ListViewItem(new[]
+                                                                    {
+                                                                        dc.ID.ToString(),
+                                                                        "3",
+                                                                        LogProvider.GetVideoTime(dc),
+                                                                        "\"" + ((Insert) list[i]).Text + "\" - \"" +
+                                                                        ((Replace) list[i + 1]).DeletedText + "\" + \"" +
+                                                                        ((Replace) list[i + 1]).InsertedText +
+                                                                        ((Insert) list[i + 2]).Text + "\"",
+                                                                    });
+
+                                    listViewPatterns.Items.Add(item);
+                                }
+                            }
+                            else
+                            {
+                                var item = new ListViewItem(new[]
+                                                                {
+                                                                    dc.ID.ToString(),
+                                                                    "2",
+                                                                    LogProvider.GetVideoTime(dc),
+                                                                    "\"" + ((Insert) list[i]).Text + "\" - \"" +
+                                                                    ((Replace) list[i + 1]).DeletedText + "\" + \"" +
+                                                                    ((Replace) list[i + 1]).InsertedText + "\"",
+                                                                });
+
+                                listViewPatterns.Items.Add(item);
+                            }
+                        }
+                    }
+                }
             }
         }
 
