@@ -116,6 +116,27 @@ namespace FluoriteAnalyzer.Analyses
             listViewEvents.Focus();
         }
 
+        public void pattern_ItemDoubleClick(int startingID)
+        {
+            // Find the closest filtered event from the event list
+            int index = FilteredEvents.BinarySearch(new DummyEvent(0) {ID = startingID},
+                                                    new ComparisonComparer<Event>(
+                                                        (x, y) => (int) (x.ID - y.ID)));
+            if (index < 0)
+            {
+                ++index;
+                index *= -1;
+            }
+
+            index = Utils.Utils.Clamp(index, 0, listViewEvents.Items.Count - 1);
+
+            listViewEvents.SelectedItems.Clear();
+            listViewEvents.Items[index].Selected = true;
+
+            listViewEvents.EnsureVisible(index);
+            listViewEvents.Focus();
+        }
+
         #region IRedrawable 멤버
 
         public void Redraw()

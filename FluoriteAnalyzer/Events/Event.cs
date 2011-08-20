@@ -41,7 +41,7 @@ namespace FluoriteAnalyzer.Events
             RepeatCount = int.Parse(GetPropertyValueFromDict("repeat", false, "1"));
         }
 
-        public int ID { get; private set; }
+        public int ID { get; internal set; }
         public string TypeString { get; private set; }
         public long Timestamp { get; private set; }
         public int RepeatCount { get; private set; }

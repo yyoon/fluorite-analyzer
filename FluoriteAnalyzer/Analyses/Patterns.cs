@@ -12,6 +12,12 @@ namespace FluoriteAnalyzer.Analyses
 {
     internal partial class Patterns : UserControl, IRedrawable
     {
+        #region delegates
+
+        public delegate void PatternDoubleClickHandler(int startingID);
+
+        #endregion
+
         public Patterns(ILogProvider logProvider)
         {
             InitializeComponent();
@@ -20,6 +26,8 @@ namespace FluoriteAnalyzer.Analyses
         }
 
         private ILogProvider LogProvider { get; set; }
+
+        public event PatternDoubleClickHandler PatternDoubleClick;
 
         private void buttonSearchFixTypos_Click(object sender, EventArgs e)
         {
@@ -115,6 +123,24 @@ namespace FluoriteAnalyzer.Analyses
                             }
                         }
                     }
+                }
+            }
+        }
+
+        private void listViewPatterns_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var item = this.listViewPatterns.GetItemAt(e.X, e.Y);
+            if (item == null)
+            {
+                return;
+            }
+
+            int startingID = -1;
+            if (int.TryParse(item.SubItems[0].Text, out startingID))
+            {
+                if (PatternDoubleClick != null)
+                {
+                    PatternDoubleClick(startingID);
                 }
             }
         }

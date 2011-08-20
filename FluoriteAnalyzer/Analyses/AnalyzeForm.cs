@@ -104,15 +104,17 @@ namespace FluoriteAnalyzer.Analyses
             tabVisualization.Controls.Add(lineChart);
             childPanels.Add(lineChart);
 
+            var patterns = new Patterns(this);
+            patterns.Dock = DockStyle.Fill;
+            patterns.PatternDoubleClick += pattern_ItemDoubleClick;
+            tabPatterns.Controls.Add(patterns);
+            childPanels.Add(patterns);
+
             var eventsList = new EventsList(this);
             eventsList.Dock = DockStyle.Fill;
             lineChart.ChartDoubleClick += eventsList.lineChart_ChartDoubleClick;
+            patterns.PatternDoubleClick += eventsList.pattern_ItemDoubleClick;
             tabEvents.Controls.Add(eventsList);
-            childPanels.Add(eventsList);
-
-            var patterns = new Patterns(this);
-            patterns.Dock = DockStyle.Fill;
-            tabPatterns.Controls.Add(patterns);
             childPanels.Add(eventsList);
 
             var keyStrokes = new KeyStrokes(this);
@@ -224,6 +226,12 @@ namespace FluoriteAnalyzer.Analyses
         }
 
         private void lineChart_ChartDoubleClick(int timevalue)
+        {
+            // Move the tab
+            tabControl.SelectTab(tabEvents);
+        }
+
+        private void pattern_ItemDoubleClick(int startingID)
         {
             // Move the tab
             tabControl.SelectTab(tabEvents);
