@@ -65,6 +65,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyses\Patterns.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Analyses\Patterns.Designer.cs">
+      <DependentUpon>Patterns.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\AdjustTimeForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +154,9 @@
     <Compile Include="Utils\RecentFiles.cs" />
     <Compile Include="Utils\ComparisonComparer.cs" />
     <Compile Include="Utils\Utils.cs" />
+    <EmbeddedResource Include="Analyses\Patterns.resx">
+      <DependentUpon>Patterns.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AdjustTimeForm.resx">
       <DependentUpon>AdjustTimeForm.cs</DependentUpon>
     </EmbeddedResource>
