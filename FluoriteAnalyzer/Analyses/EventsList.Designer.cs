@@ -57,9 +57,8 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.listViewEvents);
-            this.splitContainer.Size = new System.Drawing.Size(1000, 500);
+            this.splitContainer.Size = new System.Drawing.Size(857, 542);
             this.splitContainer.SplitterDistance = 170;
-            this.splitContainer.SplitterWidth = 5;
             this.splitContainer.TabIndex = 1;
             // 
             // treeEvents
@@ -68,7 +67,7 @@
             this.treeEvents.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeEvents.Location = new System.Drawing.Point(0, 0);
             this.treeEvents.Name = "treeEvents";
-            this.treeEvents.Size = new System.Drawing.Size(170, 500);
+            this.treeEvents.Size = new System.Drawing.Size(170, 542);
             this.treeEvents.TabIndex = 0;
             // 
             // listViewEvents
@@ -84,7 +83,7 @@
             this.listViewEvents.FullRowSelect = true;
             this.listViewEvents.Location = new System.Drawing.Point(0, 0);
             this.listViewEvents.Name = "listViewEvents";
-            this.listViewEvents.Size = new System.Drawing.Size(825, 500);
+            this.listViewEvents.Size = new System.Drawing.Size(683, 542);
             this.listViewEvents.TabIndex = 0;
             this.listViewEvents.UseCompatibleStateImageBehavior = false;
             this.listViewEvents.View = System.Windows.Forms.View.Details;
@@ -119,11 +118,11 @@
             // 
             // EventsList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.splitContainer);
             this.Name = "EventsList";
-            this.Size = new System.Drawing.Size(1000, 500);
+            this.Size = new System.Drawing.Size(857, 542);
             this.splitContainer.Panel1.ResumeLayout(false);
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();

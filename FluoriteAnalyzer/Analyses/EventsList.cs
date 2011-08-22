@@ -25,44 +25,51 @@ namespace FluoriteAnalyzer.Analyses
         {
             treeEvents.AfterCheck -= treeEvents_AfterCheck;
 
-            var stack = new Stack<TreeNode>();
-            foreach (TreeNode childNode in e.Node.Nodes)
+            if (e.Node.Nodes.Count == 0)
             {
-                stack.Push(childNode);
+                _checkDict[e.Node.Text] = e.Node.Checked;
             }
-
-            bool allChecked = true;
-
-            while (stack.Count > 0)
+            else
             {
-                TreeNode node = stack.Pop();
-                if (node.Checked == false)
-                {
-                    allChecked = false;
-                    break;
-                }
-
-                foreach (TreeNode childNode in node.Nodes)
+                var stack = new Stack<TreeNode>();
+                foreach (TreeNode childNode in e.Node.Nodes)
                 {
                     stack.Push(childNode);
                 }
-            }
 
-            stack.Clear();
-            stack.Push(e.Node);
+                bool allChecked = true;
 
-            while (stack.Count > 0)
-            {
-                TreeNode node = stack.Pop();
-                node.Checked = allChecked ^ true;
-                if (node.Level == 2 && _checkDict.ContainsKey(node.Text))
+                while (stack.Count > 0)
                 {
-                    _checkDict[node.Text] = node.Checked;
+                    TreeNode node = stack.Pop();
+                    if (node.Checked == false)
+                    {
+                        allChecked = false;
+                        break;
+                    }
+
+                    foreach (TreeNode childNode in node.Nodes)
+                    {
+                        stack.Push(childNode);
+                    }
                 }
 
-                foreach (TreeNode childNode in node.Nodes)
+                stack.Clear();
+                stack.Push(e.Node);
+
+                while (stack.Count > 0)
                 {
-                    stack.Push(childNode);
+                    TreeNode node = stack.Pop();
+                    node.Checked = allChecked ^ true;
+                    if (node.Level == 2 && _checkDict.ContainsKey(node.Text))
+                    {
+                        _checkDict[node.Text] = node.Checked;
+                    }
+
+                    foreach (TreeNode childNode in node.Nodes)
+                    {
+                        stack.Push(childNode);
+                    }
                 }
             }
 
