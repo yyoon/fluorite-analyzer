@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace FluoriteAnalyzer.Utils
 {
-    public class Utils
+    public static class Utils
     {
         public static T Clamp<T>(T value, T min, T max)
             where T : IComparable<T>
@@ -18,5 +20,21 @@ namespace FluoriteAnalyzer.Utils
             }
             return result;
         }
+
+        public static IEnumerable<T> TakeUntil<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+        {
+            foreach (T element in source)
+            {
+                yield return element;
+
+                if (predicate(element))
+                {
+                    break;
+                }
+            }
+        }
+
+        [DllImport("user32.dll")]
+        public static extern bool LockWindowUpdate(IntPtr hWndLock);
     }
 }
