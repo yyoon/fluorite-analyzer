@@ -6,6 +6,7 @@ using System.Xml;
 using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.Forms;
 using FluoriteAnalyzer.Properties;
+using System.Drawing;
 
 namespace FluoriteAnalyzer.Analyses
 {
@@ -16,6 +17,7 @@ namespace FluoriteAnalyzer.Analyses
             InitializeComponent();
 
             Icon = Resources.docfind;
+            WindowState = FormWindowState.Maximized;
 
             LogPath = logPath;
         }
@@ -56,6 +58,7 @@ namespace FluoriteAnalyzer.Analyses
 
         #region Child analyze panels
 
+        private readonly List<ToolWindow> childToolWindows = new List<ToolWindow>();
         private readonly List<IRedrawable> childPanels = new List<IRedrawable>();
 
         #endregion
@@ -95,34 +98,132 @@ namespace FluoriteAnalyzer.Analyses
             // Initialize child panels
             var commandStatistics = new CommandStatistics(this);
             commandStatistics.Dock = DockStyle.Fill;
-            tabCommands.Controls.Add(commandStatistics);
             childPanels.Add(commandStatistics);
+
+            var commandStatisticsForm = CreateToolWindow(Resources.Form_Title_Commands);
+            commandStatisticsForm.Controls.Add(commandStatistics);
+            commandStatisticsForm.Show();
+            childToolWindows.Add(commandStatisticsForm);
+
 
             var lineChart = new LineChart(this);
             lineChart.Dock = DockStyle.Fill;
             lineChart.ChartDoubleClick += lineChart_ChartDoubleClick;
-            tabVisualization.Controls.Add(lineChart);
             childPanels.Add(lineChart);
+
+            var lineChartForm = CreateToolWindow(Resources.Form_Title_LineGraph);
+            lineChartForm.Controls.Add(lineChart);
+            lineChartForm.Show();
+            childToolWindows.Add(lineChartForm);
+
 
             var patterns = new Patterns(this);
             patterns.Dock = DockStyle.Fill;
             patterns.PatternDoubleClick += pattern_ItemDoubleClick;
-            tabPatterns.Controls.Add(patterns);
             childPanels.Add(patterns);
+
+            var patternsForm = CreateToolWindow(Resources.Form_Title_Patterns);
+            patternsForm.Controls.Add(patterns);
+            patternsForm.Show();
+            childToolWindows.Add(patternsForm);
+
 
             var eventsList = new EventsList(this);
             eventsList.Dock = DockStyle.Fill;
             lineChart.ChartDoubleClick += eventsList.lineChart_ChartDoubleClick;
             patterns.PatternDoubleClick += eventsList.pattern_ItemDoubleClick;
-            tabEvents.Controls.Add(eventsList);
             childPanels.Add(eventsList);
+
+            var eventsListForm = CreateToolWindow(Resources.Form_Title_EventsList);
+            eventsListForm.Controls.Add(eventsList);
+            eventsListForm.Show();
+            childToolWindows.Add(eventsListForm);
+
 
             var keyStrokes = new KeyStrokes(this);
             keyStrokes.Dock = DockStyle.Fill;
-            tabKeyStrokes.Controls.Add(keyStrokes);
             childPanels.Add(keyStrokes);
 
+            var keyStrokesForm = CreateToolWindow(Resources.Form_Title_Keystrokes);
+            keyStrokesForm.Controls.Add(keyStrokes);
+            keyStrokesForm.Show();
+            childToolWindows.Add(keyStrokesForm);
+
+
+            CascadeToolWindows();
             Redraw();
+        }
+
+        private static readonly int STEP_WIDTH = 25;
+        private static readonly int STEP_HEIGHT = 25;
+
+        private void CascadeToolWindows()
+        {
+            int width = ClientRectangle.Width - STEP_WIDTH * (this.childToolWindows.Count - 1);
+            int height = ClientRectangle.Height - STEP_HEIGHT * (this.childToolWindows.Count - 1);
+
+            int step = 0;
+            foreach (var toolWindow in this.childToolWindows)
+            {
+                toolWindow.Location = new Point { X = STEP_WIDTH * step, Y = STEP_HEIGHT * step };
+                toolWindow.Size = new Size { Width = width, Height = height };
+                toolWindow.BringToFront();
+                ++step;
+            }
+        }
+
+        private class ToolWindow : Form
+        {
+            protected override void WndProc(ref Message m)
+            {
+                switch (m.Msg)
+                {
+                    case 0x00A1:    // WM_NCLBUTTONDOWN
+                        if (Control.ModifierKeys == Keys.Shift)
+                        {
+                            this.WindowState = FormWindowState.Normal;
+                            this.BringToFront();
+
+                            if (this.Parent != null)
+                            {
+                                this.Location = new Point { X = 0, Y = 0 };
+                                this.Size = new Size { Width = this.Parent.ClientRectangle.Width / 2, Height = this.Parent.ClientRectangle.Height };
+                            }
+                        }
+                        break;
+
+                    case 0x00A4:    // WM_NCRBUTTONDOWN
+                        if (Control.ModifierKeys == Keys.Shift)
+                        {
+                            this.WindowState = FormWindowState.Normal;
+                            this.BringToFront();
+
+                            if (this.Parent != null)
+                            {
+                                int halfWidth = Width = this.Parent.ClientRectangle.Width / 2;
+                                this.Location = new Point { X = halfWidth, Y = 0 };
+                                this.Size = new Size { Width = this.Parent.ClientRectangle.Width - halfWidth, Height = this.Parent.ClientRectangle.Height };
+                            }
+                        }
+                        break;
+                }
+
+                base.WndProc(ref m);
+            }
+        }
+
+        private ToolWindow CreateToolWindow(string formTitle)
+        {
+            var toolWindow = new ToolWindow();
+            toolWindow.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            toolWindow.ControlBox = false;
+            toolWindow.Text = formTitle;
+            toolWindow.TopLevel = false;
+            toolWindow.Size = new Size(ClientRectangle.Width, ClientRectangle.Height);
+            toolWindow.KeyPreview = true;
+            this.Controls.Add(toolWindow);
+
+            return toolWindow;
         }
 
         private void Redraw()
@@ -227,14 +328,27 @@ namespace FluoriteAnalyzer.Analyses
 
         private void lineChart_ChartDoubleClick(int timevalue)
         {
-            // Move the tab
-            tabControl.SelectTab(tabEvents);
+            BringEventsListToFront();
         }
 
         private void pattern_ItemDoubleClick(int startingID)
         {
-            // Move the tab
-            tabControl.SelectTab(tabEvents);
+            BringEventsListToFront();
+        }
+
+        private void BringEventsListToFront()
+        {
+            var eventsListForm = this.childToolWindows.Find(x => x.Text == Resources.Form_Title_EventsList);
+            if (eventsListForm != null)
+            {
+                eventsListForm.BringToFront();
+                eventsListForm.Focus();
+            }
+        }
+
+        private void cascadeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CascadeToolWindows();
         }
     }
 }
