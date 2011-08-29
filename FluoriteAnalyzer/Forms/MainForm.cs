@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -11,13 +12,25 @@ using FluoriteAnalyzer.Utils;
 
 namespace FluoriteAnalyzer.Forms
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, ILogProvider
     {
         public MainForm()
         {
             InitializeComponent();
             Icon = Resources.autoList;
         }
+
+        private long? TimeDiff { get; set; }
+
+        private string LogPath { get; set; }
+        private List<Event> LoggedEvents { get; set; }
+
+        #region Child analyze panels
+
+        private readonly List<ToolWindow> childToolWindows = new List<ToolWindow>();
+        private readonly List<IRedrawable> childPanels = new List<IRedrawable>();
+
+        #endregion
 
         private void MainForm_Load(object sender, EventArgs e)
         {
@@ -51,10 +64,118 @@ namespace FluoriteAnalyzer.Forms
 
         private void OpenLog(string filePath)
         {
-            var analyzeForm = new AnalyzeForm(filePath);
-            analyzeForm.MdiParent = this;
-            analyzeForm.Show();
+            if (LogPath != null)
+            {
+                SaveCustomGroups();
+            }
+
+            LogPath = filePath;
+
+            Text = LogPath;
+
+            ParseLog(LogPath);
+
+            InitializeAnalyzeWindows();
+
             RecentFiles.GetInstance().Touch(filePath);
+        }
+
+        private void InitializeAnalyzeWindows()
+        {
+            var commandStatistics = new CommandStatistics(this);
+            commandStatistics.Dock = DockStyle.Fill;
+            childPanels.Add(commandStatistics);
+
+            var commandStatisticsForm = CreateToolWindow(Resources.Form_Title_Commands);
+            commandStatisticsForm.Controls.Add(commandStatistics);
+            commandStatisticsForm.Show();
+            childToolWindows.Add(commandStatisticsForm);
+
+
+            var lineChart = new LineChart(this);
+            lineChart.Dock = DockStyle.Fill;
+            lineChart.ChartDoubleClick += lineChart_ChartDoubleClick;
+            childPanels.Add(lineChart);
+
+            var lineChartForm = CreateToolWindow(Resources.Form_Title_LineGraph);
+            lineChartForm.Controls.Add(lineChart);
+            lineChartForm.Show();
+            childToolWindows.Add(lineChartForm);
+
+
+            var patterns = new Patterns(this);
+            patterns.Dock = DockStyle.Fill;
+            patterns.PatternDoubleClick += pattern_ItemDoubleClick;
+            childPanels.Add(patterns);
+
+            var patternsForm = CreateToolWindow(Resources.Form_Title_Patterns);
+            patternsForm.Controls.Add(patterns);
+            patternsForm.Show();
+            childToolWindows.Add(patternsForm);
+
+
+            var eventsList = new EventsList(this);
+            eventsList.Dock = DockStyle.Fill;
+            lineChart.ChartDoubleClick += eventsList.lineChart_ChartDoubleClick;
+            patterns.PatternDoubleClick += eventsList.pattern_ItemDoubleClick;
+            childPanels.Add(eventsList);
+
+            var eventsListForm = CreateToolWindow(Resources.Form_Title_EventsList);
+            eventsListForm.Controls.Add(eventsList);
+            eventsListForm.Show();
+            childToolWindows.Add(eventsListForm);
+
+
+            var keyStrokes = new KeyStrokes(this);
+            keyStrokes.Dock = DockStyle.Fill;
+            childPanels.Add(keyStrokes);
+
+            var keyStrokesForm = CreateToolWindow(Resources.Form_Title_Keystrokes);
+            keyStrokesForm.Controls.Add(keyStrokes);
+            keyStrokesForm.Show();
+            childToolWindows.Add(keyStrokesForm);
+
+
+            LayoutMdi(MdiLayout.Cascade);
+
+
+            Redraw();
+        }
+
+        private void Redraw()
+        {
+            foreach (IRedrawable child in childPanels)
+            {
+                child.Redraw();
+            }
+        }
+
+        private void ParseLog(string logPath)
+        {
+            var log = new XmlDocument();
+            log.Load(logPath);
+
+            XmlNode events = log.DocumentElement;
+
+            TimeDiff = null;
+            foreach (XmlAttribute attr in events.Attributes)
+            {
+                if (attr.Name == "timeDiff")
+                {
+                    TimeDiff = int.Parse(attr.Value);
+                    break;
+                }
+            }
+
+            try
+            {
+                LoggedEvents =
+                    events.ChildNodes.OfType<XmlElement>().Select(x => Event.CreateEventFromXmlElement(x)).ToList();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+            }
         }
 
         private void logMergerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -194,8 +315,58 @@ namespace FluoriteAnalyzer.Forms
             log.Save(saveFileName);
         }
 
+        private void adjustTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var atForm = new AdjustTimeForm();
+            DialogResult result = atForm.ShowDialog();
+
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            int diff = atForm.VideoTick - atForm.LogTick;
+
+            var log = new XmlDocument();
+            log.Load(LogPath);
+
+            bool wasThere = false;
+            foreach (XmlAttribute attr in log.DocumentElement.Attributes)
+            {
+                if (attr.Name == "timeDiff")
+                {
+                    attr.Value = diff.ToString();
+
+                    wasThere = true;
+                    break;
+                }
+            }
+
+            if (!wasThere)
+            {
+                XmlAttribute attr = log.CreateAttribute("timeDiff");
+                attr.Value = diff.ToString();
+
+                log.DocumentElement.Attributes.Append(attr);
+            }
+
+            log.Save(LogPath);
+
+            TimeDiff = diff;
+
+            foreach (IRedrawable child in childPanels)
+            {
+                if (child is EventsList)
+                {
+                    ((EventsList)child).RebuildFilteredEventsList();
+                    break;
+                }
+            }
+        }
+
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
+            SaveCustomGroups();
             RecentFiles.Save();
         }
 
@@ -224,6 +395,31 @@ namespace FluoriteAnalyzer.Forms
             }
         }
 
+        private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            adjustTimeToolStripMenuItem.Enabled = LogPath != null;
+        }
+
+        private void windowToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
+        {
+            // toolStripSeparator2 is the one under "Window" menu.
+            int sepIndex = windowToolStripMenuItem.DropDownItems.IndexOf(toolStripSeparator2);
+
+            // Clear the windows list
+            while (windowToolStripMenuItem.DropDownItems.Count > sepIndex + 1)
+            {
+                windowToolStripMenuItem.DropDownItems.RemoveAt(sepIndex + 1);
+            }
+
+            windowToolStripMenuItem.DropDownItems.AddRange(
+                childToolWindows.Select(x => new ToolStripMenuItem(
+                                                 x.Text,
+                                                 null,
+                                                 delegate { x.Focus(); }) { Checked = x.ContainsFocus })
+                    .ToArray()
+                );
+        }
+
         private void cascadeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LayoutMdi(MdiLayout.Cascade);
@@ -239,11 +435,151 @@ namespace FluoriteAnalyzer.Forms
             LayoutMdi(MdiLayout.TileHorizontal);
         }
 
-        private void closeAllToolStripMenuItem_Click(object sender, EventArgs e)
+        #region ILogProvider Members
+
+        string ILogProvider.LogPath
         {
-            foreach (Form child in MdiChildren)
+            get { return LogPath; }
+        }
+
+        IEnumerable<Event> ILogProvider.LoggedEvents
+        {
+            get { return LoggedEvents; }
+        }
+
+        long? ILogProvider.TimeDiff
+        {
+            get { return TimeDiff; }
+        }
+
+        string ILogProvider.GetVideoTime(Event anEvent)
+        {
+            return GetVideoTime(anEvent);
+        }
+
+        string ILogProvider.GetVideoTime(long timestamp)
+        {
+            return GetVideoTime(timestamp);
+        }
+
+        #endregion
+
+        private string GetVideoTime(Event anEvent)
+        {
+            return TimeDiff.HasValue ? GetVideoTime(anEvent.Timestamp) : "";
+        }
+
+        private string GetVideoTime(long timestamp)
+        {
+            if (!TimeDiff.HasValue)
             {
-                child.Close();
+                return "";
+            }
+
+            long adjustedTimestamp = timestamp + TimeDiff.Value;
+            adjustedTimestamp /= 1000;
+            var seconds = (int)(adjustedTimestamp % 60);
+            adjustedTimestamp /= 60;
+            var minutes = (int)(adjustedTimestamp % 60);
+            adjustedTimestamp /= 60;
+            long hours = adjustedTimestamp;
+
+            return string.Format("{0:00}", hours) + ":" + string.Format("{0:00}", minutes) + ":" +
+                   string.Format("{0:00}", seconds);
+        }
+
+        private class ToolWindow : Form
+        {
+            public ToolWindow() : base()
+            {
+                FormClosing += new FormClosingEventHandler(ToolWindow_FormClosing);
+            }
+
+            void ToolWindow_FormClosing(object sender, FormClosingEventArgs e)
+            {
+                if (e.CloseReason != CloseReason.MdiFormClosing)
+                {
+                    e.Cancel = true;
+                    WindowState = FormWindowState.Minimized;
+                }
+            }
+
+            protected override void WndProc(ref Message m)
+            {
+                switch (m.Msg)
+                {
+                    case 0x00A1:    // WM_NCLBUTTONDOWN
+                        if (Control.ModifierKeys == Keys.Shift)
+                        {
+                            this.WindowState = FormWindowState.Normal;
+                            this.BringToFront();
+
+                            if (this.Parent != null)
+                            {
+                                this.Location = new Point { X = 0, Y = 0 };
+                                this.Size = new Size { Width = this.Parent.ClientRectangle.Width / 2, Height = this.Parent.ClientRectangle.Height };
+                            }
+                        }
+                        break;
+
+                    case 0x00A4:    // WM_NCRBUTTONDOWN
+                        if (Control.ModifierKeys == Keys.Shift)
+                        {
+                            this.WindowState = FormWindowState.Normal;
+                            this.BringToFront();
+
+                            if (this.Parent != null)
+                            {
+                                int halfWidth = Width = this.Parent.ClientRectangle.Width / 2;
+                                this.Location = new Point { X = halfWidth, Y = 0 };
+                                this.Size = new Size { Width = this.Parent.ClientRectangle.Width - halfWidth, Height = this.Parent.ClientRectangle.Height };
+                            }
+                        }
+                        break;
+                }
+
+                base.WndProc(ref m);
+            }
+        }
+
+        private ToolWindow CreateToolWindow(string formTitle)
+        {
+            var toolWindow = new ToolWindow();
+            toolWindow.MdiParent = this;
+            toolWindow.Text = formTitle;
+            toolWindow.TopLevel = false;
+            toolWindow.Size = new Size(ClientRectangle.Width, ClientRectangle.Height);
+            toolWindow.KeyPreview = true;
+
+            return toolWindow;
+        }
+
+        private void lineChart_ChartDoubleClick(int timevalue)
+        {
+            BringEventsListToFront();
+        }
+
+        private void pattern_ItemDoubleClick(int startingID)
+        {
+            BringEventsListToFront();
+        }
+
+        private void BringEventsListToFront()
+        {
+            var eventsListForm = this.childToolWindows.Find(x => x.Text == Resources.Form_Title_EventsList);
+            if (eventsListForm != null)
+            {
+                eventsListForm.BringToFront();
+                eventsListForm.Focus();
+            }
+        }
+
+        private void SaveCustomGroups()
+        {
+            IRedrawable commandStatistics = childPanels.Find(x => x is CommandStatistics);
+            if (commandStatistics != null)
+            {
+                ((CommandStatistics)commandStatistics).SaveCustomGroups();
             }
         }
     }

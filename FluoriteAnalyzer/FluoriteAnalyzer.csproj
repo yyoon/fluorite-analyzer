@@ -77,12 +77,6 @@
     <Compile Include="Forms\AdjustTimeForm.Designer.cs">
       <DependentUpon>AdjustTimeForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Analyses\AnalyzeForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Analyses\AnalyzeForm.Designer.cs">
-      <DependentUpon>AnalyzeForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Analyses\CommandStatistics.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -159,9 +153,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AdjustTimeForm.resx">
       <DependentUpon>AdjustTimeForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Analyses\AnalyzeForm.resx">
-      <DependentUpon>AnalyzeForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Analyses\CommandStatistics.resx">
       <DependentUpon>CommandStatistics.cs</DependentUpon>
