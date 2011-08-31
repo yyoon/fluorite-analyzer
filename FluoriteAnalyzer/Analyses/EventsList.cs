@@ -20,6 +20,8 @@ namespace FluoriteAnalyzer.Analyses
             LogProvider = logProvider;
 
             StrikeoutFont = new Font(richTextSourceCode.Font, FontStyle.Strikeout);
+
+            SelectedEvent = null;
         }
 
         private ILogProvider LogProvider { get; set; }
@@ -27,6 +29,9 @@ namespace FluoriteAnalyzer.Analyses
         private List<Event> FilteredEvents { get; set; }
 
         private Font StrikeoutFont { get; set; }
+
+        private ListViewItem SelectedListViewItem { get; set; }
+        private Event SelectedEvent { get; set; }
 
         private void treeEvents_AfterCheck(object sender, TreeViewEventArgs e)
         {
@@ -167,6 +172,14 @@ namespace FluoriteAnalyzer.Analyses
 
         private void listViewEvents_SelectedIndexChanged(object sender, EventArgs e)
         {
+            SelectedListViewItem = null;
+            SelectedEvent = null;
+            if (listViewEvents.SelectedIndices.Count > 0)
+            {
+                SelectedListViewItem = listViewEvents.Items[listViewEvents.SelectedIndices[0]];
+                SelectedEvent = SelectedListViewItem.Tag as Event;
+            }
+
             DrawSnapshot();
         }
 
@@ -322,6 +335,39 @@ namespace FluoriteAnalyzer.Analyses
             }
 
             return "";
+        }
+
+        internal void SearchString(string str)
+        {
+            Event selectedEvent = SelectedEvent;
+
+            IEnumerable<Event> events = FilteredEvents;
+            if (selectedEvent != null)
+            {
+                events = FilteredEvents.SkipUntil(x => x == SelectedEvent);
+            }
+
+            // TODO: Open a search result window
+            Event eventFound = events.Where(x => x.ContainsString(str)).FirstOrDefault();
+            if (eventFound != null)
+            {
+                // Deselect the previously selected one
+                if (SelectedListViewItem != null)
+                {
+                    SelectedListViewItem.Selected = false;
+                }
+
+                // Select the item which was found
+                ListViewItem itemFound = listViewEvents.Items.Cast<ListViewItem>().Where(x => x.Tag == eventFound).First();
+                itemFound.Selected = true;
+                listViewEvents.EnsureVisible(itemFound.Index);
+
+                Focus();
+            }
+            else
+            {
+                MessageBox.Show("The specified string was not found.", "Search", MessageBoxButtons.OK);
+            }
         }
 
         #region IRedrawable 멤버

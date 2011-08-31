@@ -30,6 +30,12 @@ namespace FluoriteAnalyzer.Forms
         private readonly List<ToolWindow> childToolWindows = new List<ToolWindow>();
         private readonly List<IRedrawable> childPanels = new List<IRedrawable>();
 
+        private CommandStatistics commandStatistics;
+        private LineChart lineChart;
+        private Patterns patterns;
+        private EventsList eventsList;
+        private KeyStrokes keyStrokes;
+
         #endregion
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -64,10 +70,7 @@ namespace FluoriteAnalyzer.Forms
 
         private void OpenLog(string filePath)
         {
-            if (LogPath != null)
-            {
-                SaveCustomGroups();
-            }
+            CloseCurrentLog();
 
             LogPath = filePath;
 
@@ -80,9 +83,25 @@ namespace FluoriteAnalyzer.Forms
             RecentFiles.GetInstance().Touch(filePath);
         }
 
+        private void CloseCurrentLog()
+        {
+            if (LogPath != null)
+            {
+                foreach (var childToolWindow in childToolWindows)
+                {
+                    childToolWindow.Close();
+                }
+
+                childToolWindows.Clear();
+                childPanels.Clear();
+
+                SaveCustomGroups();
+            }
+        }
+
         private void InitializeAnalyzeWindows()
         {
-            var commandStatistics = new CommandStatistics(this);
+            commandStatistics = new CommandStatistics(this);
             commandStatistics.Dock = DockStyle.Fill;
             childPanels.Add(commandStatistics);
 
@@ -92,7 +111,7 @@ namespace FluoriteAnalyzer.Forms
             childToolWindows.Add(commandStatisticsForm);
 
 
-            var lineChart = new LineChart(this);
+            lineChart = new LineChart(this);
             lineChart.Dock = DockStyle.Fill;
             lineChart.ChartDoubleClick += lineChart_ChartDoubleClick;
             childPanels.Add(lineChart);
@@ -103,7 +122,7 @@ namespace FluoriteAnalyzer.Forms
             childToolWindows.Add(lineChartForm);
 
 
-            var patterns = new Patterns(this);
+            patterns = new Patterns(this);
             patterns.Dock = DockStyle.Fill;
             patterns.PatternDoubleClick += pattern_ItemDoubleClick;
             childPanels.Add(patterns);
@@ -114,7 +133,7 @@ namespace FluoriteAnalyzer.Forms
             childToolWindows.Add(patternsForm);
 
 
-            var eventsList = new EventsList(this);
+            eventsList = new EventsList(this);
             eventsList.Dock = DockStyle.Fill;
             lineChart.ChartDoubleClick += eventsList.lineChart_ChartDoubleClick;
             patterns.PatternDoubleClick += eventsList.pattern_ItemDoubleClick;
@@ -126,7 +145,7 @@ namespace FluoriteAnalyzer.Forms
             childToolWindows.Add(eventsListForm);
 
 
-            var keyStrokes = new KeyStrokes(this);
+            keyStrokes = new KeyStrokes(this);
             keyStrokes.Dock = DockStyle.Fill;
             childPanels.Add(keyStrokes);
 
@@ -488,68 +507,12 @@ namespace FluoriteAnalyzer.Forms
                    string.Format("{0:00}", seconds);
         }
 
-        private class ToolWindow : Form
-        {
-            public ToolWindow() : base()
-            {
-                FormClosing += new FormClosingEventHandler(ToolWindow_FormClosing);
-            }
-
-            void ToolWindow_FormClosing(object sender, FormClosingEventArgs e)
-            {
-                if (e.CloseReason != CloseReason.MdiFormClosing)
-                {
-                    e.Cancel = true;
-                    WindowState = FormWindowState.Minimized;
-                }
-            }
-
-            protected override void WndProc(ref Message m)
-            {
-                switch (m.Msg)
-                {
-                    case 0x00A1:    // WM_NCLBUTTONDOWN
-                        if (Control.ModifierKeys == Keys.Shift)
-                        {
-                            this.WindowState = FormWindowState.Normal;
-                            this.BringToFront();
-
-                            if (this.Parent != null)
-                            {
-                                this.Location = new Point { X = 0, Y = 0 };
-                                this.Size = new Size { Width = this.Parent.ClientRectangle.Width / 2, Height = this.Parent.ClientRectangle.Height };
-                            }
-                        }
-                        break;
-
-                    case 0x00A4:    // WM_NCRBUTTONDOWN
-                        if (Control.ModifierKeys == Keys.Shift)
-                        {
-                            this.WindowState = FormWindowState.Normal;
-                            this.BringToFront();
-
-                            if (this.Parent != null)
-                            {
-                                int halfWidth = Width = this.Parent.ClientRectangle.Width / 2;
-                                this.Location = new Point { X = halfWidth, Y = 0 };
-                                this.Size = new Size { Width = this.Parent.ClientRectangle.Width - halfWidth, Height = this.Parent.ClientRectangle.Height };
-                            }
-                        }
-                        break;
-                }
-
-                base.WndProc(ref m);
-            }
-        }
-
         private ToolWindow CreateToolWindow(string formTitle)
         {
             var toolWindow = new ToolWindow();
             toolWindow.MdiParent = this;
             toolWindow.Text = formTitle;
-            toolWindow.TopLevel = false;
             toolWindow.Size = new Size(ClientRectangle.Width, ClientRectangle.Height);
-            toolWindow.KeyPreview = true;
 
             return toolWindow;
         }
@@ -576,10 +539,33 @@ namespace FluoriteAnalyzer.Forms
 
         private void SaveCustomGroups()
         {
-            IRedrawable commandStatistics = childPanels.Find(x => x is CommandStatistics);
             if (commandStatistics != null)
             {
                 ((CommandStatistics)commandStatistics).SaveCustomGroups();
+            }
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (!e.Shift && e.Control && !e.Alt && e.KeyCode == Keys.F)
+            {
+                toolStripTextSearch.Focus();
+                toolStripTextSearch.SelectAll();
+            }
+        }
+
+        private void toolStripTextSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (!string.IsNullOrEmpty(toolStripTextSearch.Text) && eventsList != null)
+                {
+                    eventsList.SearchString(toolStripTextSearch.Text);
+                    toolStripTextSearch.Focus();
+                    toolStripTextSearch.SelectAll();
+                }
+
+                e.SuppressKeyPress = true;
             }
         }
     }

@@ -88,6 +88,26 @@ namespace FluoriteAnalyzer.Events
             }
         }
 
+        public bool ContainsString(string str)
+        {
+            // If the class name contains the string, return true
+            if (GetType().Name.Contains(str))
+            {
+                return true;
+            }
+
+            // If any of the key-value pairs contains the string, return true
+            foreach (var kvp in _dict)
+            {
+                if (kvp.Key.Contains(str) || kvp.Value.Contains(str))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private void FillInDictionary()
         {
             _dict = new Dictionary<string, string>();

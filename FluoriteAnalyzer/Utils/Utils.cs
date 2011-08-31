@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 
 namespace FluoriteAnalyzer.Utils
@@ -29,7 +30,25 @@ namespace FluoriteAnalyzer.Utils
 
                 if (predicate(element))
                 {
-                    break;
+                    yield break;
+                }
+            }
+        }
+
+        public static IEnumerable<T> SkipUntil<T>(this IEnumerable<T> source, Func<T, bool>  predicate)
+        {
+            using (var iterator = source.GetEnumerator())
+            {
+                while (iterator.MoveNext())
+                {
+                    if (predicate(iterator.Current))
+                    {
+                        break;
+                    }
+                }
+                while (iterator.MoveNext())
+                {
+                    yield return iterator.Current;
                 }
             }
         }

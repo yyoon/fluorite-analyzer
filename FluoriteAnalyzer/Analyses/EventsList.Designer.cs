@@ -123,7 +123,9 @@
             this.columnParameters});
             this.listViewEvents.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewEvents.FullRowSelect = true;
+            this.listViewEvents.HideSelection = false;
             this.listViewEvents.Location = new System.Drawing.Point(0, 0);
+            this.listViewEvents.MultiSelect = false;
             this.listViewEvents.Name = "listViewEvents";
             this.listViewEvents.Size = new System.Drawing.Size(402, 510);
             this.listViewEvents.TabIndex = 0;
