@@ -89,7 +89,7 @@ namespace FluoriteAnalyzer.Forms
             {
                 foreach (var childToolWindow in childToolWindows)
                 {
-                    childToolWindow.Close();
+                    childToolWindow.ForceClose();
                 }
 
                 childToolWindows.Clear();

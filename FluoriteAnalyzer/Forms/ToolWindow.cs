@@ -11,12 +11,16 @@ namespace FluoriteAnalyzer.Forms
 {
     public partial class ToolWindow : Form
     {
+        private bool ShouldBeClosed { get; set; }
+
         public ToolWindow()
         {
             InitializeComponent();
 
             TopLevel = false;
             FormClosing += new FormClosingEventHandler(ToolWindow_FormClosing);
+
+            ShouldBeClosed = false;
         }
 
         void ToolWindow_FormClosing(object sender, FormClosingEventArgs e)
@@ -28,10 +32,19 @@ namespace FluoriteAnalyzer.Forms
                     break;
 
                 default:
-                    e.Cancel = true;
-                    WindowState = FormWindowState.Minimized;
+                    if (!ShouldBeClosed)
+                    {
+                        e.Cancel = true;
+                        WindowState = FormWindowState.Minimized;
+                    }
                     break;
             }
+        }
+
+        public void ForceClose()
+        {
+            ShouldBeClosed = true;
+            Close();
         }
 
         protected override void WndProc(ref Message m)
