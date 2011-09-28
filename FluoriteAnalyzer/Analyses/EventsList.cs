@@ -22,6 +22,9 @@ namespace FluoriteAnalyzer.Analyses
             StrikeoutFont = new Font(richTextSourceCode.Font, FontStyle.Strikeout);
 
             SelectedEvent = null;
+
+
+            SuppressNoInitialSnapshotWarning = false;
         }
 
         private ILogProvider LogProvider { get; set; }
@@ -32,6 +35,9 @@ namespace FluoriteAnalyzer.Analyses
 
         private ListViewItem SelectedListViewItem { get; set; }
         private Event SelectedEvent { get; set; }
+
+
+        private bool SuppressNoInitialSnapshotWarning { get; set; }
 
         private void treeEvents_AfterCheck(object sender, TreeViewEventArgs e)
         {
@@ -224,15 +230,28 @@ namespace FluoriteAnalyzer.Analyses
                         // If we don't have, show an error message and leave.
                         if (fileOpenCommand.Snapshot == null)
                         {
-                            MessageBox.Show(
-                                "This log file does not have initial snapshots. Source code cannot be reproduced!",
-                                "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            return;
-                        }
+                            if (!SuppressNoInitialSnapshotWarning)
+                            {
+                                MessageBox.Show(
+                                    "This log file does not have initial snapshots. Source code cannot be reproduced!",
+                                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                SuppressNoInitialSnapshotWarning = true;
+                            }
 
+                            files.Add(currentFile, null);
+                        }
+                        else
+                        {
+                            string snapshot = fileOpenCommand.Snapshot;
+                            snapshot = snapshot.Replace("\r\n", "\n");
+                            files.Add(currentFile, new StringBuilder(snapshot));
+                        }
+                    }
+                    else if (fileOpenCommand.Snapshot != null)
+                    {
                         string snapshot = fileOpenCommand.Snapshot;
                         snapshot = snapshot.Replace("\r\n", "\n");
-                        files.Add(currentFile, new StringBuilder(snapshot));
+                        files[currentFile] = new StringBuilder(snapshot);
                     }
                 }
                 else if (docChangeEvent is DocumentChange)
@@ -253,9 +272,14 @@ namespace FluoriteAnalyzer.Analyses
 
             if (currentFile == null)
             {
-                MessageBox.Show(
-                    "This log file does not have any FileOpenCommand.", "Error", MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                //MessageBox.Show(
+                //    "This log file does not have any FileOpenCommand.", "Error", MessageBoxButtons.OK,
+                //    MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (files[currentFile] == null)
+            {
                 return;
             }
 
@@ -290,6 +314,11 @@ namespace FluoriteAnalyzer.Analyses
 
         private void ApplyDocumentChange(StringBuilder builder, Event docChangeEvent)
         {
+            if (builder == null)
+            {
+                return;
+            }
+
             if (docChangeEvent is Delete)
             {
                 var delete = (Delete) docChangeEvent;
