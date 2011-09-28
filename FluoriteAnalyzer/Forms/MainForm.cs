@@ -481,6 +481,24 @@ namespace FluoriteAnalyzer.Forms
             return GetVideoTime(timestamp);
         }
 
+        bool ILogProvider.CausedByPaste(DocumentChange dc)
+        {
+            return false;
+        }
+
+        bool ILogProvider.CausedByAssist(DocumentChange dc)
+        {
+            return false;
+        }
+
+        bool ILogProvider.CausedByAutoIndent(DocumentChange dc)
+        {
+            Replace replace = dc as Replace;
+            if (replace == null) { return false; }
+
+            return !string.IsNullOrEmpty(replace.DeletedText) && string.IsNullOrWhiteSpace(replace.DeletedText);
+        }
+
         #endregion
 
         private string GetVideoTime(Event anEvent)

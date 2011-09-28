@@ -12,5 +12,10 @@ namespace FluoriteAnalyzer.Analyses
 
         string GetVideoTime(Event anEvent);
         string GetVideoTime(long timestamp);
+
+        // TODO: Generalize
+        bool CausedByPaste(DocumentChange dc);
+        bool CausedByAssist(DocumentChange dc);
+        bool CausedByAutoIndent(DocumentChange dc);
     }
 }

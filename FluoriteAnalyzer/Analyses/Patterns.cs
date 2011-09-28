@@ -179,6 +179,14 @@ namespace FluoriteAnalyzer.Analyses
                 Confirmed = false;
             }
 
+            public ParameterTuneElement(Replace replace)
+            {
+                DeleteOffset = replace.Offset;
+                DeletedText = replace.DeletedText;
+                InsertedText = replace.InsertedText;
+                Confirmed = true;
+            }
+
             public int DeleteOffset { get; set; }
             public bool Confirmed { get; set; }
 
@@ -190,7 +198,8 @@ namespace FluoriteAnalyzer.Analyses
         {
             listViewPatterns.Items.Clear();
 
-            List<Event> list = LogProvider.LoggedEvents.Where(x => x is DocumentChange || x is RunCommand).ToList();
+            // we only consider "Create" because people often do not close the application at all.
+            List<Event> list = LogProvider.LoggedEvents.Where(x => x is DocumentChange || (x is RunCommand && !((RunCommand)x).IsTerminate)).ToList();
 
             Event lastRun = null;
 
@@ -201,10 +210,6 @@ namespace FluoriteAnalyzer.Analyses
                 if (list[i] is RunCommand)
                 {
                     RunCommand currentRun = (RunCommand) list[i];
-                    if (currentRun.IsTerminate)
-                    {
-                        continue;   // we only consider "Create" because people often do not close the application at all.
-                    }
 
                     if (lastRun != null)
                     {
@@ -241,6 +246,8 @@ namespace FluoriteAnalyzer.Analyses
                         // TODO: Merge delete offsets if necessary!
                         foreach (int j in Enumerable.Range(0, deleteOffsets.Count))
                         {
+                            if (deleteOffsets[j].Confirmed) { continue; }
+
                             if (deleteOffsets[j].DeleteOffset > delete.Offset)
                             {
                                 deleteOffsets[j].DeleteOffset -= delete.Length;
@@ -255,6 +262,8 @@ namespace FluoriteAnalyzer.Analyses
 
                         foreach (int j in Enumerable.Range(0, deleteOffsets.Count))
                         {
+                            if (deleteOffsets[j].Confirmed) { continue; }
+
                             if (deleteOffsets[j].DeleteOffset > insert.Offset)
                             {
                                 deleteOffsets[j].DeleteOffset += insert.Length;
@@ -263,6 +272,23 @@ namespace FluoriteAnalyzer.Analyses
                             {
                                 deleteOffsets[j].InsertedText = insert.Text;
                                 deleteOffsets[j].Confirmed = true;
+                            }
+                        }
+                    }
+                    else if (dc is Replace && !LogProvider.CausedByAutoIndent(dc))
+                    {
+                        Replace replace = (Replace)dc;
+
+                        deleteOffsets.Add(new ParameterTuneElement(replace));
+
+                        foreach (int j in Enumerable.Range(0, deleteOffsets.Count))
+                        {
+                            if (deleteOffsets[j].Confirmed) { continue; }
+
+                            if (deleteOffsets[j].DeleteOffset == replace.Offset)
+                            {
+                                deleteOffsets[j].DeleteOffset -= replace.Length;
+                                deleteOffsets[j].DeleteOffset += replace.InsertionLength;
                             }
                         }
                     }
