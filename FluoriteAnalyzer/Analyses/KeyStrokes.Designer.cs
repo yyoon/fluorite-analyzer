@@ -28,56 +28,72 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.chartKeyStrokes = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.chartKeyStrokes)).BeginInit();
             this.SuspendLayout();
             // 
             // chartKeyStrokes
             // 
+            this.chartKeyStrokes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.chartKeyStrokes.BorderSkin.SkinStyle = System.Windows.Forms.DataVisualization.Charting.BorderSkinStyle.Emboss;
-            chartArea1.Area3DStyle.Enable3D = true;
-            chartArea1.Name = "ChartArea1";
-            this.chartKeyStrokes.ChartAreas.Add(chartArea1);
-            this.chartKeyStrokes.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.chartKeyStrokes.Legends.Add(legend1);
+            chartArea2.Area3DStyle.Enable3D = true;
+            chartArea2.Name = "ChartArea1";
+            this.chartKeyStrokes.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chartKeyStrokes.Legends.Add(legend2);
             this.chartKeyStrokes.Location = new System.Drawing.Point(0, 0);
             this.chartKeyStrokes.Name = "chartKeyStrokes";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
-            series1.CustomProperties = "PieLabelStyle=Outside";
-            series1.Label = "#VALX (#VALY / #TOTAL, #PERCENT)";
-            series1.Legend = "Legend1";
-            series1.LegendText = "#VALX (#VALY / #TOTAL, #PERCENT)";
-            series1.Name = "Series1";
-            this.chartKeyStrokes.Series.Add(series1);
-            this.chartKeyStrokes.Size = new System.Drawing.Size(1000, 500);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Pie;
+            series2.CustomProperties = "PieLabelStyle=Outside";
+            series2.Label = "#VALX (#VALY / #TOTAL, #PERCENT)";
+            series2.Legend = "Legend1";
+            series2.LegendText = "#VALX (#VALY / #TOTAL, #PERCENT)";
+            series2.Name = "Series1";
+            this.chartKeyStrokes.Series.Add(series2);
+            this.chartKeyStrokes.Size = new System.Drawing.Size(795, 500);
             this.chartKeyStrokes.TabIndex = 0;
             this.chartKeyStrokes.Text = "chart1";
-            title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            title1.Name = "Title1";
-            title1.Text = "Key Strokes Distribution";
-            title1.TextStyle = System.Windows.Forms.DataVisualization.Charting.TextStyle.Shadow;
-            this.chartKeyStrokes.Titles.Add(title1);
+            title2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            title2.Name = "Title1";
+            title2.Text = "Key Strokes Distribution";
+            title2.TextStyle = System.Windows.Forms.DataVisualization.Charting.TextStyle.Shadow;
+            this.chartKeyStrokes.Titles.Add(title2);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(801, 0);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(199, 500);
+            this.textBox1.TabIndex = 1;
             // 
             // KeyStrokes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.chartKeyStrokes);
             this.Name = "KeyStrokes";
             this.Size = new System.Drawing.Size(1000, 500);
             ((System.ComponentModel.ISupportInitialize)(this.chartKeyStrokes)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.DataVisualization.Charting.Chart chartKeyStrokes;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using FluoriteAnalyzer.Events;
+using System;
 
 namespace FluoriteAnalyzer.Analyses
 {
@@ -23,7 +24,8 @@ namespace FluoriteAnalyzer.Analyses
         private void CountKeyStrokes()
         {
             CountFromInsertStringCommand();
-            CountFromOtherCommands();
+            CountFromEditCommands();
+            //CountFromOtherCommands(commands);
         }
 
         private void CountFromInsertStringCommand()
@@ -141,7 +143,7 @@ namespace FluoriteAnalyzer.Analyses
             }
         }
 
-        private void CountFromOtherCommands()
+        private void CountFromEditCommands()
         {
             IEnumerable<Command> commands = LogProvider.LoggedEvents.OfType<Command>();
 
@@ -182,38 +184,41 @@ namespace FluoriteAnalyzer.Analyses
                                  "eventLogger.styledTextCommand.SELECT_PAGE_UP");
             CountSpecificCommand(commands, new[] {"Shift", "Ctrl"}, new[] {"Page Down"},
                                  "eventLogger.styledTextCommand.SELECT_PAGE_DOWN");
+        }
 
+        private void CountFromOtherCommands(IEnumerable<Command> commands)
+        {
             // Undo / Redo (assuming they are all invoked by keyboard)
-            CountSpecificCommand(commands, new[] {"Ctrl"}, new[] {"Z"}, "UndoCommand");
-            CountSpecificCommand(commands, new[] {"Ctrl"}, new[] {"Y"}, "RedoCommand");
+            CountSpecificCommand(commands, new[] { "Ctrl" }, new[] { "Z" }, "UndoCommand");
+            CountSpecificCommand(commands, new[] { "Ctrl" }, new[] { "Y" }, "RedoCommand");
 
             // Cut / Copy / Paste
-            CountSpecificCommand(commands, new[] {"Ctrl"}, new[] {"X"}, "CutCommand");
-            CountSpecificCommand(commands, new[] {"Ctrl"}, new[] {"C"}, "CopyCommand");
-            CountSpecificCommand(commands, new[] {"Ctrl"}, new[] {"V"}, "PasteCommand");
+            CountSpecificCommand(commands, new[] { "Ctrl" }, new[] { "X" }, "CutCommand");
+            CountSpecificCommand(commands, new[] { "Ctrl" }, new[] { "C" }, "CopyCommand");
+            CountSpecificCommand(commands, new[] { "Ctrl" }, new[] { "V" }, "PasteCommand");
 
             // Select All
-            CountSpecificCommand(commands, new[] {"Ctrl"}, new[] {"A"}, "org.eclipse.ui.edit.selectAll");
+            CountSpecificCommand(commands, new[] { "Ctrl" }, new[] { "A" }, "org.eclipse.ui.edit.selectAll");
 
             // Goto matching bracket
-            CountSpecificCommand(commands, new[] {"Shift", "Ctrl"}, new[] {"P"},
+            CountSpecificCommand(commands, new[] { "Shift", "Ctrl" }, new[] { "P" },
                                  "org.eclipse.jdt.ui.edit.text.java.goto.matching.bracket");
 
             // File save
-            CountSpecificCommand(commands, new[] {"Ctrl"}, new[] {"S"}, "org.eclipse.ui.file.save");
+            CountSpecificCommand(commands, new[] { "Ctrl" }, new[] { "S" }, "org.eclipse.ui.file.save");
 
             // Delete Line
-            CountSpecificCommand(commands, new[] {"Ctrl"}, new[] {"D"}, "org.eclipse.ui.edit.text.delete.line");
+            CountSpecificCommand(commands, new[] { "Ctrl" }, new[] { "D" }, "org.eclipse.ui.edit.text.delete.line");
 
             // Add block comment
-            CountSpecificCommand(commands, new[] {"Shift", "Ctrl"}, new[] {"/"},
+            CountSpecificCommand(commands, new[] { "Shift", "Ctrl" }, new[] { "/" },
                                  "org.eclipse.jdt.ui.edit.text.java.add.block.comment");
 
             // Correct Indent
-            CountSpecificCommand(commands, new[] {"Ctrl"}, new[] {"I"}, "org.eclipse.jdt.ui.edit.text.java.indent");
+            CountSpecificCommand(commands, new[] { "Ctrl" }, new[] { "I" }, "org.eclipse.jdt.ui.edit.text.java.indent");
 
             // Format
-            CountSpecificCommand(commands, new[] {"Shift", "Ctrl"}, new[] {"F"},
+            CountSpecificCommand(commands, new[] { "Shift", "Ctrl" }, new[] { "F" },
                                  "org.eclipse.jdt.ui.edit.text.java.format");
         }
 
@@ -297,6 +302,8 @@ namespace FluoriteAnalyzer.Analyses
             {
                 chartKeyStrokes.Series[0].Points.AddXY(kvp.Key, kvp.Value);
             }
+
+            textBox1.Text = string.Join(Environment.NewLine, keyCount.OrderByDescending(x => x.Value).Select(x => x.Key + "\t" + x.Value));
 
             chartKeyStrokes.ApplyPaletteColors();
 
