@@ -11,7 +11,7 @@ namespace FluoriteAnalyzer.Utils
         private static RecentFiles _instance;
         private static readonly string ParentPath;
 
-        private static readonly int MAX_FILES = 10;
+        private static readonly int MAX_FILES = 15;
         private static readonly string FILE_NAME = "RecentFiles.xml";
 
         private readonly List<string> _list;
