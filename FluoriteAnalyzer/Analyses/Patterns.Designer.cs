@@ -34,14 +34,16 @@
             this.columnPatternLength = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnPatternTimeInVideo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnPatternInfo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.buttonSearchParameterTuning = new System.Windows.Forms.Button();
+            this.labelCount = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonSearchFixTypos
             // 
             this.buttonSearchFixTypos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSearchFixTypos.Location = new System.Drawing.Point(686, 517);
+            this.buttonSearchFixTypos.Location = new System.Drawing.Point(511, 517);
             this.buttonSearchFixTypos.Name = "buttonSearchFixTypos";
-            this.buttonSearchFixTypos.Size = new System.Drawing.Size(171, 25);
+            this.buttonSearchFixTypos.Size = new System.Drawing.Size(170, 25);
             this.buttonSearchFixTypos.TabIndex = 3;
             this.buttonSearchFixTypos.Text = "Find Fix Typos Patterns";
             this.buttonSearchFixTypos.UseVisualStyleBackColor = true;
@@ -85,15 +87,39 @@
             this.columnPatternInfo.Text = "Additional Information";
             this.columnPatternInfo.Width = 400;
             // 
+            // buttonSearchParameterTuning
+            // 
+            this.buttonSearchParameterTuning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSearchParameterTuning.Location = new System.Drawing.Point(687, 518);
+            this.buttonSearchParameterTuning.Name = "buttonSearchParameterTuning";
+            this.buttonSearchParameterTuning.Size = new System.Drawing.Size(170, 23);
+            this.buttonSearchParameterTuning.TabIndex = 4;
+            this.buttonSearchParameterTuning.Text = "Find Parameter Tuning Patterns";
+            this.buttonSearchParameterTuning.UseVisualStyleBackColor = true;
+            this.buttonSearchParameterTuning.Click += new System.EventHandler(this.buttonSearchParameterTuning_Click);
+            // 
+            // labelCount
+            // 
+            this.labelCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelCount.AutoSize = true;
+            this.labelCount.Location = new System.Drawing.Point(3, 523);
+            this.labelCount.Name = "labelCount";
+            this.labelCount.Size = new System.Drawing.Size(35, 13);
+            this.labelCount.TabIndex = 5;
+            this.labelCount.Text = "label1";
+            // 
             // Patterns
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.labelCount);
+            this.Controls.Add(this.buttonSearchParameterTuning);
             this.Controls.Add(this.buttonSearchFixTypos);
             this.Controls.Add(this.listViewPatterns);
             this.Name = "Patterns";
             this.Size = new System.Drawing.Size(857, 542);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -105,5 +131,7 @@
         private System.Windows.Forms.ColumnHeader columnPatternLength;
         private System.Windows.Forms.ColumnHeader columnPatternTimeInVideo;
         private System.Windows.Forms.ColumnHeader columnPatternInfo;
+        private System.Windows.Forms.Button buttonSearchParameterTuning;
+        private System.Windows.Forms.Label labelCount;
     }
 }
