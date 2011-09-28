@@ -41,6 +41,7 @@
             this.buttonAddGroup = new System.Windows.Forms.Button();
             this.listGroups = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -58,6 +59,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.textBox1);
             this.splitContainer1.Panel1.Controls.Add(this.chartPie);
             // 
             // splitContainer1.Panel2
@@ -75,11 +77,13 @@
             // 
             // chartPie
             // 
+            this.chartPie.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
             this.chartPie.BorderSkin.SkinStyle = System.Windows.Forms.DataVisualization.Charting.BorderSkinStyle.Emboss;
             chartArea1.Area3DStyle.Enable3D = true;
             chartArea1.Name = "ChartArea1";
             this.chartPie.ChartAreas.Add(chartArea1);
-            this.chartPie.Dock = System.Windows.Forms.DockStyle.Fill;
             legend1.Name = "Legend1";
             this.chartPie.Legends.Add(legend1);
             this.chartPie.Location = new System.Drawing.Point(0, 0);
@@ -93,7 +97,7 @@
             series1.LegendText = "#VALX (#PERCENT)";
             series1.Name = "Series1";
             this.chartPie.Series.Add(series1);
-            this.chartPie.Size = new System.Drawing.Size(1000, 304);
+            this.chartPie.Size = new System.Drawing.Size(757, 304);
             this.chartPie.TabIndex = 3;
             this.chartPie.Text = "chart1";
             title1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -176,6 +180,16 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "List of Groups";
             // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(763, 0);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(237, 304);
+            this.textBox1.TabIndex = 4;
+            // 
             // CommandStatistics
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
@@ -184,6 +198,7 @@
             this.Name = "CommandStatistics";
             this.Size = new System.Drawing.Size(1000, 500);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -204,5 +219,6 @@
         private System.Windows.Forms.Button buttonAddGroup;
         private System.Windows.Forms.ListBox listGroups;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

@@ -203,6 +203,8 @@ namespace FluoriteAnalyzer.Analyses
                 chartPie.Series[0].Points.AddXY(group.Key, group.Sum);
             }
 
+            textBox1.Text = string.Join(Environment.NewLine, groups.OrderByDescending(x => x.Sum).Select(x => x.Key + "\t" + x.Sum));
+
             chartPie.ApplyPaletteColors();
 
             foreach (Series series in chartPie.Series)
