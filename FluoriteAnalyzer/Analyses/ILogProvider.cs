@@ -17,5 +17,6 @@ namespace FluoriteAnalyzer.Analyses
         bool CausedByPaste(DocumentChange dc);
         bool CausedByAssist(DocumentChange dc);
         bool CausedByAutoIndent(DocumentChange dc);
+        bool CausedByInsertString(DocumentChange dc);
     }
 }

@@ -499,6 +499,19 @@ namespace FluoriteAnalyzer.Forms
             return !string.IsNullOrEmpty(replace.DeletedText) && string.IsNullOrWhiteSpace(replace.DeletedText);
         }
 
+        bool ILogProvider.CausedByInsertString(DocumentChange dc)
+        {
+            Insert insert = dc as Insert;
+            if (insert == null) { return false; }
+
+            int index = LoggedEvents.IndexOf(dc);
+            if (index < 0) { return false; }
+
+            if (index + 1 >= LoggedEvents.Count) { return false; }
+
+            return (LoggedEvents[index + 1] is InsertStringCommand);
+        }
+
         #endregion
 
         private string GetVideoTime(Event anEvent)

@@ -29,7 +29,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 DocumentChange dc = dcList[i];
 
                 // Insert - Delete - Insert+
-                if (dc is Insert)
+                if (dc is Insert && logProvider.CausedByInsertString(dc) && !string.IsNullOrWhiteSpace(((Insert)dc).Text)) 
                 {
                     int offset = dc.Offset;
                     int length = dc.Length;
@@ -65,12 +65,14 @@ namespace FluoriteAnalyzer.PatternDetectors
                 }
 
                 // Insert - Replace - Insert*
-                if (dc is Insert)
+                if (dc is Insert && logProvider.CausedByInsertString(dc) && !string.IsNullOrWhiteSpace(((Insert)dc).Text)) 
                 {
                     int offset = dc.Offset;
                     int length = dc.Length;
 
-                    if (i + 1 < dcList.Count && dcList[i + 1] is Replace && (dcList[i + 1].Timestamp - dc.Timestamp) < timethreshold)
+                    if (i + 1 < dcList.Count && dcList[i + 1] is Replace &&
+                        !logProvider.CausedByAutoIndent(dcList[i + 1]) &&
+                        (dcList[i + 1].Timestamp - dc.Timestamp) < timethreshold)
                     {
                         Replace replace = (Replace)dcList[i + 1];
 
