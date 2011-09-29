@@ -59,11 +59,11 @@ namespace FluoriteAnalyzer.PatternDetectors
                     if (lastRun != null)
                     {
                         // TODO: Make it as an option! Current value is 1 min.
-                        if (currentRun.Timestamp - lastRun.Timestamp <= 60000)
+                        if (currentRun.Timestamp - lastRun.Timestamp <= 45000)
                         {
                             foreach (var element in deleteOffsets)
                             {
-                                if (element.Confirmed)
+                                if (CheckElement(element))
                                 {
                                     var item = new ListViewItem(new[]
                                                                     {
@@ -120,7 +120,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                             }
                         }
                     }
-                    else if (dc is Replace && !logProvider.CausedByAutoIndent(dc))
+                    else if (dc is Replace && !logProvider.CausedByAutoIndent(dc) && !logProvider.CausedByAssist(dc))
                     {
                         Replace replace = (Replace)dc;
 
@@ -139,6 +139,25 @@ namespace FluoriteAnalyzer.PatternDetectors
                     }
                 }
             }
+        }
+
+        private static bool CheckElement(ParameterTuneElement element)
+        {
+            if (element.Confirmed == false) { return false; }
+
+            if (element.DeletedText.Contains('\r') ||
+                element.DeletedText.Contains('\n') ||
+                element.DeletedText.Contains(' ') ||
+                string.IsNullOrEmpty(element.DeletedText.Trim()) ||
+                element.InsertedText.Contains('\r') ||
+                element.InsertedText.Contains('\n') ||
+                element.InsertedText.Contains(' ') ||
+                string.IsNullOrEmpty(element.InsertedText.Trim()))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

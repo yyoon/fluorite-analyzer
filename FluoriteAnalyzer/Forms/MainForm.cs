@@ -488,7 +488,13 @@ namespace FluoriteAnalyzer.Forms
 
         bool ILogProvider.CausedByAssist(DocumentChange dc)
         {
-            return false;
+            Replace replace = dc as Replace;
+            if (replace == null) { return false; }
+
+            int index = LoggedEvents.IndexOf(dc);
+            if (index < 0) { return false; }
+
+            return (index > 0 && LoggedEvents[index - 1] is AssistCommand);
         }
 
         bool ILogProvider.CausedByAutoIndent(DocumentChange dc)
