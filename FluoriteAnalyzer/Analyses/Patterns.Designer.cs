@@ -36,14 +36,15 @@
             this.columnPatternInfo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.buttonSearchParameterTuning = new System.Windows.Forms.Button();
             this.labelCount = new System.Windows.Forms.Label();
+            this.buttonFindErrorRecoveries = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonSearchFixTypos
             // 
             this.buttonSearchFixTypos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSearchFixTypos.Location = new System.Drawing.Point(511, 517);
+            this.buttonSearchFixTypos.Location = new System.Drawing.Point(394, 476);
             this.buttonSearchFixTypos.Name = "buttonSearchFixTypos";
-            this.buttonSearchFixTypos.Size = new System.Drawing.Size(170, 25);
+            this.buttonSearchFixTypos.Size = new System.Drawing.Size(198, 23);
             this.buttonSearchFixTypos.TabIndex = 3;
             this.buttonSearchFixTypos.Text = "Find Fix Typos Patterns";
             this.buttonSearchFixTypos.UseVisualStyleBackColor = true;
@@ -62,7 +63,7 @@
             this.listViewPatterns.FullRowSelect = true;
             this.listViewPatterns.Location = new System.Drawing.Point(0, 0);
             this.listViewPatterns.Name = "listViewPatterns";
-            this.listViewPatterns.Size = new System.Drawing.Size(857, 511);
+            this.listViewPatterns.Size = new System.Drawing.Size(999, 472);
             this.listViewPatterns.TabIndex = 2;
             this.listViewPatterns.UseCompatibleStateImageBehavior = false;
             this.listViewPatterns.View = System.Windows.Forms.View.Details;
@@ -90,9 +91,9 @@
             // buttonSearchParameterTuning
             // 
             this.buttonSearchParameterTuning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSearchParameterTuning.Location = new System.Drawing.Point(687, 518);
+            this.buttonSearchParameterTuning.Location = new System.Drawing.Point(598, 476);
             this.buttonSearchParameterTuning.Name = "buttonSearchParameterTuning";
-            this.buttonSearchParameterTuning.Size = new System.Drawing.Size(170, 23);
+            this.buttonSearchParameterTuning.Size = new System.Drawing.Size(198, 22);
             this.buttonSearchParameterTuning.TabIndex = 4;
             this.buttonSearchParameterTuning.Text = "Find Parameter Tuning Patterns";
             this.buttonSearchParameterTuning.UseVisualStyleBackColor = true;
@@ -102,22 +103,34 @@
             // 
             this.labelCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.labelCount.AutoSize = true;
-            this.labelCount.Location = new System.Drawing.Point(3, 523);
+            this.labelCount.Location = new System.Drawing.Point(3, 483);
             this.labelCount.Name = "labelCount";
-            this.labelCount.Size = new System.Drawing.Size(35, 13);
+            this.labelCount.Size = new System.Drawing.Size(38, 12);
             this.labelCount.TabIndex = 5;
             this.labelCount.Text = "label1";
             // 
+            // buttonFindErrorRecoveries
+            // 
+            this.buttonFindErrorRecoveries.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonFindErrorRecoveries.Location = new System.Drawing.Point(802, 476);
+            this.buttonFindErrorRecoveries.Name = "buttonFindErrorRecoveries";
+            this.buttonFindErrorRecoveries.Size = new System.Drawing.Size(198, 22);
+            this.buttonFindErrorRecoveries.TabIndex = 6;
+            this.buttonFindErrorRecoveries.Text = "Error Recoveries";
+            this.buttonFindErrorRecoveries.UseVisualStyleBackColor = true;
+            this.buttonFindErrorRecoveries.Click += new System.EventHandler(this.buttonFindErrorRecoveries_Click);
+            // 
             // Patterns
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.buttonFindErrorRecoveries);
             this.Controls.Add(this.labelCount);
             this.Controls.Add(this.buttonSearchParameterTuning);
             this.Controls.Add(this.buttonSearchFixTypos);
             this.Controls.Add(this.listViewPatterns);
             this.Name = "Patterns";
-            this.Size = new System.Drawing.Size(857, 542);
+            this.Size = new System.Drawing.Size(1000, 500);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -133,5 +146,6 @@
         private System.Windows.Forms.ColumnHeader columnPatternInfo;
         private System.Windows.Forms.Button buttonSearchParameterTuning;
         private System.Windows.Forms.Label labelCount;
+        private System.Windows.Forms.Button buttonFindErrorRecoveries;
     }
 }

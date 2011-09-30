@@ -71,5 +71,10 @@ namespace FluoriteAnalyzer.Analyses
         {
             DetectPattern(ParameterTuningDetector.GetInstance());
         }
+
+        private void buttonFindErrorRecoveries_Click(object sender, EventArgs e)
+        {
+            DetectPattern(ErrorRecoveryDetector.GetInstance());
+        }
     }
 }
