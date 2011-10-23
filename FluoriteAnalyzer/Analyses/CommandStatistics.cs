@@ -217,5 +217,57 @@ namespace FluoriteAnalyzer.Analyses
         }
 
         #endregion
+
+        private void listGroups_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int index = listGroups.IndexFromPoint(e.Location);
+            if (index < 0 || index >= listGroups.Items.Count) { return; }
+
+            var inputForm = new InputStringForm();
+            inputForm.Text = "Modify Custom Group Name";
+            inputForm.Message = "Name of the custom group";
+            inputForm.Value = CustomGroups[index].Name;
+
+            DialogResult result = inputForm.ShowDialog();
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            CustomGroups[index].Name = inputForm.Value;
+            listGroups.SelectedIndex = index;
+
+            Redraw();
+        }
+
+        private void listPatterns_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            int index = listPatterns.IndexFromPoint(e.Location);
+            if (index < 0 || index >= listPatterns.Items.Count) { return; }
+
+            int selectedIndex = listGroups.SelectedIndex;
+            if (selectedIndex < 0 || selectedIndex >= listGroups.Items.Count)
+            {
+                return;
+            }
+
+            CustomGroup group = CustomGroups[selectedIndex];
+
+            var inputForm = new InputStringForm();
+            inputForm.Text = "Modify Regex Pattern";
+            inputForm.Message = "Regex Pattern";
+            inputForm.Value = group.Patterns[index];
+
+            DialogResult result = inputForm.ShowDialog();
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            group.Patterns[index] = inputForm.Value;
+            listPatterns.SelectedIndex = index;
+
+            Redraw();
+        }
     }
 }

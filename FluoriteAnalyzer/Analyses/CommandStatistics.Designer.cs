@@ -33,6 +33,7 @@
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.chartPie = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.buttonRemovePattern = new System.Windows.Forms.Button();
             this.buttonAddPattern = new System.Windows.Forms.Button();
@@ -41,7 +42,6 @@
             this.buttonAddGroup = new System.Windows.Forms.Button();
             this.listGroups = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -74,6 +74,16 @@
             this.splitContainer1.Size = new System.Drawing.Size(1000, 500);
             this.splitContainer1.SplitterDistance = 304;
             this.splitContainer1.TabIndex = 4;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox1.Location = new System.Drawing.Point(763, 0);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(237, 304);
+            this.textBox1.TabIndex = 4;
             // 
             // chartPie
             // 
@@ -138,6 +148,7 @@
             this.listPatterns.Size = new System.Drawing.Size(233, 136);
             this.listPatterns.TabIndex = 6;
             this.listPatterns.SelectedIndexChanged += new System.EventHandler(this.listPatterns_SelectedIndexChanged);
+            this.listPatterns.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listPatterns_MouseDoubleClick);
             // 
             // buttonRemoveGroup
             // 
@@ -170,6 +181,7 @@
             this.listGroups.Size = new System.Drawing.Size(233, 136);
             this.listGroups.TabIndex = 1;
             this.listGroups.SelectedIndexChanged += new System.EventHandler(this.listGroups_SelectedIndexChanged);
+            this.listGroups.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listGroups_MouseDoubleClick);
             // 
             // label1
             // 
@@ -179,16 +191,6 @@
             this.label1.Size = new System.Drawing.Size(84, 12);
             this.label1.TabIndex = 0;
             this.label1.Text = "List of Groups";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Location = new System.Drawing.Point(763, 0);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(237, 304);
-            this.textBox1.TabIndex = 4;
             // 
             // CommandStatistics
             // 
