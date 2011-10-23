@@ -580,6 +580,11 @@ namespace FluoriteAnalyzer.Forms
             {
                 ((CommandStatistics)commandStatistics).SaveCustomGroups();
             }
+
+            if (keyStrokes != null)
+            {
+                ((KeyStrokes)keyStrokes).SaveCustomGroups();
+            }
         }
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)

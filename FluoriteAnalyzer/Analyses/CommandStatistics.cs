@@ -15,7 +15,7 @@ namespace FluoriteAnalyzer.Analyses
 {
     internal partial class CommandStatistics : UserControl, IRedrawable
     {
-        private static readonly string CUSTOM_GROUPS_FILE_NAME = "CustomGroups.xml";
+        private static readonly string CUSTOM_GROUPS_FILE_NAME = "CustomGroups_Commands.xml";
 
         public CommandStatistics(ILogProvider log)
         {
@@ -187,37 +187,6 @@ namespace FluoriteAnalyzer.Analyses
             Redraw();
         }
 
-        #region IReloadable 멤버
-
-        public void Redraw()
-        {
-            var usedColors = new HashSet<Color>();
-
-            chartPie.Series[0].Points.Clear();
-
-            var groups = LogProvider.LoggedEvents.OfType<Command>().GroupBy(x => GetGroupForCommand(x)).Where(
-                x => x.Key != "Ignored")
-                .Select(x => new {x.Key, Sum = x.Sum(y => y.RepeatCount)});
-            foreach (var group in groups.OrderByDescending(x => x.Sum))
-            {
-                chartPie.Series[0].Points.AddXY(group.Key, group.Sum);
-            }
-
-            textBox1.Text = string.Join(Environment.NewLine, groups.OrderByDescending(x => x.Sum).Select(x => x.Key + "\t" + x.Sum));
-
-            chartPie.ApplyPaletteColors();
-
-            foreach (Series series in chartPie.Series)
-            {
-                foreach (DataPoint point in series.Points)
-                {
-                    point.Color = Color.FromArgb(200, point.Color);
-                }
-            }
-        }
-
-        #endregion
-
         private void listGroups_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             int index = listGroups.IndexFromPoint(e.Location);
@@ -269,5 +238,36 @@ namespace FluoriteAnalyzer.Analyses
 
             Redraw();
         }
+
+        #region IReloadable 멤버
+
+        public void Redraw()
+        {
+            var usedColors = new HashSet<Color>();
+
+            chartPie.Series[0].Points.Clear();
+
+            var groups = LogProvider.LoggedEvents.OfType<Command>().GroupBy(x => GetGroupForCommand(x)).Where(
+                x => x.Key != "Ignored")
+                .Select(x => new {x.Key, Sum = x.Sum(y => y.RepeatCount)});
+            foreach (var group in groups.OrderByDescending(x => x.Sum))
+            {
+                chartPie.Series[0].Points.AddXY(group.Key, group.Sum);
+            }
+
+            textBox1.Text = string.Join(Environment.NewLine, groups.OrderByDescending(x => x.Sum).Select(x => x.Key + "\t" + x.Sum));
+
+            chartPie.ApplyPaletteColors();
+
+            foreach (Series series in chartPie.Series)
+            {
+                foreach (DataPoint point in series.Points)
+                {
+                    point.Color = Color.FromArgb(200, point.Color);
+                }
+            }
+        }
+
+        #endregion
     }
 }

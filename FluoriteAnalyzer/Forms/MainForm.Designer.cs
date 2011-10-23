@@ -62,7 +62,8 @@
             this.windowToolStripMenuItem});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(947, 24);
+            this.menuMain.Padding = new System.Windows.Forms.Padding(7, 2, 0, 2);
+            this.menuMain.Size = new System.Drawing.Size(1105, 24);
             this.menuMain.TabIndex = 1;
             this.menuMain.Text = "menuStrip1";
             // 
@@ -82,26 +83,26 @@
             // 
             this.openLogToolStripMenuItem.Name = "openLogToolStripMenuItem";
             this.openLogToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openLogToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.openLogToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.openLogToolStripMenuItem.Text = "&Open Log";
             this.openLogToolStripMenuItem.Click += new System.EventHandler(this.openLogToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(166, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(167, 6);
             // 
             // recentFilesToolStripMenuItem
             // 
             this.recentFilesToolStripMenuItem.Name = "recentFilesToolStripMenuItem";
-            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.recentFilesToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.recentFilesToolStripMenuItem.Text = "Recent &Files";
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.ShortcutKeyDisplayString = "Alt+F4";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(169, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(170, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             // 
             // toolsToolStripMenuItem
@@ -112,7 +113,7 @@
             this.duplicateFixToolStripMenuItem,
             this.adjustTimeToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
             this.toolsToolStripMenuItem.DropDownOpening += new System.EventHandler(this.toolsToolStripMenuItem_DropDownOpening);
             // 
@@ -120,28 +121,28 @@
             // 
             this.logMergerToolStripMenuItem.Image = global::FluoriteAnalyzer.Properties.Resources.Merge;
             this.logMergerToolStripMenuItem.Name = "logMergerToolStripMenuItem";
-            this.logMergerToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.logMergerToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.logMergerToolStripMenuItem.Text = "Log &Merger";
             this.logMergerToolStripMenuItem.Click += new System.EventHandler(this.logMergerToolStripMenuItem_Click);
             // 
             // fixInsertStringCommandRepeatCountToolStripMenuItem
             // 
             this.fixInsertStringCommandRepeatCountToolStripMenuItem.Name = "fixInsertStringCommandRepeatCountToolStripMenuItem";
-            this.fixInsertStringCommandRepeatCountToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.fixInsertStringCommandRepeatCountToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.fixInsertStringCommandRepeatCountToolStripMenuItem.Text = "&Repeat Count Fix";
             this.fixInsertStringCommandRepeatCountToolStripMenuItem.Click += new System.EventHandler(this.fixInsertStringCommandRepeatCountToolStripMenuItem_Click);
             // 
             // duplicateFixToolStripMenuItem
             // 
             this.duplicateFixToolStripMenuItem.Name = "duplicateFixToolStripMenuItem";
-            this.duplicateFixToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.duplicateFixToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.duplicateFixToolStripMenuItem.Text = "&Duplicate Fix";
             this.duplicateFixToolStripMenuItem.Click += new System.EventHandler(this.duplicateFixToolStripMenuItem_Click);
             // 
             // adjustTimeToolStripMenuItem
             // 
             this.adjustTimeToolStripMenuItem.Name = "adjustTimeToolStripMenuItem";
-            this.adjustTimeToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+            this.adjustTimeToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.adjustTimeToolStripMenuItem.Text = "&Adjust Time";
             this.adjustTimeToolStripMenuItem.Click += new System.EventHandler(this.adjustTimeToolStripMenuItem_Click);
             // 
@@ -160,28 +161,28 @@
             // cascadeToolStripMenuItem
             // 
             this.cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";
-            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.cascadeToolStripMenuItem.Text = "&Cascade";
             this.cascadeToolStripMenuItem.Click += new System.EventHandler(this.cascadeToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(160, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(161, 22);
             this.toolStripMenuItem2.Text = "Tile &Vertically";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // tileHorizontallyToolStripMenuItem
             // 
             this.tileHorizontallyToolStripMenuItem.Name = "tileHorizontallyToolStripMenuItem";
-            this.tileHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.tileHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.tileHorizontallyToolStripMenuItem.Text = "Tile &Horizontally";
             this.tileHorizontallyToolStripMenuItem.Click += new System.EventHandler(this.tileHorizontallyToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(157, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(158, 6);
             // 
             // toolMain
             // 
@@ -193,7 +194,7 @@
             this.toolStripLabel1});
             this.toolMain.Location = new System.Drawing.Point(0, 24);
             this.toolMain.Name = "toolMain";
-            this.toolMain.Size = new System.Drawing.Size(947, 25);
+            this.toolMain.Size = new System.Drawing.Size(1105, 25);
             this.toolMain.TabIndex = 2;
             this.toolMain.Text = "toolStrip1";
             // 
@@ -228,21 +229,21 @@
             this.toolStripTextSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.toolStripTextSearch.Margin = new System.Windows.Forms.Padding(1, 0, 5, 0);
             this.toolStripTextSearch.Name = "toolStripTextSearch";
-            this.toolStripTextSearch.Size = new System.Drawing.Size(300, 25);
+            this.toolStripTextSearch.Size = new System.Drawing.Size(350, 25);
             this.toolStripTextSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.toolStripTextSearch_KeyDown);
             // 
             // toolStripLabel1
             // 
             this.toolStripLabel1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(45, 22);
+            this.toolStripLabel1.Size = new System.Drawing.Size(46, 22);
             this.toolStripLabel1.Text = "Search:";
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(947, 664);
+            this.ClientSize = new System.Drawing.Size(1105, 613);
             this.Controls.Add(this.toolMain);
             this.Controls.Add(this.menuMain);
             this.IsMdiContainer = true;
