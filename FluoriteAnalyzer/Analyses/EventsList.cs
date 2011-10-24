@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.Utils;
+using System.IO;
 
 namespace FluoriteAnalyzer.Analyses
 {
@@ -191,6 +192,7 @@ namespace FluoriteAnalyzer.Analyses
 
         private void ReproduceSnapshot()
         {
+            textCurrentFileName.Text = "";
             richTextSourceCode.Text = "";
 
             if (listViewEvents.SelectedIndices.Count == 0)
@@ -282,6 +284,9 @@ namespace FluoriteAnalyzer.Analyses
             {
                 return;
             }
+
+            // Set the current file name
+            textCurrentFileName.Text = Path.GetFileName(currentFile);
 
             int offset, insertionLength;
             string deletedText = GetOffsetAndLength(lastDocChange, out offset, out insertionLength);
