@@ -2,7 +2,7 @@
 
 namespace FluoriteAnalyzer.Events
 {
-    internal class DocumentChange : Event
+    public class DocumentChange : Event
     {
         public DocumentChange(XmlElement element)
             : base(element)

@@ -122,8 +122,7 @@
             // 
             // Patterns
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.buttonFindErrorRecoveries);
             this.Controls.Add(this.labelCount);
             this.Controls.Add(this.buttonSearchParameterTuning);

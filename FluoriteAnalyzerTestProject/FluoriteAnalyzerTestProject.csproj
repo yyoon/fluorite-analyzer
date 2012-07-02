@@ -38,6 +38,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
     <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
@@ -47,6 +48,12 @@
   <ItemGroup>
     <Compile Include="MainTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FluoriteAnalyzer\FluoriteAnalyzer.csproj">
+      <Project>{A019DD70-2B9A-4146-836D-B1CBBC28B930}</Project>
+      <Name>FluoriteAnalyzer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -40,18 +40,19 @@
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(12, 12);
+            this.listBox1.ItemHeight = 12;
+            this.listBox1.Location = new System.Drawing.Point(14, 11);
             this.listBox1.Name = "listBox1";
             this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBox1.Size = new System.Drawing.Size(487, 238);
+            this.listBox1.Size = new System.Drawing.Size(567, 220);
             this.listBox1.TabIndex = 0;
             // 
             // buttonAdd
             // 
             this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonAdd.Location = new System.Drawing.Point(505, 12);
+            this.buttonAdd.Location = new System.Drawing.Point(589, 11);
             this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(75, 23);
+            this.buttonAdd.Size = new System.Drawing.Size(87, 21);
             this.buttonAdd.TabIndex = 1;
             this.buttonAdd.Text = "Add";
             this.buttonAdd.UseVisualStyleBackColor = true;
@@ -60,9 +61,9 @@
             // buttonRemoveFiles
             // 
             this.buttonRemoveFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonRemoveFiles.Location = new System.Drawing.Point(505, 41);
+            this.buttonRemoveFiles.Location = new System.Drawing.Point(589, 38);
             this.buttonRemoveFiles.Name = "buttonRemoveFiles";
-            this.buttonRemoveFiles.Size = new System.Drawing.Size(75, 23);
+            this.buttonRemoveFiles.Size = new System.Drawing.Size(87, 21);
             this.buttonRemoveFiles.TabIndex = 2;
             this.buttonRemoveFiles.Text = "Remove";
             this.buttonRemoveFiles.UseVisualStyleBackColor = true;
@@ -71,9 +72,9 @@
             // buttonMerge
             // 
             this.buttonMerge.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonMerge.Location = new System.Drawing.Point(505, 227);
+            this.buttonMerge.Location = new System.Drawing.Point(589, 210);
             this.buttonMerge.Name = "buttonMerge";
-            this.buttonMerge.Size = new System.Drawing.Size(75, 23);
+            this.buttonMerge.Size = new System.Drawing.Size(87, 21);
             this.buttonMerge.TabIndex = 3;
             this.buttonMerge.Text = "Merge";
             this.buttonMerge.UseVisualStyleBackColor = true;
@@ -81,9 +82,8 @@
             // 
             // LogMerger
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(592, 262);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.ClientSize = new System.Drawing.Size(691, 242);
             this.Controls.Add(this.buttonMerge);
             this.Controls.Add(this.buttonRemoveFiles);
             this.Controls.Add(this.buttonAdd);

@@ -193,8 +193,7 @@
             // 
             // KeyStrokes
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.splitContainer1);
             this.Name = "KeyStrokes";
             this.Size = new System.Drawing.Size(1000, 500);

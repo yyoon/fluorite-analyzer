@@ -6,7 +6,7 @@ using System.Xml;
 
 namespace FluoriteAnalyzer.Events
 {
-    internal enum EventType
+    public enum EventType
     {
         Command,
         DocumentChange,
@@ -14,7 +14,7 @@ namespace FluoriteAnalyzer.Events
         Dummy
     }
 
-    internal abstract class Event
+    public abstract class Event
     {
         protected Dictionary<string, string> _dict;
         protected XmlElement _xmlElement;

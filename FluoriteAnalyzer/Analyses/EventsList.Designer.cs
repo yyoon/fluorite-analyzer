@@ -70,16 +70,17 @@
             this.splitContainer1.Panel2.Controls.Add(this.buttonNext);
             this.splitContainer1.Panel2.Controls.Add(this.buttonPrev);
             this.splitContainer1.Panel2.Controls.Add(this.richTextSourceCode);
-            this.splitContainer1.Size = new System.Drawing.Size(857, 542);
-            this.splitContainer1.SplitterDistance = 578;
+            this.splitContainer1.Size = new System.Drawing.Size(1000, 500);
+            this.splitContainer1.SplitterDistance = 674;
+            this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 2;
             // 
             // buttonShowHideCode
             // 
             this.buttonShowHideCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonShowHideCode.Location = new System.Drawing.Point(425, 516);
+            this.buttonShowHideCode.Location = new System.Drawing.Point(496, 476);
             this.buttonShowHideCode.Name = "buttonShowHideCode";
-            this.buttonShowHideCode.Size = new System.Drawing.Size(150, 23);
+            this.buttonShowHideCode.Size = new System.Drawing.Size(175, 21);
             this.buttonShowHideCode.TabIndex = 3;
             this.buttonShowHideCode.Text = "Show/Hide Code";
             this.buttonShowHideCode.UseVisualStyleBackColor = true;
@@ -101,8 +102,9 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.listViewEvents);
-            this.splitContainer.Size = new System.Drawing.Size(575, 510);
+            this.splitContainer.Size = new System.Drawing.Size(671, 471);
             this.splitContainer.SplitterDistance = 170;
+            this.splitContainer.SplitterWidth = 5;
             this.splitContainer.TabIndex = 2;
             // 
             // treeEvents
@@ -111,7 +113,7 @@
             this.treeEvents.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeEvents.Location = new System.Drawing.Point(0, 0);
             this.treeEvents.Name = "treeEvents";
-            this.treeEvents.Size = new System.Drawing.Size(170, 510);
+            this.treeEvents.Size = new System.Drawing.Size(170, 471);
             this.treeEvents.TabIndex = 0;
             // 
             // listViewEvents
@@ -130,7 +132,7 @@
             this.listViewEvents.MultiSelect = false;
             this.listViewEvents.Name = "listViewEvents";
             this.listViewEvents.ShowItemToolTips = true;
-            this.listViewEvents.Size = new System.Drawing.Size(401, 510);
+            this.listViewEvents.Size = new System.Drawing.Size(496, 471);
             this.listViewEvents.TabIndex = 0;
             this.listViewEvents.UseCompatibleStateImageBehavior = false;
             this.listViewEvents.View = System.Windows.Forms.View.Details;
@@ -169,16 +171,16 @@
             this.textCurrentFileName.Location = new System.Drawing.Point(0, 0);
             this.textCurrentFileName.Name = "textCurrentFileName";
             this.textCurrentFileName.ReadOnly = true;
-            this.textCurrentFileName.Size = new System.Drawing.Size(275, 20);
+            this.textCurrentFileName.Size = new System.Drawing.Size(320, 21);
             this.textCurrentFileName.TabIndex = 3;
             // 
             // buttonNext
             // 
             this.buttonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonNext.Enabled = false;
-            this.buttonNext.Location = new System.Drawing.Point(196, 516);
+            this.buttonNext.Location = new System.Drawing.Point(229, 476);
             this.buttonNext.Name = "buttonNext";
-            this.buttonNext.Size = new System.Drawing.Size(75, 23);
+            this.buttonNext.Size = new System.Drawing.Size(87, 21);
             this.buttonNext.TabIndex = 2;
             this.buttonNext.Text = "Next";
             this.buttonNext.UseVisualStyleBackColor = true;
@@ -187,9 +189,9 @@
             // 
             this.buttonPrev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonPrev.Enabled = false;
-            this.buttonPrev.Location = new System.Drawing.Point(3, 516);
+            this.buttonPrev.Location = new System.Drawing.Point(3, 476);
             this.buttonPrev.Name = "buttonPrev";
-            this.buttonPrev.Size = new System.Drawing.Size(75, 23);
+            this.buttonPrev.Size = new System.Drawing.Size(87, 21);
             this.buttonPrev.TabIndex = 1;
             this.buttonPrev.Text = "Previous";
             this.buttonPrev.UseVisualStyleBackColor = true;
@@ -201,20 +203,19 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.richTextSourceCode.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextSourceCode.HideSelection = false;
-            this.richTextSourceCode.Location = new System.Drawing.Point(0, 26);
+            this.richTextSourceCode.Location = new System.Drawing.Point(0, 24);
             this.richTextSourceCode.Name = "richTextSourceCode";
             this.richTextSourceCode.ReadOnly = true;
-            this.richTextSourceCode.Size = new System.Drawing.Size(274, 484);
+            this.richTextSourceCode.Size = new System.Drawing.Size(319, 447);
             this.richTextSourceCode.TabIndex = 0;
             this.richTextSourceCode.Text = "";
             // 
             // EventsList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.splitContainer1);
             this.Name = "EventsList";
-            this.Size = new System.Drawing.Size(857, 542);
+            this.Size = new System.Drawing.Size(1000, 500);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             this.splitContainer1.Panel2.PerformLayout();

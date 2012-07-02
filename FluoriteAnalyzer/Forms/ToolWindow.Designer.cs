@@ -28,9 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.SuspendLayout();
+            // 
+            // ToolWindow
+            // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.Name = "ToolWindow";
             this.Text = "ToolWindow";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

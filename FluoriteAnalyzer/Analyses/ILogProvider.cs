@@ -3,7 +3,7 @@ using FluoriteAnalyzer.Events;
 
 namespace FluoriteAnalyzer.Analyses
 {
-    internal interface ILogProvider
+    public interface ILogProvider
     {
         string LogPath { get; }
         IEnumerable<Event> LoggedEvents { get; }
