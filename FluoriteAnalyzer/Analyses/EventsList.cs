@@ -245,14 +245,14 @@ namespace FluoriteAnalyzer.Analyses
                         else
                         {
                             string snapshot = fileOpenCommand.Snapshot;
-                            snapshot = snapshot.Replace("\r\n", "\n");
+                            //snapshot = snapshot.Replace("\r\n", "\n");
                             files.Add(currentFile, new StringBuilder(snapshot));
                         }
                     }
                     else if (fileOpenCommand.Snapshot != null)
                     {
                         string snapshot = fileOpenCommand.Snapshot;
-                        snapshot = snapshot.Replace("\r\n", "\n");
+                        //snapshot = snapshot.Replace("\r\n", "\n");
                         files[currentFile] = new StringBuilder(snapshot);
                     }
                 }
@@ -332,13 +332,15 @@ namespace FluoriteAnalyzer.Analyses
             else if (docChangeEvent is Insert)
             {
                 var insert = (Insert) docChangeEvent;
-                builder.Insert(insert.Offset, insert.Text.Replace("\r\n", "\n"));
+                //builder.Insert(insert.Offset, insert.Text.Replace("\r\n", "\n"));
+                builder.Insert(insert.Offset, insert.Text);
             }
             else if (docChangeEvent is Replace)
             {
                 var replace = (Replace) docChangeEvent;
                 builder.Remove(replace.Offset, replace.Length);
-                builder.Insert(replace.Offset, replace.InsertedText.Replace("\r\n", "\n"));
+                //builder.Insert(replace.Offset, replace.InsertedText.Replace("\r\n", "\n"));
+                builder.Insert(replace.Offset, replace.InsertedText);
             }
         }
 

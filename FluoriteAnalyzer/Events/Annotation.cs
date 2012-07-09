@@ -17,10 +17,11 @@ namespace FluoriteAnalyzer.Events
         public Annotation(XmlElement element)
             : base(element)
         {
-            Direction = GetPropertyValueFromDict("direction") == "FORWARD"
-                            ? AnnotationDirection.Forward
-                            : AnnotationDirection.Backward;
+            //Direction = GetPropertyValueFromDict("direction") == "FORWARD"
+            //                ? AnnotationDirection.Forward
+            //                : AnnotationDirection.Backward;
             Comment = GetPropertyValueFromDict("comment");
+            Selection = GetPropertyValueFromDict("selection");
         }
 
         public override EventType EventType
@@ -30,5 +31,6 @@ namespace FluoriteAnalyzer.Events
 
         public AnnotationDirection Direction { get; private set; }
         public string Comment { get; private set; }
+        public string Selection { get; private set; }
     }
 }
