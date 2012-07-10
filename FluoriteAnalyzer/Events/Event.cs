@@ -60,7 +60,25 @@ namespace FluoriteAnalyzer.Events
 
         public virtual string ParameterStringComplex
         {
-            get { return string.Join(Environment.NewLine, _dict.Select(x => "[" + x.Key + "] = " + x.Value)); }
+            get
+            {
+                return string.Join(Environment.NewLine, _dict.Select(x => "[" + x.Key + "] = " + GetParameterValue(x)));
+            }
+        }
+
+        private string GetParameterValue(KeyValuePair<string, string> pair)
+        {
+            switch (pair.Key)
+            {
+                case "text":
+                case "snapshot":
+                case "insertedText":
+                case "deletedText":
+                    return Environment.NewLine + pair.Value;
+
+                default:
+                    return pair.Value;
+            }
         }
 
         public static Event CreateEventFromXmlElement(XmlElement element)
