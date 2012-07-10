@@ -101,6 +101,10 @@ namespace FluoriteAnalyzer.Analyses
 
         public void RebuildFilteredEventsList()
         {
+            // Before clearing the list view, remember the selected event's ID.
+            int lastSelectedID = SelectedEvent != null ? SelectedEvent.ID : -1;
+
+            // Clear the list view.
             listViewEvents.Items.Clear();
 
             FilteredEvents = LogProvider.LoggedEvents.Where(x => _checkDict[x.TypeOrCommandString]).ToList();
@@ -120,45 +124,66 @@ namespace FluoriteAnalyzer.Analyses
                 item.Tag = anEvent;
                 listViewEvents.Items.Add(item);
             }
+
+            // Restore the selected item to be selected.
+            SelectClosestEventByID(lastSelectedID);
         }
 
         public void lineChart_ChartDoubleClick(int timevalue)
         {
-            // Find the closest filtered event from the event list
-            int index = FilteredEvents.BinarySearch(new DummyEvent(timevalue),
-                                                    new ComparisonComparer<Event>(
-                                                        (x, y) => (int) (x.Timestamp - y.Timestamp)));
-            if (index < 0)
-            {
-                ++index;
-                index *= -1;
-            }
-
-            index = Utils.Utils.Clamp(index, 0, listViewEvents.Items.Count - 1);
-
-            listViewEvents.SelectedItems.Clear();
-            listViewEvents.Items[index].Selected = true;
-
-            listViewEvents.EnsureVisible(index);
-            listViewEvents.Focus();
+            SelectClosestEventByTimestamp(timevalue);
         }
 
         public void pattern_ItemDoubleClick(int startingID)
         {
+            SelectClosestEventByID(startingID);
+        }
+
+        private void SelectClosestEventByTimestamp(int timevalue)
+        {
             // Find the closest filtered event from the event list
-            int index = FilteredEvents.BinarySearch(new DummyEvent(0) {ID = startingID},
+            int index = FilteredEvents.BinarySearch(new DummyEvent(timevalue),
                                                     new ComparisonComparer<Event>(
-                                                        (x, y) => (x.ID - y.ID)));
+                                                        (x, y) => (int)(x.Timestamp - y.Timestamp)));
+
+            // If it's not found (negative index), just select the closest one.
             if (index < 0)
             {
                 ++index;
                 index *= -1;
             }
 
+            SelectEventByItemIndex(index);
+        }
+
+        private void SelectClosestEventByID(int startingID)
+        {
+            // Find the closest filtered event from the event list
+            int index = FilteredEvents.BinarySearch(new DummyEvent(0) { ID = startingID },
+                                                    new ComparisonComparer<Event>(
+                                                        (x, y) => (x.ID - y.ID)));
+
+            // If it's not found (negative index), just select the closest one.
+            if (index < 0)
+            {
+                ++index;
+                index *= -1;
+            }
+
+            SelectEventByItemIndex(index);
+        }
+
+        private void SelectEventByItemIndex(int index)
+        {
+            // This method should do nothing when there is no item at all.
+            if (listViewEvents.Items.Count == 0)
+                return;
+
             index = Utils.Utils.Clamp(index, 0, listViewEvents.Items.Count - 1);
 
             listViewEvents.SelectedItems.Clear();
             listViewEvents.Items[index].Selected = true;
+            listViewEvents.Items[index].Focused = true;
 
             listViewEvents.EnsureVisible(index);
             listViewEvents.Focus();
