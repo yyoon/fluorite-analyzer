@@ -114,7 +114,7 @@ namespace FluoriteAnalyzer.Analyses
                                                     LogProvider.GetVideoTime(anEvent),
                                                     anEvent.EventType.ToString(),
                                                     anEvent.TypeString,
-                                                    anEvent.ParameterString
+                                                    anEvent.ParameterStringPlain
                                                 });
 
                 item.Tag = anEvent;
@@ -185,6 +185,14 @@ namespace FluoriteAnalyzer.Analyses
             {
                 SelectedListViewItem = listViewEvents.Items[listViewEvents.SelectedIndices[0]];
                 SelectedEvent = SelectedListViewItem.Tag as Event;
+
+                // Show parameters
+                textParameters.Text = SelectedEvent.ParameterStringComplex;
+            }
+            else
+            {
+                // Remove parameters
+                textParameters.Text = string.Empty;
             }
 
             DrawSnapshot();

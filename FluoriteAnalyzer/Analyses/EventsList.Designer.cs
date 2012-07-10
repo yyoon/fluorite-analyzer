@@ -32,6 +32,7 @@
             this.buttonShowHideCode = new System.Windows.Forms.Button();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.treeEvents = new System.Windows.Forms.TreeView();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.listViewEvents = new System.Windows.Forms.ListView();
             this.columnID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -39,6 +40,8 @@
             this.columnCategory = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnParameters = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.labelParameters = new System.Windows.Forms.Label();
+            this.textParameters = new System.Windows.Forms.TextBox();
             this.textCurrentFileName = new System.Windows.Forms.TextBox();
             this.buttonNext = new System.Windows.Forms.Button();
             this.buttonPrev = new System.Windows.Forms.Button();
@@ -51,6 +54,10 @@
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
             this.splitContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -101,7 +108,7 @@
             // 
             // splitContainer.Panel2
             // 
-            this.splitContainer.Panel2.Controls.Add(this.listViewEvents);
+            this.splitContainer.Panel2.Controls.Add(this.splitContainer2);
             this.splitContainer.Size = new System.Drawing.Size(671, 471);
             this.splitContainer.SplitterDistance = 170;
             this.splitContainer.SplitterWidth = 5;
@@ -115,6 +122,25 @@
             this.treeEvents.Name = "treeEvents";
             this.treeEvents.Size = new System.Drawing.Size(170, 471);
             this.treeEvents.TabIndex = 0;
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel1
+            // 
+            this.splitContainer2.Panel1.Controls.Add(this.listViewEvents);
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.labelParameters);
+            this.splitContainer2.Panel2.Controls.Add(this.textParameters);
+            this.splitContainer2.Size = new System.Drawing.Size(496, 471);
+            this.splitContainer2.SplitterDistance = 317;
+            this.splitContainer2.TabIndex = 1;
             // 
             // listViewEvents
             // 
@@ -132,7 +158,7 @@
             this.listViewEvents.MultiSelect = false;
             this.listViewEvents.Name = "listViewEvents";
             this.listViewEvents.ShowItemToolTips = true;
-            this.listViewEvents.Size = new System.Drawing.Size(496, 471);
+            this.listViewEvents.Size = new System.Drawing.Size(496, 317);
             this.listViewEvents.TabIndex = 0;
             this.listViewEvents.UseCompatibleStateImageBehavior = false;
             this.listViewEvents.View = System.Windows.Forms.View.Details;
@@ -166,6 +192,31 @@
             this.columnParameters.Text = "Parameters";
             this.columnParameters.Width = 300;
             // 
+            // labelParameters
+            // 
+            this.labelParameters.AutoSize = true;
+            this.labelParameters.Font = new System.Drawing.Font("Gulim", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.labelParameters.Location = new System.Drawing.Point(3, 0);
+            this.labelParameters.Name = "labelParameters";
+            this.labelParameters.Size = new System.Drawing.Size(80, 12);
+            this.labelParameters.TabIndex = 1;
+            this.labelParameters.Text = "Parameters";
+            // 
+            // textParameters
+            // 
+            this.textParameters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textParameters.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.textParameters.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textParameters.Location = new System.Drawing.Point(3, 15);
+            this.textParameters.Multiline = true;
+            this.textParameters.Name = "textParameters";
+            this.textParameters.ReadOnly = true;
+            this.textParameters.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textParameters.Size = new System.Drawing.Size(490, 132);
+            this.textParameters.TabIndex = 0;
+            // 
             // textCurrentFileName
             // 
             this.textCurrentFileName.Location = new System.Drawing.Point(0, 0);
@@ -178,7 +229,7 @@
             // 
             this.buttonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonNext.Enabled = false;
-            this.buttonNext.Location = new System.Drawing.Point(229, 476);
+            this.buttonNext.Location = new System.Drawing.Point(227, 476);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(87, 21);
             this.buttonNext.TabIndex = 2;
@@ -206,7 +257,7 @@
             this.richTextSourceCode.Location = new System.Drawing.Point(0, 24);
             this.richTextSourceCode.Name = "richTextSourceCode";
             this.richTextSourceCode.ReadOnly = true;
-            this.richTextSourceCode.Size = new System.Drawing.Size(319, 447);
+            this.richTextSourceCode.Size = new System.Drawing.Size(317, 447);
             this.richTextSourceCode.TabIndex = 0;
             this.richTextSourceCode.Text = "";
             // 
@@ -225,6 +276,11 @@
             this.splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            this.splitContainer2.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -246,6 +302,9 @@
         private System.Windows.Forms.Button buttonNext;
         private System.Windows.Forms.Button buttonPrev;
         private System.Windows.Forms.TextBox textCurrentFileName;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.Label labelParameters;
+        private System.Windows.Forms.TextBox textParameters;
 
     }
 }

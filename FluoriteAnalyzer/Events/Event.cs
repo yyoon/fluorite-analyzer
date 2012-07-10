@@ -53,9 +53,14 @@ namespace FluoriteAnalyzer.Events
             get { return TypeString; }
         }
 
-        public virtual string ParameterString
+        public virtual string ParameterStringPlain
         {
             get { return "{" + string.Join(", ", _dict.Select(x => x.Key + "=\"" + x.Value + "\"")) + "}"; }
+        }
+
+        public virtual string ParameterStringComplex
+        {
+            get { return string.Join(Environment.NewLine, _dict.Select(x => "[" + x.Key + "] = " + x.Value)); }
         }
 
         public static Event CreateEventFromXmlElement(XmlElement element)
