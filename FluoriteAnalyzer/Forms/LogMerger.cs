@@ -74,6 +74,11 @@ namespace FluoriteAnalyzer.Forms
             XmlNode root = mergedLog.DocumentElement;
             long baseTimestamp = long.Parse(root.Attributes["startTimestamp"].Value);
 
+            // last id + 1
+            long id = long.Parse(root.LastChild.Attributes["__id"].Value) + 1;
+            List<XmlComment> comments = new List<XmlComment>();
+            comments.Add(GenerateCommentForFile(mergedLog, fileInfos[0], 0, id));
+
             foreach (FileInfo fileInfo in fileInfos.Skip(1))
             {
                 var subsequentLog = new XmlDocument();
@@ -81,6 +86,7 @@ namespace FluoriteAnalyzer.Forms
 
                 long startTimestamp = long.Parse(subsequentLog.DocumentElement.Attributes["startTimestamp"].Value);
                 long delta = startTimestamp - baseTimestamp;
+                long startID = id;
 
                 foreach (XmlNode node in subsequentLog.DocumentElement.ChildNodes)
                 {
@@ -91,13 +97,35 @@ namespace FluoriteAnalyzer.Forms
                         {
                             attr.Value = (long.Parse(attr.Value) + delta).ToString();
                         }
+                        else if (attr.Name == "__id")
+                        {
+                            attr.Value = id.ToString();
+                        }
                     }
 
+                    ++id;
                     root.AppendChild(copiedNode);
                 }
+
+                comments.Add(GenerateCommentForFile(mergedLog, fileInfo, startID, id));
+            }
+
+            var refChild = mergedLog.FirstChild;
+            foreach (XmlComment comment in comments)
+            {
+                mergedLog.InsertBefore(comment, refChild);
             }
 
             mergedLog.Save(mergedFilePath);
+        }
+
+        private XmlComment GenerateCommentForFile(XmlDocument doc, FileInfo file, long startID, long endID)
+        {
+            string content = string.Format(
+                "Original Log File: {0}, [{1}, {2})",
+                file.Name, startID, endID);
+
+            return doc.CreateComment(content);
         }
     }
 }
