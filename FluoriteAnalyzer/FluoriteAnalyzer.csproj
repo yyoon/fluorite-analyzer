@@ -125,6 +125,12 @@
     <Compile Include="Events\RunCommand.cs" />
     <Compile Include="Events\SelectTextCommand.cs" />
     <Compile Include="Events\UndoCommand.cs" />
+    <Compile Include="Forms\AnnotationExtractor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\AnnotationExtractor.Designer.cs">
+      <DependentUpon>AnnotationExtractor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InputStringForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,6 +181,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Analyses\LineChart.resx">
       <DependentUpon>LineChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\AnnotationExtractor.resx">
+      <DependentUpon>AnnotationExtractor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputStringForm.resx">
       <DependentUpon>InputStringForm.cs</DependentUpon>

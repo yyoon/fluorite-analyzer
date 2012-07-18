@@ -383,6 +383,12 @@ namespace FluoriteAnalyzer.Forms
             }
         }
 
+        private void extractAnnotationsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AnnotationExtractor extractor = new AnnotationExtractor();
+            extractor.ShowDialog();
+        }
+
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             SaveCustomGroups();

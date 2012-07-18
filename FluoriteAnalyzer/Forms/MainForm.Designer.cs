@@ -39,6 +39,7 @@
             this.fixInsertStringCommandRepeatCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateFixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adjustTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extractAnnotationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -111,7 +112,8 @@
             this.logMergerToolStripMenuItem,
             this.fixInsertStringCommandRepeatCountToolStripMenuItem,
             this.duplicateFixToolStripMenuItem,
-            this.adjustTimeToolStripMenuItem});
+            this.adjustTimeToolStripMenuItem,
+            this.extractAnnotationsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -121,30 +123,37 @@
             // 
             this.logMergerToolStripMenuItem.Image = global::FluoriteAnalyzer.Properties.Resources.Merge;
             this.logMergerToolStripMenuItem.Name = "logMergerToolStripMenuItem";
-            this.logMergerToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.logMergerToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.logMergerToolStripMenuItem.Text = "Log &Merger";
             this.logMergerToolStripMenuItem.Click += new System.EventHandler(this.logMergerToolStripMenuItem_Click);
             // 
             // fixInsertStringCommandRepeatCountToolStripMenuItem
             // 
             this.fixInsertStringCommandRepeatCountToolStripMenuItem.Name = "fixInsertStringCommandRepeatCountToolStripMenuItem";
-            this.fixInsertStringCommandRepeatCountToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.fixInsertStringCommandRepeatCountToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.fixInsertStringCommandRepeatCountToolStripMenuItem.Text = "&Repeat Count Fix";
             this.fixInsertStringCommandRepeatCountToolStripMenuItem.Click += new System.EventHandler(this.fixInsertStringCommandRepeatCountToolStripMenuItem_Click);
             // 
             // duplicateFixToolStripMenuItem
             // 
             this.duplicateFixToolStripMenuItem.Name = "duplicateFixToolStripMenuItem";
-            this.duplicateFixToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.duplicateFixToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.duplicateFixToolStripMenuItem.Text = "&Duplicate Fix";
             this.duplicateFixToolStripMenuItem.Click += new System.EventHandler(this.duplicateFixToolStripMenuItem_Click);
             // 
             // adjustTimeToolStripMenuItem
             // 
             this.adjustTimeToolStripMenuItem.Name = "adjustTimeToolStripMenuItem";
-            this.adjustTimeToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
+            this.adjustTimeToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.adjustTimeToolStripMenuItem.Text = "&Adjust Time";
             this.adjustTimeToolStripMenuItem.Click += new System.EventHandler(this.adjustTimeToolStripMenuItem_Click);
+            // 
+            // extractAnnotationsToolStripMenuItem
+            // 
+            this.extractAnnotationsToolStripMenuItem.Name = "extractAnnotationsToolStripMenuItem";
+            this.extractAnnotationsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.extractAnnotationsToolStripMenuItem.Text = "&Extract Annotations";
+            this.extractAnnotationsToolStripMenuItem.Click += new System.EventHandler(this.extractAnnotationsToolStripMenuItem_Click);
             // 
             // windowToolStripMenuItem
             // 
@@ -286,6 +295,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripTextBox toolStripTextSearch;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripMenuItem extractAnnotationsToolStripMenuItem;
     }
 }
 
