@@ -12,18 +12,17 @@ using FluoriteAnalyzer.Utils;
 
 namespace FluoriteAnalyzer.Forms
 {
-    public partial class MainForm : Form, ILogProvider
+    public partial class MainForm : Form
     {
         public MainForm()
         {
             InitializeComponent();
             Icon = Resources.autoList;
+
+            LogProvider = new LogProvider();
         }
 
-        private long? TimeDiff { get; set; }
-
-        private string LogPath { get; set; }
-        private List<Event> LoggedEvents { get; set; }
+        private LogProvider LogProvider { get; set; }
 
         #region Child analyze panels
 
@@ -72,11 +71,9 @@ namespace FluoriteAnalyzer.Forms
         {
             CloseCurrentLog();
 
-            LogPath = filePath;
+            Text = filePath; // Set the title.
 
-            Text = LogPath;
-
-            ParseLog(LogPath);
+            LogProvider.OpenLog(filePath);
 
             InitializeAnalyzeWindows();
 
@@ -85,7 +82,7 @@ namespace FluoriteAnalyzer.Forms
 
         private void CloseCurrentLog()
         {
-            if (LogPath != null)
+            if (LogProvider.IsLogOpen())
             {
                 foreach (var childToolWindow in childToolWindows)
                 {
@@ -101,7 +98,7 @@ namespace FluoriteAnalyzer.Forms
 
         private void InitializeAnalyzeWindows()
         {
-            commandStatistics = new CommandStatistics(this);
+            commandStatistics = new CommandStatistics(LogProvider);
             commandStatistics.Dock = DockStyle.Fill;
             childPanels.Add(commandStatistics);
 
@@ -111,7 +108,7 @@ namespace FluoriteAnalyzer.Forms
             childToolWindows.Add(commandStatisticsForm);
 
 
-            lineChart = new LineChart(this);
+            lineChart = new LineChart(LogProvider);
             lineChart.Dock = DockStyle.Fill;
             lineChart.ChartDoubleClick += lineChart_ChartDoubleClick;
             childPanels.Add(lineChart);
@@ -122,7 +119,7 @@ namespace FluoriteAnalyzer.Forms
             childToolWindows.Add(lineChartForm);
 
 
-            patterns = new Patterns(this);
+            patterns = new Patterns(LogProvider);
             patterns.Dock = DockStyle.Fill;
             patterns.PatternDoubleClick += pattern_ItemDoubleClick;
             childPanels.Add(patterns);
@@ -133,7 +130,7 @@ namespace FluoriteAnalyzer.Forms
             childToolWindows.Add(patternsForm);
 
 
-            eventsList = new EventsList(this);
+            eventsList = new EventsList(LogProvider);
             eventsList.Dock = DockStyle.Fill;
             lineChart.ChartDoubleClick += eventsList.lineChart_ChartDoubleClick;
             patterns.PatternDoubleClick += eventsList.pattern_ItemDoubleClick;
@@ -145,7 +142,7 @@ namespace FluoriteAnalyzer.Forms
             childToolWindows.Add(eventsListForm);
 
 
-            keyStrokes = new KeyStrokes(this);
+            keyStrokes = new KeyStrokes(LogProvider);
             keyStrokes.Dock = DockStyle.Fill;
             childPanels.Add(keyStrokes);
 
@@ -166,34 +163,6 @@ namespace FluoriteAnalyzer.Forms
             foreach (IRedrawable child in childPanels)
             {
                 child.Redraw();
-            }
-        }
-
-        private void ParseLog(string logPath)
-        {
-            var log = new XmlDocument();
-            log.Load(logPath);
-
-            XmlNode events = log.DocumentElement;
-
-            TimeDiff = null;
-            foreach (XmlAttribute attr in events.Attributes)
-            {
-                if (attr.Name == "timeDiff")
-                {
-                    TimeDiff = int.Parse(attr.Value);
-                    break;
-                }
-            }
-
-            try
-            {
-                LoggedEvents =
-                    events.ChildNodes.OfType<XmlElement>().Select(x => Event.CreateEventFromXmlElement(x)).ToList();
-            }
-            catch (Exception e)
-            {
-                MessageBox.Show(e.Message);
             }
         }
 
@@ -222,7 +191,7 @@ namespace FluoriteAnalyzer.Forms
                 log.DocumentElement.ChildNodes.OfType<XmlElement>()
                     .Where(x => x.Name == "Command" && x.Attributes["_type"].Value == "InsertStringCommand"))
             {
-                var isc = (InsertStringCommand) Event.CreateEventFromXmlElement(element);
+                var isc = (InsertStringCommand)Event.CreateEventFromXmlElement(element);
                 int length = isc.Data.Length;
                 if (element.Attributes.GetNamedItem("repeat") != null)
                 {
@@ -287,7 +256,7 @@ namespace FluoriteAnalyzer.Forms
                             string oldText = element.ChildNodes[0].ChildNodes[0].Value;
                             string newText = "";
 
-                            if (oldText.Length%currentMultiplier != 0)
+                            if (oldText.Length % currentMultiplier != 0)
                             {
                                 for (int j = 1; j < currentMultiplier; ++j)
                                 {
@@ -297,16 +266,16 @@ namespace FluoriteAnalyzer.Forms
                                 break;
                             }
 
-                            for (int j = 0; j < oldText.Length/currentMultiplier; ++j)
+                            for (int j = 0; j < oldText.Length / currentMultiplier; ++j)
                             {
-                                newText += oldText[j*currentMultiplier];
+                                newText += oldText[j * currentMultiplier];
                             }
                             element.ChildNodes[0].ChildNodes[0].Value = newText;
 
                             if (element.Attributes["repeat"] != null)
                             {
                                 element.Attributes["repeat"].Value =
-                                    (int.Parse(element.Attributes["repeat"].Value)/currentMultiplier).ToString();
+                                    (int.Parse(element.Attributes["repeat"].Value) / currentMultiplier).ToString();
                             }
                         }
                         break;
@@ -321,7 +290,7 @@ namespace FluoriteAnalyzer.Forms
                             }
 
                             element.Attributes["repeat"].Value =
-                                (int.Parse(element.Attributes["repeat"].Value)/currentMultiplier).ToString();
+                                (int.Parse(element.Attributes["repeat"].Value) / currentMultiplier).ToString();
                         }
                         break;
                 }
@@ -347,31 +316,24 @@ namespace FluoriteAnalyzer.Forms
             int diff = atForm.VideoTick - atForm.LogTick;
 
             var log = new XmlDocument();
-            log.Load(LogPath);
+            log.Load(LogProvider.LogPath);
 
-            bool wasThere = false;
-            foreach (XmlAttribute attr in log.DocumentElement.Attributes)
+            XmlAttribute attr = log.DocumentElement.Attributes["timeDiff"];
+            if (attr != null)
             {
-                if (attr.Name == "timeDiff")
-                {
-                    attr.Value = diff.ToString();
-
-                    wasThere = true;
-                    break;
-                }
+                attr.Value = diff.ToString();
             }
-
-            if (!wasThere)
+            else
             {
-                XmlAttribute attr = log.CreateAttribute("timeDiff");
+                attr = log.CreateAttribute("timeDiff");
                 attr.Value = diff.ToString();
 
                 log.DocumentElement.Attributes.Append(attr);
             }
 
-            log.Save(LogPath);
+            log.Save(LogProvider.LogPath);
 
-            TimeDiff = diff;
+            LogProvider.TimeDiff = diff;
 
             foreach (IRedrawable child in childPanels)
             {
@@ -422,7 +384,7 @@ namespace FluoriteAnalyzer.Forms
 
         private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
-            adjustTimeToolStripMenuItem.Enabled = LogPath != null;
+            adjustTimeToolStripMenuItem.Enabled = LogProvider.IsLogOpen();
         }
 
         private void windowToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
@@ -458,96 +420,6 @@ namespace FluoriteAnalyzer.Forms
         private void tileHorizontallyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LayoutMdi(MdiLayout.TileHorizontal);
-        }
-
-        #region ILogProvider Members
-
-        string ILogProvider.LogPath
-        {
-            get { return LogPath; }
-        }
-
-        IEnumerable<Event> ILogProvider.LoggedEvents
-        {
-            get { return LoggedEvents; }
-        }
-
-        long? ILogProvider.TimeDiff
-        {
-            get { return TimeDiff; }
-        }
-
-        string ILogProvider.GetVideoTime(Event anEvent)
-        {
-            return GetVideoTime(anEvent);
-        }
-
-        string ILogProvider.GetVideoTime(long timestamp)
-        {
-            return GetVideoTime(timestamp);
-        }
-
-        bool ILogProvider.CausedByPaste(DocumentChange dc)
-        {
-            throw new NotImplementedException();
-        }
-
-        bool ILogProvider.CausedByAssist(DocumentChange dc)
-        {
-            Replace replace = dc as Replace;
-            if (replace == null) { return false; }
-
-            int index = LoggedEvents.IndexOf(dc);
-            if (index < 0) { return false; }
-
-            return (index > 0 && LoggedEvents[index - 1] is AssistCommand);
-        }
-
-        bool ILogProvider.CausedByAutoIndent(DocumentChange dc)
-        {
-            Replace replace = dc as Replace;
-            if (replace == null) { return false; }
-
-            return !string.IsNullOrEmpty(replace.DeletedText) && string.IsNullOrWhiteSpace(replace.DeletedText);
-        }
-
-        bool ILogProvider.CausedByInsertString(DocumentChange dc)
-        {
-            Insert insert = dc as Insert;
-            if (insert == null) { return false; }
-
-            int index = LoggedEvents.IndexOf(dc);
-            if (index < 0) { return false; }
-
-            if (index + 1 >= LoggedEvents.Count) { return false; }
-
-            return (LoggedEvents[index + 1] is InsertStringCommand);
-        }
-
-        #endregion
-
-        private string GetVideoTime(Event anEvent)
-        {
-            return TimeDiff.HasValue ? GetVideoTime(anEvent.Timestamp) : "";
-        }
-
-        private string GetVideoTime(long timestamp)
-        {
-            if (!TimeDiff.HasValue)
-            {
-                return "";
-            }
-
-            long adjustedTimestamp = timestamp + TimeDiff.Value;
-            adjustedTimestamp /= 1000;
-            var seconds = (int)(adjustedTimestamp % 60);
-            adjustedTimestamp /= 60;
-            var minutes = (int)(adjustedTimestamp % 60);
-            adjustedTimestamp /= 60;
-            long hours = adjustedTimestamp;
-
-            return string.Format("{0:00}", hours) + ":" + string.Format("{0:00}", minutes) + ":" +
-                   string.Format("{0:00}", seconds);
         }
 
         private ToolWindow CreateToolWindow(string formTitle)
