@@ -57,7 +57,7 @@ namespace FluoriteAnalyzer.Analyses
         private void DetectPattern(IPatternDetector detector)
         {
             listViewPatterns.Items.Clear();
-            listViewPatterns.Items.AddRange(detector.Detect(LogProvider).ToArray());
+            listViewPatterns.Items.AddRange(detector.DetectAsListViewItems(LogProvider).ToArray());
 
             labelCount.Text = "Total: " + listViewPatterns.Items.Count;
         }

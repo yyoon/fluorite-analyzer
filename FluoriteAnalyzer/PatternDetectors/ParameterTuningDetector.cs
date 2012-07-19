@@ -8,7 +8,7 @@ using FluoriteAnalyzer.Analyses;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {
-    class ParameterTuningDetector : IPatternDetector
+    class ParameterTuningDetector : AbstractPatternDetector
     {
         private class ParameterTuneElement
         {
@@ -41,7 +41,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             return _instance ?? (_instance = new ParameterTuningDetector());
         }
 
-        public IEnumerable<ListViewItem> Detect(ILogProvider logProvider)
+        public override IEnumerable<PatternInstance> DetectAsPatternInstances(ILogProvider logProvider)
         {
             // we only consider "Create" because people often do not close the application at all.
             List<Event> list = logProvider.LoggedEvents.Where(x => x is DocumentChange || (x is RunCommand && !((RunCommand)x).IsTerminate)).ToList();
@@ -65,14 +65,12 @@ namespace FluoriteAnalyzer.PatternDetectors
                             {
                                 if (CheckElement(element))
                                 {
-                                    var item = new ListViewItem(new[]
-                                                                    {
-                                                                        lastRun.ID.ToString(),
-                                                                        "",
-                                                                        logProvider.GetVideoTime(lastRun),
-                                                                        "Deleted: \"" + element.DeletedText + "\", Inserted: \"" + element.InsertedText + "\"",
-                                                                    });
-                                    yield return item;
+                                    var result = new PatternInstance(
+                                        lastRun,
+                                        -1,
+                                        "Deleted: \"" + element.DeletedText + "\", Inserted: \"" + element.InsertedText + "\""
+                                        );
+                                    yield return result;
                                 }
                             }
                         }

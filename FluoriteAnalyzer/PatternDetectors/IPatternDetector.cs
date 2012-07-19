@@ -9,6 +9,7 @@ namespace FluoriteAnalyzer.PatternDetectors
 {
     interface IPatternDetector
     {
-        IEnumerable<ListViewItem> Detect(ILogProvider logProvider);
+        IEnumerable<PatternInstance> DetectAsPatternInstances(ILogProvider logProvider);
+        IEnumerable<ListViewItem> DetectAsListViewItems(ILogProvider logProvider);
     }
 }

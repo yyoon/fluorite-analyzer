@@ -8,7 +8,7 @@ using FluoriteAnalyzer.Analyses;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {
-    class ErrorRecoveryDetector : IPatternDetector
+    class ErrorRecoveryDetector : AbstractPatternDetector
     {
         private static ErrorRecoveryDetector _instance = null;
         internal static ErrorRecoveryDetector GetInstance()
@@ -18,7 +18,7 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private static readonly int _threshold = 2000;  // find all the create/terminate pairs within one second.
 
-        public IEnumerable<ListViewItem> Detect(ILogProvider logProvider)
+        public override IEnumerable<PatternInstance> DetectAsPatternInstances(ILogProvider logProvider)
         {
             List<RunCommand> runCommands = logProvider.LoggedEvents.OfType<RunCommand>().ToList();
 
@@ -29,12 +29,11 @@ namespace FluoriteAnalyzer.PatternDetectors
                 bool erroneous = IsErroneous(runCommands, runCommand);
                 if (!erroneous && lastRunWasErroneous)
                 {
-                    yield return new ListViewItem(new string[] {
-                        runCommand.ID.ToString(),
-                        "",
-                        logProvider.GetVideoTime(runCommand).ToString(),
+                    yield return new PatternInstance(
+                        runCommand,
+                        -1,
                         ""
-                    });
+                        );
                 }
 
                 lastRunWasErroneous = erroneous;

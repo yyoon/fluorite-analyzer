@@ -155,6 +155,8 @@
     <Compile Include="Forms\ToolWindow.Designer.cs">
       <DependentUpon>ToolWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="PatternDetectors\AbstractPatternDetector.cs" />
+    <Compile Include="PatternDetectors\PatternInstance.cs" />
     <Compile Include="PatternDetectors\ErrorRecoveryDetector.cs" />
     <Compile Include="PatternDetectors\IPatternDetector.cs" />
     <Compile Include="PatternDetectors\ParameterTuningDetector.cs" />

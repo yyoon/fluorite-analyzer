@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {
-    class TypoCorrectionDetector : IPatternDetector
+    class TypoCorrectionDetector : AbstractPatternDetector
     {
         private static TypoCorrectionDetector _instance = null;
         internal static TypoCorrectionDetector GetInstance()
@@ -17,7 +17,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             return _instance ?? (_instance = new TypoCorrectionDetector());
         }
 
-        public IEnumerable<ListViewItem> Detect(ILogProvider logProvider)
+        public override IEnumerable<PatternInstance> DetectAsPatternInstances(ILogProvider logProvider)
         {
             int timethreshold = 3000;
 
@@ -47,17 +47,15 @@ namespace FluoriteAnalyzer.PatternDetectors
 
                                 if (offset2 == offset3)
                                 {
-                                    var item = new ListViewItem(new[]
-                                                                    {
-                                                                        dc.ID.ToString(),
-                                                                        "3",
-                                                                        logProvider.GetVideoTime(dc),
-                                                                        "\"" + ((Insert) dcList[i]).Text + "\" - \"" +
-                                                                        ((Delete) dcList[i + 1]).Text + "\" + \"" +
-                                                                        ((Insert) dcList[i + 2]).Text + "\"",
-                                                                    });
+                                    var result = new PatternInstance(
+                                        dc,
+                                        3,
+                                        "\"" + ((Insert)dcList[i]).Text + "\" - \"" +
+                                            ((Delete)dcList[i + 1]).Text + "\" + \"" +
+                                            ((Insert)dcList[i + 2]).Text + "\""
+                                        );
 
-                                    yield return item;
+                                    yield return result;
                                 }
                             }
                         }
@@ -97,33 +95,29 @@ namespace FluoriteAnalyzer.PatternDetectors
 
                                     if (offset3 == offset2 + replace.InsertionLength)
                                     {
-                                        var item = new ListViewItem(new[]
-                                                                    {
-                                                                        dc.ID.ToString(),
-                                                                        "3",
-                                                                        logProvider.GetVideoTime(dc),
-                                                                        "\"" + ((Insert) dcList[i]).Text + "\" - \"" +
-                                                                        replace.DeletedText + "\" + \"" +
-                                                                        replace.InsertedText +
-                                                                        ((Insert) dcList[i + 2]).Text + "\"",
-                                                                    });
+                                        var result = new PatternInstance(
+                                            dc,
+                                            3,
+                                            "\"" + ((Insert)dcList[i]).Text + "\" - \"" +
+                                                replace.DeletedText + "\" + \"" +
+                                                replace.InsertedText +
+                                                ((Insert)dcList[i + 2]).Text + "\""
+                                            );
 
-                                        yield return item;
+                                        yield return result;
                                     }
                                 }
                                 else
                                 {
-                                    var item = new ListViewItem(new[]
-                                                                {
-                                                                    dc.ID.ToString(),
-                                                                    "2",
-                                                                    logProvider.GetVideoTime(dc),
-                                                                    "\"" + ((Insert) dcList[i]).Text + "\" - \"" +
-                                                                    ((Replace) dcList[i + 1]).DeletedText + "\" + \"" +
-                                                                    ((Replace) dcList[i + 1]).InsertedText + "\"",
-                                                                });
+                                    var result = new PatternInstance(
+                                        dc,
+                                        2,
+                                        "\"" + ((Insert)dcList[i]).Text + "\" - \"" +
+                                            ((Replace)dcList[i + 1]).DeletedText + "\" + \"" +
+                                            ((Replace)dcList[i + 1]).InsertedText + "\""
+                                        );
 
-                                    yield return item;
+                                    yield return result;
                                 }
                             }
                         }
