@@ -105,9 +105,8 @@
             this.labelCount.AutoSize = true;
             this.labelCount.Location = new System.Drawing.Point(3, 483);
             this.labelCount.Name = "labelCount";
-            this.labelCount.Size = new System.Drawing.Size(38, 12);
+            this.labelCount.Size = new System.Drawing.Size(0, 12);
             this.labelCount.TabIndex = 5;
-            this.labelCount.Text = "label1";
             // 
             // buttonFindErrorRecoveries
             // 
