@@ -489,7 +489,7 @@ namespace FluoriteAnalyzer.Forms
 
         bool ILogProvider.CausedByPaste(DocumentChange dc)
         {
-            return false;
+            throw new NotImplementedException();
         }
 
         bool ILogProvider.CausedByAssist(DocumentChange dc)
