@@ -76,5 +76,10 @@ namespace FluoriteAnalyzer.Analyses
         {
             DetectPattern(ErrorRecoveryDetector.GetInstance());
         }
+
+        private void buttonFindMovePatterns_Click(object sender, EventArgs e)
+        {
+            DetectPattern(MoveDetector.GetInstance());
+        }
     }
 }

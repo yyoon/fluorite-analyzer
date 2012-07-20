@@ -132,6 +132,12 @@
     <Compile Include="Forms\AnnotationExtractor.Designer.cs">
       <DependentUpon>AnnotationExtractor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DetectMoves.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DetectMoves.Designer.cs">
+      <DependentUpon>DetectMoves.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\InputStringForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -163,6 +169,8 @@
       <DependentUpon>ToolWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="PatternDetectors\AbstractPatternDetector.cs" />
+    <Compile Include="PatternDetectors\MoveDetector.cs" />
+    <Compile Include="PatternDetectors\MovePatternInstance.cs" />
     <Compile Include="PatternDetectors\PatternInstance.cs" />
     <Compile Include="PatternDetectors\ErrorRecoveryDetector.cs" />
     <Compile Include="PatternDetectors\IPatternDetector.cs" />
@@ -193,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AnnotationExtractor.resx">
       <DependentUpon>AnnotationExtractor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DetectMoves.resx">
+      <DependentUpon>DetectMoves.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\InputStringForm.resx">
       <DependentUpon>InputStringForm.cs</DependentUpon>

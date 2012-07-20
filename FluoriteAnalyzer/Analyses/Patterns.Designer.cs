@@ -37,12 +37,13 @@
             this.buttonSearchParameterTuning = new System.Windows.Forms.Button();
             this.labelCount = new System.Windows.Forms.Label();
             this.buttonFindErrorRecoveries = new System.Windows.Forms.Button();
+            this.buttonFindMovePatterns = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonSearchFixTypos
             // 
             this.buttonSearchFixTypos.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSearchFixTypos.Location = new System.Drawing.Point(394, 476);
+            this.buttonSearchFixTypos.Location = new System.Drawing.Point(187, 475);
             this.buttonSearchFixTypos.Name = "buttonSearchFixTypos";
             this.buttonSearchFixTypos.Size = new System.Drawing.Size(198, 23);
             this.buttonSearchFixTypos.TabIndex = 3;
@@ -91,7 +92,7 @@
             // buttonSearchParameterTuning
             // 
             this.buttonSearchParameterTuning.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonSearchParameterTuning.Location = new System.Drawing.Point(598, 476);
+            this.buttonSearchParameterTuning.Location = new System.Drawing.Point(391, 475);
             this.buttonSearchParameterTuning.Name = "buttonSearchParameterTuning";
             this.buttonSearchParameterTuning.Size = new System.Drawing.Size(198, 22);
             this.buttonSearchParameterTuning.TabIndex = 4;
@@ -111,7 +112,7 @@
             // buttonFindErrorRecoveries
             // 
             this.buttonFindErrorRecoveries.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonFindErrorRecoveries.Location = new System.Drawing.Point(802, 476);
+            this.buttonFindErrorRecoveries.Location = new System.Drawing.Point(595, 475);
             this.buttonFindErrorRecoveries.Name = "buttonFindErrorRecoveries";
             this.buttonFindErrorRecoveries.Size = new System.Drawing.Size(198, 22);
             this.buttonFindErrorRecoveries.TabIndex = 6;
@@ -119,9 +120,21 @@
             this.buttonFindErrorRecoveries.UseVisualStyleBackColor = true;
             this.buttonFindErrorRecoveries.Click += new System.EventHandler(this.buttonFindErrorRecoveries_Click);
             // 
+            // buttonFindMovePatterns
+            // 
+            this.buttonFindMovePatterns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonFindMovePatterns.Location = new System.Drawing.Point(799, 475);
+            this.buttonFindMovePatterns.Name = "buttonFindMovePatterns";
+            this.buttonFindMovePatterns.Size = new System.Drawing.Size(198, 22);
+            this.buttonFindMovePatterns.TabIndex = 7;
+            this.buttonFindMovePatterns.Text = "Move Patterns";
+            this.buttonFindMovePatterns.UseVisualStyleBackColor = true;
+            this.buttonFindMovePatterns.Click += new System.EventHandler(this.buttonFindMovePatterns_Click);
+            // 
             // Patterns
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.Controls.Add(this.buttonFindMovePatterns);
             this.Controls.Add(this.buttonFindErrorRecoveries);
             this.Controls.Add(this.labelCount);
             this.Controls.Add(this.buttonSearchParameterTuning);
@@ -145,5 +158,6 @@
         private System.Windows.Forms.Button buttonSearchParameterTuning;
         private System.Windows.Forms.Label labelCount;
         private System.Windows.Forms.Button buttonFindErrorRecoveries;
+        private System.Windows.Forms.Button buttonFindMovePatterns;
     }
 }
