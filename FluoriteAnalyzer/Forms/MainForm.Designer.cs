@@ -51,6 +51,7 @@
             this.toolStripButtonLogMerger = new System.Windows.Forms.ToolStripButton();
             this.toolStripTextSearch = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.removeTyposToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.toolMain.SuspendLayout();
             this.SuspendLayout();
@@ -113,7 +114,8 @@
             this.fixInsertStringCommandRepeatCountToolStripMenuItem,
             this.duplicateFixToolStripMenuItem,
             this.adjustTimeToolStripMenuItem,
-            this.extractAnnotationsToolStripMenuItem});
+            this.extractAnnotationsToolStripMenuItem,
+            this.removeTyposToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -248,6 +250,13 @@
             this.toolStripLabel1.Size = new System.Drawing.Size(46, 22);
             this.toolStripLabel1.Text = "Search:";
             // 
+            // removeTyposToolStripMenuItem
+            // 
+            this.removeTyposToolStripMenuItem.Name = "removeTyposToolStripMenuItem";
+            this.removeTyposToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.removeTyposToolStripMenuItem.Text = "Remove &Typos";
+            this.removeTyposToolStripMenuItem.Click += new System.EventHandler(this.removeTyposToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -296,6 +305,7 @@
         private System.Windows.Forms.ToolStripTextBox toolStripTextSearch;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripMenuItem extractAnnotationsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeTyposToolStripMenuItem;
     }
 }
 

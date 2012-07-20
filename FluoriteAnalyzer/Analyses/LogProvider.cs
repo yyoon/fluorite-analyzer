@@ -13,7 +13,7 @@ namespace FluoriteAnalyzer.Analyses
         public long? TimeDiff { get; set; }
 
         public string LogPath { get; private set; }
-        private List<Event> LoggedEvents { get; set; }
+        public List<Event> LoggedEvents { get; private set; }
 
         public void OpenLog(string filePath)
         {

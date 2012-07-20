@@ -21,7 +21,7 @@ namespace FluoriteAnalyzer.Events
         }
 
         public int Offset { get; private set; }
-        public int Length { get; private set; }
+        public int Length { get; set; }
 
         public int DocumentLength { get; private set; }
         public int ActiveCodeLength { get; private set; }

@@ -63,7 +63,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                                 var result = new PatternInstance(
                                     dc,
                                     3,
-                                    "\"" + ((Insert)dcList[i]).Text + "\" - \"" +
+                                    "Type #1: \"" + ((Insert)dcList[i]).Text + "\" - \"" +
                                         ((Delete)dcList[i + 1]).Text + "\" + \"" +
                                         ((Insert)dcList[i + 2]).Text + "\""
                                     );
@@ -113,7 +113,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                                     var result = new PatternInstance(
                                         dc,
                                         3,
-                                        "\"" + ((Insert)dcList[i]).Text + "\" - \"" +
+                                        "Type #2: \"" + ((Insert)dcList[i]).Text + "\" - \"" +
                                             replace.DeletedText + "\" + \"" +
                                             replace.InsertedText +
                                             ((Insert)dcList[i + 2]).Text + "\""
@@ -127,7 +127,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                                 var result = new PatternInstance(
                                     dc,
                                     2,
-                                    "\"" + ((Insert)dcList[i]).Text + "\" - \"" +
+                                    "Type #3: \"" + ((Insert)dcList[i]).Text + "\" - \"" +
                                         ((Replace)dcList[i + 1]).DeletedText + "\" + \"" +
                                         ((Replace)dcList[i + 1]).InsertedText + "\""
                                     );

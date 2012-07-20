@@ -39,11 +39,16 @@ namespace FluoriteAnalyzer.Events
             TypeString = GetPropertyValueFromDict("_type");
             Timestamp = long.Parse(GetPropertyValueFromDict("timestamp"));
             RepeatCount = int.Parse(GetPropertyValueFromDict("repeat", false, "1"));
+
+            string timestamp2Value = GetPropertyValueFromDict("timestamp2", false);
+            if (timestamp2Value != null) { Timestamp2 = long.Parse(timestamp2Value); }
+            else { Timestamp2 = null; }
         }
 
         public int ID { get; internal set; }
         public string TypeString { get; private set; }
         public long Timestamp { get; private set; }
+        public long? Timestamp2 { get; set; }
         public int RepeatCount { get; private set; }
 
         public abstract EventType EventType { get; }
@@ -109,6 +114,20 @@ namespace FluoriteAnalyzer.Events
             {
                 throw new Exception("Exception thrown while creating an event object for\n" + element.OuterXml, e);
             }
+        }
+
+        public static XmlElement FindCorrespondingXmlElementFromXmlDocument(XmlDocument doc, Event anEvent)
+        {
+            if (doc == null || anEvent == null) { throw new ArgumentNullException(); }
+
+            return FindCorrespondingXmlElementFromXmlElements(doc.DocumentElement.ChildNodes.OfType<XmlElement>(), anEvent);
+        }
+
+        public static XmlElement FindCorrespondingXmlElementFromXmlElements(IEnumerable<XmlElement> elements, Event anEvent)
+        {
+            if (elements == null || anEvent == null) { throw new ArgumentNullException(); }
+
+            return elements.FirstOrDefault(x => x.Attributes["__id"].Value == anEvent.ID.ToString());
         }
 
         public bool ContainsString(string str)

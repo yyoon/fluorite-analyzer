@@ -10,6 +10,6 @@ namespace FluoriteAnalyzer.Events
             Text = GetPropertyValueFromDict("text");
         }
 
-        public string Text { get; private set; }
+        public string Text { get; set; }
     }
 }

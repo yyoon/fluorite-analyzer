@@ -348,7 +348,13 @@ namespace FluoriteAnalyzer.Forms
         private void extractAnnotationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AnnotationExtractor extractor = new AnnotationExtractor();
-            extractor.ShowDialog();
+            extractor.ShowDialog(this);
+        }
+
+        private void removeTyposToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RemoveTypos removeTypos = new RemoveTypos();
+            removeTypos.ShowDialog(this);
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
