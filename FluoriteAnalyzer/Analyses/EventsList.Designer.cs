@@ -229,7 +229,7 @@
             // 
             this.buttonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonNext.Enabled = false;
-            this.buttonNext.Location = new System.Drawing.Point(227, 476);
+            this.buttonNext.Location = new System.Drawing.Point(226, 476);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(87, 21);
             this.buttonNext.TabIndex = 2;
@@ -252,12 +252,13 @@
             this.richTextSourceCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextSourceCode.BackColor = System.Drawing.SystemColors.Window;
             this.richTextSourceCode.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextSourceCode.HideSelection = false;
             this.richTextSourceCode.Location = new System.Drawing.Point(0, 24);
             this.richTextSourceCode.Name = "richTextSourceCode";
             this.richTextSourceCode.ReadOnly = true;
-            this.richTextSourceCode.Size = new System.Drawing.Size(317, 447);
+            this.richTextSourceCode.Size = new System.Drawing.Size(316, 447);
             this.richTextSourceCode.TabIndex = 0;
             this.richTextSourceCode.Text = "";
             // 

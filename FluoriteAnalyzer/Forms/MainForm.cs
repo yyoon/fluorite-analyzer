@@ -357,6 +357,12 @@ namespace FluoriteAnalyzer.Forms
             removeTypos.ShowDialog(this);
         }
 
+        private void detectMovesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DetectMoves detectMoves = new DetectMoves();
+            detectMoves.ShowDialog(this);
+        }
+
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             SaveCustomGroups();

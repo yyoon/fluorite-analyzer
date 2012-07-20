@@ -72,6 +72,7 @@
     <Compile Include="Analyses\Patterns.Designer.cs">
       <DependentUpon>Patterns.cs</DependentUpon>
     </Compile>
+    <Compile Include="Events\Move.cs" />
     <Compile Include="Forms\AdjustTimeForm.cs">
       <SubType>Form</SubType>
     </Compile>

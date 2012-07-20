@@ -40,7 +40,7 @@
             // 
             this.textPostfix.Location = new System.Drawing.Point(56, 12);
             this.textPostfix.Name = "textPostfix";
-            this.textPostfix.Size = new System.Drawing.Size(100, 20);
+            this.textPostfix.Size = new System.Drawing.Size(100, 21);
             this.textPostfix.TabIndex = 18;
             // 
             // label1
@@ -48,7 +48,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.Size = new System.Drawing.Size(43, 12);
             this.label1.TabIndex = 17;
             this.label1.Text = "Postfix";
             // 
@@ -61,6 +61,7 @@
             this.buttonGo.TabIndex = 16;
             this.buttonGo.Text = "Go!";
             this.buttonGo.UseVisualStyleBackColor = true;
+            this.buttonGo.Click += new System.EventHandler(this.buttonGo_Click);
             // 
             // buttonRemoveFiles
             // 
@@ -71,6 +72,7 @@
             this.buttonRemoveFiles.TabIndex = 15;
             this.buttonRemoveFiles.Text = "Remove";
             this.buttonRemoveFiles.UseVisualStyleBackColor = true;
+            this.buttonRemoveFiles.Click += new System.EventHandler(this.buttonRemoveFiles_Click);
             // 
             // buttonAdd
             // 
@@ -81,6 +83,7 @@
             this.buttonAdd.TabIndex = 14;
             this.buttonAdd.Text = "Add";
             this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
             // listBox1
             // 
@@ -88,6 +91,7 @@
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.IntegralHeight = false;
+            this.listBox1.ItemHeight = 12;
             this.listBox1.Location = new System.Drawing.Point(14, 39);
             this.listBox1.Name = "listBox1";
             this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;

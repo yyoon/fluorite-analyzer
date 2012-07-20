@@ -299,7 +299,7 @@ namespace FluoriteAnalyzer.Analyses
                         return;
                     }
 
-                    ApplyDocumentChange(files[currentFile], docChangeEvent);
+                    ApplyDocumentChange(files, currentFile, docChangeEvent);
 
                     lastDocChange = (DocumentChange) docChangeEvent;
                 }
@@ -321,37 +321,50 @@ namespace FluoriteAnalyzer.Analyses
             // Set the current file name
             textCurrentFileName.Text = Path.GetFileName(currentFile);
 
-            int offset, insertionLength;
-            string deletedText = GetOffsetAndLength(lastDocChange, out offset, out insertionLength);
-            int deletionLength = deletedText.Length - deletedText.Count(x => x == '\r');
+            int insertionOffset, insertionLength, deletionOffset;
+            string deletedText = GetOffsetAndLength(lastDocChange, out insertionOffset, out insertionLength, out deletionOffset);
+            int deletionLength = deletedText.Length;
 
             string currentSourceCode = files[currentFile].ToString();
-            currentSourceCode = currentSourceCode.Insert(offset, deletedText);
+            currentSourceCode = currentSourceCode.Insert(deletionOffset, deletedText);
 
             // Set the text box content
             richTextSourceCode.Text = currentSourceCode;
 
-            // Highlight the last inserted text
+            // Highlight the last change
+            HighlightLastChange(files, currentFile, lastDocChange, insertionOffset, insertionLength, deletionOffset, deletionLength);
+        }
+
+        private void HighlightLastChange(Dictionary<string, StringBuilder> files, string currentFile, DocumentChange lastDocChange, int insertionOffset, int insertionLength, int deletionOffset, int deletionLength)
+        {
             if (lastDocChange != null)
             {
                 // Stupid workaround due to the weird behavior of RichTextBox (it translates \r\n into \n automatically).
-                offset -= files[currentFile].ToString().Substring(0, offset).Count(x => x == '\r');
+                insertionOffset -= files[currentFile].ToString().Substring(0, insertionOffset).Count(x => x == '\r');
+                deletionOffset -= files[currentFile].ToString().Substring(0, deletionOffset).Count(x => x == '\r');
 
-                // Highlight deletedText
-                richTextSourceCode.Select(offset, deletionLength);
+                richTextSourceCode.Select(deletionOffset, deletionLength);
                 richTextSourceCode.SelectionFont = StrikeoutFont;
                 richTextSourceCode.SelectionBackColor = Color.Pink;
 
-                richTextSourceCode.Select(offset + deletionLength, insertionLength);
-                richTextSourceCode.SelectionBackColor = Color.DarkSeaGreen;
+                richTextSourceCode.Select(insertionOffset, insertionLength);
+                richTextSourceCode.SelectionBackColor = Color.LightGreen;
 
-                richTextSourceCode.Select(offset, 0);
+                if (insertionLength == 0)
+                {
+                    richTextSourceCode.Select(deletionOffset, 0);
+                }
+                else
+                {
+                    richTextSourceCode.Select(insertionOffset, 0);
+                }
                 richTextSourceCode.ScrollToCaret();
             }
         }
 
-        private void ApplyDocumentChange(StringBuilder builder, Event docChangeEvent)
+        private void ApplyDocumentChange(Dictionary<string, StringBuilder> files, string currentFile, Event docChangeEvent)
         {
+            StringBuilder builder = files[currentFile];
             if (builder == null)
             {
                 return;
@@ -365,42 +378,84 @@ namespace FluoriteAnalyzer.Analyses
             else if (docChangeEvent is Insert)
             {
                 var insert = (Insert) docChangeEvent;
-                //builder.Insert(insert.Offset, insert.Text.Replace("\r\n", "\n"));
                 builder.Insert(insert.Offset, insert.Text);
             }
             else if (docChangeEvent is Replace)
             {
                 var replace = (Replace) docChangeEvent;
                 builder.Remove(replace.Offset, replace.Length);
-                //builder.Insert(replace.Offset, replace.InsertedText.Replace("\r\n", "\n"));
                 builder.Insert(replace.Offset, replace.InsertedText);
+            }
+            else if (docChangeEvent is Move)
+            {
+                var move = (Move) docChangeEvent;
+
+                if (files.ContainsKey(move.DeletedFrom) == false ||
+                    files.ContainsKey(move.InsertedTo) == false ||
+                    files[move.DeletedFrom] == null ||
+                    files[move.InsertedTo] == null)
+                {
+                    return;
+                }
+
+                files[move.DeletedFrom].Remove(move.Offset, move.Length);
+                files[move.InsertedTo].Insert(move.InsertionOffset, move.InsertedText);
             }
         }
 
-        private string GetOffsetAndLength(DocumentChange lastDocChange, out int offset, out int length)
+        private string GetOffsetAndLength(DocumentChange lastDocChange, out int insertionOffset, out int insertionLength, out int deletionOffset)
         {
-            offset = 0;
-            length = 0;
+            insertionOffset = 0;
+            insertionLength = 0;
+            deletionOffset = 0;
 
             if (lastDocChange is Delete)
             {
                 var delete = (Delete) lastDocChange;
-                offset = delete.Offset;
-                length = 0;
+                deletionOffset = delete.Offset;
+                insertionLength = 0;
                 return delete.Text.Replace("\r\n", "\n");
             }
             else if (lastDocChange is Insert)
             {
                 var insert = (Insert) lastDocChange;
-                offset = insert.Offset;
-                length = insert.Length - insert.Text.Count(x => x == '\r');
+                insertionOffset = insert.Offset;
+                insertionLength = insert.Length - insert.Text.Count(x => x == '\r');
             }
             else if (lastDocChange is Replace)
             {
                 var replace = (Replace) lastDocChange;
-                offset = replace.Offset;
-                length = replace.InsertedText.Length - replace.InsertedText.Count(x => x == '\r');
-                return replace.DeletedText.Replace("\r\n", "\n");
+                string deletedText = replace.DeletedText.Replace("\r\n", "\n");
+                insertionOffset = replace.Offset + deletedText.Length;
+                insertionLength = replace.InsertedText.Length - replace.InsertedText.Count(x => x == '\r');
+                deletionOffset = replace.Offset;
+                return deletedText;
+            }
+            else if (lastDocChange is Move)
+            {
+                // only consider the current file
+                var move = (Move) lastDocChange;
+                insertionOffset = move.InsertionOffset;
+                insertionLength = move.InsertionLength - move.InsertedText.Count(x => x == '\r');
+
+                //return "";
+
+                if (move.DeletedFrom == move.InsertedTo)
+                {
+                    deletionOffset = move.Offset;
+                    string deletedText = move.DeletedText.Replace("\r\n", "\n");
+
+                    if (deletionOffset > insertionOffset)
+                    {
+                        deletionOffset += insertionLength;
+                    }
+                    else
+                    {
+                        insertionOffset += deletedText.Length;
+                    }
+
+                    return deletedText;
+                }
             }
 
             return "";

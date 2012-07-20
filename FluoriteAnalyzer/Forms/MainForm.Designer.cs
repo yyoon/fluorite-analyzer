@@ -40,6 +40,7 @@
             this.duplicateFixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adjustTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extractAnnotationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeTyposToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,7 +52,7 @@
             this.toolStripButtonLogMerger = new System.Windows.Forms.ToolStripButton();
             this.toolStripTextSearch = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.removeTyposToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.detectMovesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.toolMain.SuspendLayout();
             this.SuspendLayout();
@@ -115,7 +116,8 @@
             this.duplicateFixToolStripMenuItem,
             this.adjustTimeToolStripMenuItem,
             this.extractAnnotationsToolStripMenuItem,
-            this.removeTyposToolStripMenuItem});
+            this.removeTyposToolStripMenuItem,
+            this.detectMovesToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -126,7 +128,7 @@
             this.logMergerToolStripMenuItem.Image = global::FluoriteAnalyzer.Properties.Resources.Merge;
             this.logMergerToolStripMenuItem.Name = "logMergerToolStripMenuItem";
             this.logMergerToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.logMergerToolStripMenuItem.Text = "Log &Merger";
+            this.logMergerToolStripMenuItem.Text = "&Log Merger";
             this.logMergerToolStripMenuItem.Click += new System.EventHandler(this.logMergerToolStripMenuItem_Click);
             // 
             // fixInsertStringCommandRepeatCountToolStripMenuItem
@@ -156,6 +158,13 @@
             this.extractAnnotationsToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
             this.extractAnnotationsToolStripMenuItem.Text = "&Extract Annotations";
             this.extractAnnotationsToolStripMenuItem.Click += new System.EventHandler(this.extractAnnotationsToolStripMenuItem_Click);
+            // 
+            // removeTyposToolStripMenuItem
+            // 
+            this.removeTyposToolStripMenuItem.Name = "removeTyposToolStripMenuItem";
+            this.removeTyposToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.removeTyposToolStripMenuItem.Text = "Remove &Typos";
+            this.removeTyposToolStripMenuItem.Click += new System.EventHandler(this.removeTyposToolStripMenuItem_Click);
             // 
             // windowToolStripMenuItem
             // 
@@ -250,12 +259,12 @@
             this.toolStripLabel1.Size = new System.Drawing.Size(46, 22);
             this.toolStripLabel1.Text = "Search:";
             // 
-            // removeTyposToolStripMenuItem
+            // detectMovesToolStripMenuItem
             // 
-            this.removeTyposToolStripMenuItem.Name = "removeTyposToolStripMenuItem";
-            this.removeTyposToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
-            this.removeTyposToolStripMenuItem.Text = "Remove &Typos";
-            this.removeTyposToolStripMenuItem.Click += new System.EventHandler(this.removeTyposToolStripMenuItem_Click);
+            this.detectMovesToolStripMenuItem.Name = "detectMovesToolStripMenuItem";
+            this.detectMovesToolStripMenuItem.Size = new System.Drawing.Size(179, 22);
+            this.detectMovesToolStripMenuItem.Text = "Detect &Moves";
+            this.detectMovesToolStripMenuItem.Click += new System.EventHandler(this.detectMovesToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -306,6 +315,7 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripMenuItem extractAnnotationsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeTyposToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem detectMovesToolStripMenuItem;
     }
 }
 
