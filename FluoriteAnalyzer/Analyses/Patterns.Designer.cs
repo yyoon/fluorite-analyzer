@@ -69,6 +69,7 @@
             this.listViewPatterns.UseCompatibleStateImageBehavior = false;
             this.listViewPatterns.View = System.Windows.Forms.View.Details;
             this.listViewPatterns.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listViewPatterns_MouseDoubleClick);
+            this.listViewPatterns.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listViewPatterns_MouseDown);
             // 
             // columnPatternID
             // 

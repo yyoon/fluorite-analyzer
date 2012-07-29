@@ -19,7 +19,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                     x.PatternLength.ToString(),
                     logProvider.GetVideoTime(x.PrimaryEvent),
                     x.Description
-                }));
+                }) { Tag = x });
         }
     }
 }

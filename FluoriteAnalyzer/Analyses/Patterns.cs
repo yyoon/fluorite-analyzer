@@ -37,10 +37,7 @@ namespace FluoriteAnalyzer.Analyses
         private void listViewPatterns_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             ListViewItem item = listViewPatterns.GetItemAt(e.X, e.Y);
-            if (item == null)
-            {
-                return;
-            }
+            if (item == null) { return; }
 
             int startingID = -1;
             if (int.TryParse(item.SubItems[0].Text, out startingID))
@@ -49,6 +46,31 @@ namespace FluoriteAnalyzer.Analyses
                 {
                     PatternDoubleClick(startingID);
                 }
+            }
+        }
+
+        private void listViewPatterns_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == System.Windows.Forms.MouseButtons.Right)
+            {
+                ListViewItem item = listViewPatterns.GetItemAt(e.X, e.Y);
+                if (item == null) { return; }
+
+                ContextMenuStrip contextMenu = new ContextMenuStrip();
+
+                PatternInstance instance = item.Tag as PatternInstance;
+                foreach (var pair in instance.GetInvolvingEvents())
+                {
+                    ToolStripMenuItem menuItem = new ToolStripMenuItem(pair.Key);
+                    menuItem.Click += delegate(object s, EventArgs ea)
+                    {
+                        PatternDoubleClick(pair.Value);
+                    };
+
+                    contextMenu.Items.Add(menuItem);
+                }
+
+                contextMenu.Show(this, e.Location);
             }
         }
 
