@@ -1,7 +1,9 @@
 ﻿using System.Xml;
+using System;
 
 namespace FluoriteAnalyzer.Events
 {
+    [Serializable]
     internal class EclipseCommand : Command
     {
         public EclipseCommand(XmlElement element)

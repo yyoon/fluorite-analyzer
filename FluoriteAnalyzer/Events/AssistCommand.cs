@@ -3,6 +3,7 @@ using System.Xml;
 
 namespace FluoriteAnalyzer.Events
 {
+    [Serializable]
     internal class AssistCommand : Command
     {
         #region AssistTypeEnum enum

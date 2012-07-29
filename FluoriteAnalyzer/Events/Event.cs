@@ -6,6 +6,7 @@ using System.Xml;
 
 namespace FluoriteAnalyzer.Events
 {
+    [Serializable]
     public enum EventType
     {
         Command,
@@ -14,6 +15,7 @@ namespace FluoriteAnalyzer.Events
         Dummy
     }
 
+    [Serializable]
     public abstract class Event
     {
         protected Dictionary<string, string> _dict;

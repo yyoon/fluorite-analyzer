@@ -1,7 +1,9 @@
 ﻿using System.Xml;
+using System;
 
 namespace FluoriteAnalyzer.Events
 {
+    [Serializable]
     internal class InsertStringCommand : Command
     {
         public InsertStringCommand(XmlElement element)

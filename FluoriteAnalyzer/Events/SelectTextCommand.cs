@@ -1,7 +1,9 @@
 ﻿using System.Xml;
+using System;
 
 namespace FluoriteAnalyzer.Events
 {
+    [Serializable]
     internal class SelectTextCommand : Command
     {
         public SelectTextCommand(XmlElement element)

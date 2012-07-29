@@ -1,5 +1,7 @@
-﻿namespace FluoriteAnalyzer.Events
+﻿using System;
+namespace FluoriteAnalyzer.Events
 {
+    [Serializable]
     internal class DummyEvent : Event
     {
         public DummyEvent(int timestamp)

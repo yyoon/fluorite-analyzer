@@ -6,6 +6,7 @@ using System.Xml;
 
 namespace FluoriteAnalyzer.Events
 {
+    [Serializable]
     internal class Move : DocumentChange
     {
         public Move(XmlElement element)

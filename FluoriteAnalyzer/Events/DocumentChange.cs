@@ -1,7 +1,9 @@
 ﻿using System.Xml;
+using System;
 
 namespace FluoriteAnalyzer.Events
 {
+    [Serializable]
     public class DocumentChange : Event
     {
         public DocumentChange(XmlElement element)
