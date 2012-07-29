@@ -363,6 +363,12 @@ namespace FluoriteAnalyzer.Forms
             detectMoves.ShowDialog(this);
         }
 
+        private void calculateActiveWorkingTimeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CalculateActiveWorkingTime calcTime = new CalculateActiveWorkingTime();
+            calcTime.ShowDialog(this);
+        }
+
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             SaveCustomGroups();

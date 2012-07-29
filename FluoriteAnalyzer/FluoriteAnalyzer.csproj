@@ -133,6 +133,12 @@
     <Compile Include="Forms\AnnotationExtractor.Designer.cs">
       <DependentUpon>AnnotationExtractor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CalculateActiveWorkingTime.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CalculateActiveWorkingTime.Designer.cs">
+      <DependentUpon>CalculateActiveWorkingTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\DetectMoves.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,6 +208,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AnnotationExtractor.resx">
       <DependentUpon>AnnotationExtractor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CalculateActiveWorkingTime.resx">
+      <DependentUpon>CalculateActiveWorkingTime.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DetectMoves.resx">
       <DependentUpon>DetectMoves.cs</DependentUpon>
