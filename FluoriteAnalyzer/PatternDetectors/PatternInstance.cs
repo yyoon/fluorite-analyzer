@@ -30,6 +30,7 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         public void AddInvolvingEvent(string description, int id)
         {
+            _involvingEvents.Add(new KeyValuePair<string, int>(description, id));
         }
 
         public IEnumerable<KeyValuePair<string, int>> GetInvolvingEvents()
