@@ -178,6 +178,8 @@
     <Compile Include="PatternDetectors\AbstractPatternDetector.cs" />
     <Compile Include="PatternDetectors\MoveDetector.cs" />
     <Compile Include="PatternDetectors\MovePatternInstance.cs" />
+    <Compile Include="PatternDetectors\OperationConflictDetector.cs" />
+    <Compile Include="PatternDetectors\OperationConflictPatternInstance.cs" />
     <Compile Include="PatternDetectors\PatternInstance.cs" />
     <Compile Include="PatternDetectors\ErrorRecoveryDetector.cs" />
     <Compile Include="PatternDetectors\IPatternDetector.cs" />

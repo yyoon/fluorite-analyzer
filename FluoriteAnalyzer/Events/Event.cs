@@ -19,7 +19,6 @@ namespace FluoriteAnalyzer.Events
     public abstract class Event
     {
         protected Dictionary<string, string> _dict;
-        protected XmlElement _xmlElement;
 
         public Event(int timestamp)
         {
@@ -33,9 +32,7 @@ namespace FluoriteAnalyzer.Events
                 throw new ArgumentNullException("commandElement is null");
             }
 
-            _xmlElement = element;
-
-            FillInDictionary();
+            FillInDictionary(element);
 
             ID = int.Parse(GetPropertyValueFromDict("__id", false, "-1"));
             TypeString = GetPropertyValueFromDict("_type");
@@ -152,16 +149,16 @@ namespace FluoriteAnalyzer.Events
             return false;
         }
 
-        private void FillInDictionary()
+        private void FillInDictionary(XmlElement element)
         {
             _dict = new Dictionary<string, string>();
 
-            foreach (XmlAttribute attr in _xmlElement.Attributes)
+            foreach (XmlAttribute attr in element.Attributes)
             {
                 _dict.Add(attr.Name, attr.Value);
             }
 
-            foreach (XmlElement child in _xmlElement.ChildNodes)
+            foreach (XmlElement child in element.ChildNodes)
             {
                 if (child.ChildNodes.Count == 1 && child.FirstChild.NodeType == XmlNodeType.CDATA)
                 {

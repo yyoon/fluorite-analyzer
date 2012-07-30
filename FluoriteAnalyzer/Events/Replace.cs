@@ -28,9 +28,11 @@ namespace FluoriteAnalyzer.Events
 
         public int StartLine { get; private set; }
         public int EndLine { get; private set; }
-        public int InsertionLength { get; private set; }
+        public int InsertionLength { get; internal set; }
 
-        public string DeletedText { get; private set; }
-        public string InsertedText { get; private set; }
+        public string DeletedText { get; internal set; }
+        public string InsertedText { get; internal set; }
+
+        public int LengthDiff { get { return InsertionLength - Length; } }
     }
 }

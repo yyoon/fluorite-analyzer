@@ -22,8 +22,8 @@ namespace FluoriteAnalyzer.Events
             get { return EventType.DocumentChange; }
         }
 
-        public int Offset { get; private set; }
-        public int Length { get; set; }
+        public int Offset { get; internal set; }
+        public int Length { get; internal set; }
 
         public int DocumentLength { get; private set; }
         public int ActiveCodeLength { get; private set; }

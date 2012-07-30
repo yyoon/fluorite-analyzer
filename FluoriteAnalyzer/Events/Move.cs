@@ -37,8 +37,11 @@ namespace FluoriteAnalyzer.Events
         public string InsertedTo { get; private set; }
 
         // normal "offset" and "length" are used for deletion info.
-        public int InsertionOffset { get; private set; }
-        public int InsertionLength { get; private set; }
+        public int InsertionOffset { get; internal set; }
+        public int InsertionLength { get; internal set; }
+
+        public int DeletionOffset { get { return base.Offset; } internal set { base.Offset = value; } }
+        public int DeletionLength { get { return base.Length; } internal set { base.Length = value; } }
 
         public int OriginalDeleteID { get; private set; }
     }
