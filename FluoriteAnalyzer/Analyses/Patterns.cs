@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
-using FluoriteAnalyzer.Events;
-using System.Diagnostics;
 using FluoriteAnalyzer.PatternDetectors;
 
 namespace FluoriteAnalyzer.Analyses
@@ -21,6 +19,20 @@ namespace FluoriteAnalyzer.Analyses
             InitializeComponent();
 
             LogProvider = logProvider;
+
+            // Detect all the detectors using reflection.
+            // Use AbstractPatternDetector as a base class,
+            // and find all subclasses in this assembly.
+            comboDetectors.Items.Clear();
+
+            Type baseType = typeof(AbstractPatternDetector);
+            var patternDetectors = baseType.Assembly.GetTypes().Where(x => x.IsSubclassOf(baseType));
+
+            comboDetectors.Items.AddRange(patternDetectors.Select(x => x.Name).ToArray());
+            if (comboDetectors.Items.Count > 0)
+            {
+                comboDetectors.SelectedIndex = 0;
+            }
         }
 
         private ILogProvider LogProvider { get; set; }
@@ -89,24 +101,24 @@ namespace FluoriteAnalyzer.Analyses
             labelCount.Text = "Total: " + listViewPatterns.Items.Count;
         }
 
-        private void buttonSearchFixTypos_Click(object sender, EventArgs e)
+        private void buttonDetectPatterns_Click(object sender, EventArgs e)
         {
-            DetectPattern(TypoCorrectionDetector.GetInstance());
-        }
+            // Make sure that something is selected.
+            if (comboDetectors.SelectedIndex < 0 || comboDetectors.SelectedIndex >= comboDetectors.Items.Count)
+            {
+                // Do nothing in these cases
+                return;
+            }
 
-        private void buttonSearchParameterTuning_Click(object sender, EventArgs e)
-        {
-            DetectPattern(ParameterTuningDetector.GetInstance());
-        }
+            Type baseType = typeof(AbstractPatternDetector);
+            Assembly assembly = baseType.Assembly;
+            string detectorName = comboDetectors.Items[comboDetectors.SelectedIndex].ToString();
 
-        private void buttonFindErrorRecoveries_Click(object sender, EventArgs e)
-        {
-            DetectPattern(ErrorRecoveryDetector.GetInstance());
-        }
+            Type detectorType = assembly.GetType(baseType.Namespace + "." + detectorName);
+            MethodInfo instanceGetter = detectorType.GetMethod("GetInstance", BindingFlags.NonPublic | BindingFlags.Static);
+            IPatternDetector patternDetector = instanceGetter.Invoke(null, null) as IPatternDetector;
 
-        private void buttonFindMovePatterns_Click(object sender, EventArgs e)
-        {
-            DetectPattern(MoveDetector.GetInstance());
+            DetectPattern(patternDetector);
         }
     }
 }
