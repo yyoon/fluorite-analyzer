@@ -163,6 +163,12 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\OperationConflictExtractor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\OperationConflictExtractor.Designer.cs">
+      <DependentUpon>OperationConflictExtractor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\RemoveTypos.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -226,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\OperationConflictExtractor.resx">
+      <DependentUpon>OperationConflictExtractor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\RemoveTypos.resx">
       <DependentUpon>RemoveTypos.cs</DependentUpon>

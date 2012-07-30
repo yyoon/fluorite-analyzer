@@ -369,6 +369,12 @@ namespace FluoriteAnalyzer.Forms
             calcTime.ShowDialog(this);
         }
 
+        private void extractOperationConflictsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OperationConflictExtractor extractor = new OperationConflictExtractor();
+            extractor.ShowDialog(this);
+        }
+
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             SaveCustomGroups();
