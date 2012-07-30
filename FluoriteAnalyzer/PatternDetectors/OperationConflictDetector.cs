@@ -44,6 +44,14 @@ namespace FluoriteAnalyzer.PatternDetectors
                         ProcessedChangesDict.Add(CurrentFile, new List<DocumentChange>());
 
                     ProcessedChanges = ProcessedChangesDict[CurrentFile];
+
+                    if (fileOpenCommand.Snapshot != null)
+                    {
+                        // At the moment, just cancel all the processed things.
+                        // TODO: Use "Diff" and apply patch.
+                        // Apply the same thing to the logger part, too.
+                        ProcessedChanges.Clear();
+                    }
                 }
                 else if (anEvent is DocumentChange)
                 {
@@ -132,12 +140,12 @@ namespace FluoriteAnalyzer.PatternDetectors
         private void ProcessDeleteBeforeInsert(Delete oldChange, Insert newChange)
         {
             // Trivial case
-            if (newChange.Offset < oldChange.Offset)
+            if (newChange.Offset <= oldChange.Offset)
             {
                 oldChange.Offset += newChange.Length;
             }
             // Trivial case
-            else if (oldChange.Offset <= newChange.Offset)
+            else if (oldChange.Offset < newChange.Offset)
             {
                 // Do nothing.
             }
@@ -156,7 +164,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             }
             // CONFLICTING CASE!!
             else if (oldChange.Offset < newChange.Offset &&
-                newChange.Offset < oldChange.Offset + oldChange.Length)
+                newChange.Offset < oldChange.Offset + oldChange.InsertionLength)
             {
                 /*
                 Replace left = oldChange;
@@ -191,7 +199,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 AddPatternInstance(oldChange, newChange, "RI-01");
             }
             // Trivial case
-            else if (oldChange.Offset + oldChange.Length <= newChange.Offset)
+            else if (oldChange.Offset + oldChange.InsertionLength <= newChange.Offset)
             {
                 // Do nothing.
             }
@@ -235,7 +243,8 @@ namespace FluoriteAnalyzer.PatternDetectors
                 else if (oldChange.InsertionOffset < newChange.Offset &&
                     newChange.Offset < oldChange.InsertionOffset + oldChange.InsertionLength)
                 {
-                    oldChange.InsertionLength += newChange.Length;
+                    //oldChange.InsertionLength += newChange.Length;
+                    AddPatternInstance(oldChange, newChange, "MI-01");
                 }
                 // Trivial case
                 else if (oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset)
@@ -266,7 +275,8 @@ namespace FluoriteAnalyzer.PatternDetectors
                     // Trivial case
                     else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset < oldChange.InsertionOffset + oldChange.InsertionLength)
                     {
-                        oldChange.InsertionLength += newChange.Length;
+                        //oldChange.InsertionLength += newChange.Length;
+                        AddPatternInstance(oldChange, newChange, "MI-02");
                     }
                     // Trivial case
                     else if (oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset)
@@ -289,7 +299,8 @@ namespace FluoriteAnalyzer.PatternDetectors
                     // Trivial case
                     else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset < oldChange.InsertionOffset + oldChange.InsertionLength)
                     {
-                        oldChange.InsertionLength += newChange.Length;
+                        //oldChange.InsertionLength += newChange.Length;
+                        AddPatternInstance(oldChange, newChange, "MI-03");
                     }
                     // Trivial case
                     else if (oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset && newChange.Offset < oldChange.DeletionOffset + oldChange.InsertionLength)
@@ -344,9 +355,14 @@ namespace FluoriteAnalyzer.PatternDetectors
                 AddPatternInstance(oldChange, newChange, "ID-02");
             }
             // Trivial case
+            //else if (oldChange.Offset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.Offset + oldChange.Length)
+            //{
+            //    oldChange.Length -= newChange.Length;
+            //}
+            // CONFLICTING CASE!!
             else if (oldChange.Offset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.Offset + oldChange.Length)
             {
-                oldChange.Length -= newChange.Length;
+                AddPatternInstance(oldChange, newChange, "ID-025");
             }
             // CONFLICTING CASE!!
             else if (oldChange.Offset < newChange.Offset && newChange.Offset < oldChange.Offset + oldChange.Length && oldChange.Offset + oldChange.Length <= newChange.Offset + newChange.Length)
@@ -389,33 +405,39 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void ProcessReplaceBeforeDelete(Replace oldChange, Delete newChange)
         {
+            int NS = newChange.Offset;
+            int NE = newChange.Offset + newChange.Length;
+
+            int RS = oldChange.Offset;
+            int RE = oldChange.Offset + oldChange.InsertionLength;
+
             // Trivial case
-            if (newChange.Offset + newChange.Length <= oldChange.Offset)
+            if (NE <= RS)
             {
-                oldChange.Offset -= newChange.Length;
+                RS -= newChange.Length;
             }
             // CONFLICTING CASE!!
-            else if (newChange.Offset <= oldChange.Offset && oldChange.Offset < newChange.Offset + newChange.Length && newChange.Offset + newChange.Length < oldChange.Offset + oldChange.InsertionLength)
+            else if (NS <= RS && RS < NE && NE < RE)
             {
                 AddPatternInstance(oldChange, newChange, "RD-01");
             }
             // CONFLICTING CASE!!
-            else if (newChange.Offset <= oldChange.Offset && oldChange.Offset + oldChange.InsertionLength <= newChange.Offset + newChange.Length)
+            else if (NS <= RS && RE <= NE)
             {
                 AddPatternInstance(oldChange, newChange, "RD-02");
             }
             // CONFLICTING CASE!!
-            else if (oldChange.Offset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.Offset + oldChange.InsertionLength)
+            else if (RS < NS && NE < RE)
             {
                 AddPatternInstance(oldChange, newChange, "RD-03");
             }
             // CONFLICTING CASE!!
-            else if (oldChange.Offset < newChange.Offset && newChange.Offset < oldChange.Offset + oldChange.InsertionLength && oldChange.Offset + oldChange.InsertionLength <= newChange.Offset + newChange.Length)
+            else if (RS < NS && NS < RE && RE <= NE)
             {
                 AddPatternInstance(oldChange, newChange, "RD-04");
             }
             // Trivial case
-            else if (oldChange.Offset + oldChange.InsertionLength <= newChange.Offset)
+            else if (RE <= NS)
             {
                 // Do nothing.
             }
@@ -471,9 +493,14 @@ namespace FluoriteAnalyzer.PatternDetectors
                     AddPatternInstance(oldChange, newChange, "MD-03");
                 }
                 // Trivial case
+                //else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.InsertionOffset + oldChange.InsertionLength)
+                //{
+                //    oldChange.InsertionLength -= newChange.Length;
+                //}
+                // CONFLICTING CASE!!
                 else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.InsertionOffset + oldChange.InsertionLength)
                 {
-                    oldChange.InsertionLength -= newChange.Length;
+                    AddPatternInstance(oldChange, newChange, "MD-035");
                 }
                 // CONFLICTING CASE!!
                 else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset < oldChange.InsertionOffset + oldChange.InsertionLength && oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset + newChange.Length)
@@ -532,11 +559,16 @@ namespace FluoriteAnalyzer.PatternDetectors
                         AddPatternInstance(oldChange, newChange, "MD-09");
                     }
                     // Trivial case
+                    //else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.InsertionOffset + oldChange.InsertionLength)
+                    //{
+                    //    oldChange.InsertionLength -= newChange.Length;
+                    //}
+                    // CONFLICTING CASE!!
+                    // CONFLICTING CASE!!
                     else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.InsertionOffset + oldChange.InsertionLength)
                     {
-                        oldChange.InsertionLength -= newChange.Length;
+                        AddPatternInstance(oldChange, newChange, "MD-095");
                     }
-                    // CONFLICTING CASE!!
                     else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset < oldChange.InsertionOffset + oldChange.InsertionLength && oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset + newChange.Length)
                     {
                         AddPatternInstance(oldChange, newChange, "MD-10");
@@ -585,7 +617,8 @@ namespace FluoriteAnalyzer.PatternDetectors
                     // Trivial case
                     else if (IS < NS && NE < IE)
                     {
-                        oldChange.InsertionLength -= newChange.Length;
+                        //oldChange.InsertionLength -= newChange.Length;
+                        AddPatternInstance(oldChange, newChange, "MD-135");
                     }
                     // CONFLICTING CASE!!
                     else if (IS < NS && NS < IE && IE <= NE && NE < DO)
@@ -661,7 +694,8 @@ namespace FluoriteAnalyzer.PatternDetectors
             // Trivial case
             else if (IS < NS && NE < IE)
             {
-                oldChange.Length += newChange.LengthDiff;
+                //oldChange.Length += newChange.LengthDiff;
+                AddPatternInstance(oldChange, newChange, "IR-025");
             }
             // CONFLICTING CASE!!
             else if (IS < NS && NS < IE && IE <= NE)
@@ -713,7 +747,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             int NE = newChange.Offset + newChange.Length;
 
             int RS = oldChange.Offset;
-            int RE = oldChange.Offset + oldChange.Length;
+            int RE = oldChange.Offset + oldChange.InsertionLength;
 
             // Trivial case
             if (NE <= RS)
@@ -810,7 +844,8 @@ namespace FluoriteAnalyzer.PatternDetectors
                 // Trivial case
                 else if (IS < NS && NE < IE)
                 {
-                    oldChange.InsertionLength += newChange.LengthDiff;
+                    //oldChange.InsertionLength += newChange.LengthDiff;
+                    AddPatternInstance(oldChange, newChange, "MR-035");
                 }
                 // CONFLICTING CASE!!
                 else if (IS < NS && NS < IE && IE <= NE)
@@ -872,7 +907,8 @@ namespace FluoriteAnalyzer.PatternDetectors
                     }
                     else if (IS < NS && NE < IE)
                     {
-                        oldChange.InsertionLength += newChange.LengthDiff;
+                        //oldChange.InsertionLength += newChange.LengthDiff;
+                        AddPatternInstance(oldChange, newChange, "MR-095");
                     }
                     else if (IS < NS && NS < IE && IE <= NE)
                     {
@@ -916,7 +952,8 @@ namespace FluoriteAnalyzer.PatternDetectors
                     }
                     else if (IS < NS && NE < IE)
                     {
-                        oldChange.InsertionLength += newChange.LengthDiff;
+                        //oldChange.InsertionLength += newChange.LengthDiff;
+                        AddPatternInstance(oldChange, newChange, "MR-135");
                     }
                     else if (IS < NS && NS < IE && IE <= NE && NE < DO)
                     {
