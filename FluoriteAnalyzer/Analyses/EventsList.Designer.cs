@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.buttonGoto = new System.Windows.Forms.Button();
             this.buttonShowHideCode = new System.Windows.Forms.Button();
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.treeEvents = new System.Windows.Forms.TreeView();
@@ -68,6 +69,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.buttonGoto);
             this.splitContainer1.Panel1.Controls.Add(this.buttonShowHideCode);
             this.splitContainer1.Panel1.Controls.Add(this.splitContainer);
             // 
@@ -81,6 +83,17 @@
             this.splitContainer1.SplitterDistance = 674;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // buttonGoto
+            // 
+            this.buttonGoto.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonGoto.Location = new System.Drawing.Point(415, 476);
+            this.buttonGoto.Name = "buttonGoto";
+            this.buttonGoto.Size = new System.Drawing.Size(75, 21);
+            this.buttonGoto.TabIndex = 4;
+            this.buttonGoto.Text = "&Goto ID";
+            this.buttonGoto.UseVisualStyleBackColor = true;
+            this.buttonGoto.Click += new System.EventHandler(this.buttonGoto_Click);
             // 
             // buttonShowHideCode
             // 
@@ -229,7 +242,7 @@
             // 
             this.buttonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonNext.Enabled = false;
-            this.buttonNext.Location = new System.Drawing.Point(226, 476);
+            this.buttonNext.Location = new System.Drawing.Point(224, 476);
             this.buttonNext.Name = "buttonNext";
             this.buttonNext.Size = new System.Drawing.Size(87, 21);
             this.buttonNext.TabIndex = 2;
@@ -258,7 +271,7 @@
             this.richTextSourceCode.Location = new System.Drawing.Point(0, 24);
             this.richTextSourceCode.Name = "richTextSourceCode";
             this.richTextSourceCode.ReadOnly = true;
-            this.richTextSourceCode.Size = new System.Drawing.Size(316, 447);
+            this.richTextSourceCode.Size = new System.Drawing.Size(314, 447);
             this.richTextSourceCode.TabIndex = 0;
             this.richTextSourceCode.Text = "";
             // 
@@ -306,6 +319,7 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Label labelParameters;
         private System.Windows.Forms.TextBox textParameters;
+        private System.Windows.Forms.Button buttonGoto;
 
     }
 }
