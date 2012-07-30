@@ -1007,7 +1007,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             var patternInstance = new OperationConflictPatternInstance(
                 oldChange, 2,
                 string.Format("Type: {4}, {0}({1}) -> {2}({3})", oldChange.GetType().Name[0], oldChange.ID, newChange.GetType().Name[0], newChange.ID, conflictType),
-                oldChange, newChange);
+                oldChange, newChange, conflictType);
 
             patternInstance.AddInvolvingEvent(string.Format("Jump to the 1st {0}({1})", oldChange.GetType().Name, oldChange.ID), oldChange.ID);
             patternInstance.AddInvolvingEvent(string.Format("Jump to the 2nd {0}({1})", newChange.GetType().Name, newChange.ID), newChange.ID);
