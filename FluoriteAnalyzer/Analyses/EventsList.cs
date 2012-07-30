@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.Utils;
 using System.IO;
+using FluoriteAnalyzer.Forms;
 
 namespace FluoriteAnalyzer.Analyses
 {
@@ -491,6 +492,25 @@ namespace FluoriteAnalyzer.Analyses
             else
             {
                 MessageBox.Show("The specified string was not found.", "Search", MessageBoxButtons.OK);
+            }
+        }
+
+        private void buttonGoto_Click(object sender, EventArgs e)
+        {
+            InputStringForm inputForm = new InputStringForm();
+            inputForm.Message = "Input ID:";
+            DialogResult result = inputForm.ShowDialog(this);
+
+            if (result != DialogResult.OK) { return; }
+
+            int id;
+            if (int.TryParse(inputForm.Value, out id))
+            {
+                SelectClosestEventByID(id);
+            }
+            else
+            {
+                MessageBox.Show("Invalid ID", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
