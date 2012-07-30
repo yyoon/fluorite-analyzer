@@ -48,6 +48,7 @@
             this.columnPatternLength,
             this.columnPatternTimeInVideo,
             this.columnPatternInfo});
+            this.listViewPatterns.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listViewPatterns.FullRowSelect = true;
             this.listViewPatterns.Location = new System.Drawing.Point(0, 0);
             this.listViewPatterns.Name = "listViewPatterns";
