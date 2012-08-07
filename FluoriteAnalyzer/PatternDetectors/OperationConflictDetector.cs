@@ -102,46 +102,23 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void ProcessInsertBeforeInsert(Insert oldChange, Insert newChange)
         {
+            int NS = newChange.Offset;
+
+            int IS = oldChange.Offset;
+            int IE = oldChange.Offset + oldChange.Length;
+
             // Trivial case
-            if (newChange.Offset <= oldChange.Offset)
+            if (NS <= IS)
             {
                 oldChange.Offset += newChange.Length;
             }
             // CONFLICTING CASE!!
-            else if (oldChange.Offset < newChange.Offset &&
-                newChange.Offset < oldChange.Offset + oldChange.Length)
+            else if (IS < NS && NS < IE)
             {
-                /*
-                Insert left = oldChange;
-                Insert right = ObjectCopier.Clone(left);
-
-                int leftLength = newChange.Offset - left.Offset;
-
-                right.Offset = left.Offset + leftLength + newChange.Length;
-                right.Length = left.Length - leftLength;
-                right.Text = left.Text.Substring(leftLength);
-
-                ProcessedChanges.Add(right);
-
-                left.Length = leftLength;
-                left.Text = left.Text.Substring(0, leftLength);
-
-                // Add a new PatternInstance
-                var patternInstance = new OperationConflictPatternInstance(
-                    left, 2,
-                    string.Format("I->I: \"{0}\" + \"{1}\" + \"{2}\" = \"{3}\"", left.Text, newChange.Text, right.Text, left.Text + newChange.Text + right.Text),
-                    left, newChange);
-
-                patternInstance.AddInvolvingEvent("First Insert", left.ID);
-                patternInstance.AddInvolvingEvent("Second Insert", newChange.ID);
-
-                DetectedPatterns.Add(patternInstance);
-                */
-
                 AddPatternInstance(oldChange, newChange, "II-01");
             }
             // Trivial case
-            else if (oldChange.Offset + oldChange.Length <= newChange.Offset)
+            else if (IE <= NS)
             {
                 // Do nothing.
             }
@@ -153,13 +130,17 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void ProcessDeleteBeforeInsert(Delete oldChange, Insert newChange)
         {
+            int NS = newChange.Offset;
+
+            int DO = oldChange.Offset;
+
             // Trivial case
-            if (newChange.Offset <= oldChange.Offset)
+            if (NS <= DO)
             {
                 oldChange.Offset += newChange.Length;
             }
             // Trivial case
-            else if (oldChange.Offset < newChange.Offset)
+            else if (DO < NS)
             {
                 // Do nothing.
             }
@@ -171,49 +152,23 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void ProcessReplaceBeforeInsert(Replace oldChange, Insert newChange)
         {
+            int NS = newChange.Offset;
+
+            int RS = oldChange.Offset;
+            int RE = oldChange.Offset + oldChange.InsertionLength;
+
             // Trivial case
-            if (newChange.Offset <= oldChange.Offset)
+            if (NS <= RS)
             {
                 oldChange.Offset += newChange.Length;
             }
             // CONFLICTING CASE!!
-            else if (oldChange.Offset < newChange.Offset &&
-                newChange.Offset < oldChange.Offset + oldChange.InsertionLength)
+            else if (RS < NS && NS < RE)
             {
-                /*
-                Replace left = oldChange;
-                Replace right = ObjectCopier.Clone(left);
-
-                int leftLength = newChange.Offset - left.Offset;
-
-                right.Offset = left.Offset + leftLength + newChange.Length;
-                right.InsertionLength = left.InsertionLength - leftLength;
-                right.InsertedText = left.InsertedText.Substring(leftLength);
-                // NOTE: assume the deletion is at the left.
-                right.DeletedText = "";
-                right.Length = 0;
-
-                ProcessedChanges.Add(right);
-
-                left.InsertionLength = leftLength;
-                left.InsertedText = left.InsertedText.Substring(0, leftLength);
-
-                // Add a new PatternInstance
-                var patternInstance = new OperationConflictPatternInstance(
-                    left, 2,
-                    string.Format("R->I: \"{0}\" + \"{1}\" + \"{2}\" = \"{3}\"", left.InsertedText, newChange.Text, right.InsertedText, left.InsertedText + newChange.Text + right.InsertedText),
-                    left, newChange);
-
-                patternInstance.AddInvolvingEvent("First Replace", left.ID);
-                patternInstance.AddInvolvingEvent("Second Insert", newChange.ID);
-
-                DetectedPatterns.Add(patternInstance);
-                */
-
                 AddPatternInstance(oldChange, newChange, "RI-01");
             }
             // Trivial case
-            else if (oldChange.Offset + oldChange.InsertionLength <= newChange.Offset)
+            else if (RE <= NS)
             {
                 // Do nothing.
             }
@@ -229,13 +184,17 @@ namespace FluoriteAnalyzer.PatternDetectors
             // Treat the move as a deletion
             if (oldChange.DeletedFrom == CurrentFile && oldChange.InsertedTo != CurrentFile)
             {
+                int NS = newChange.Offset;
+
+                int DO = oldChange.DeletionOffset;
+
                 // Trivial case
-                if (newChange.Offset < oldChange.Offset)
+                if (NS < DO)
                 {
-                    oldChange.Offset += newChange.Length;
+                    oldChange.DeletionOffset += newChange.Length;
                 }
                 // Trivial case
-                else if (oldChange.Offset <= newChange.Offset)
+                else if (DO <= NS)
                 {
                     // Do nothing.
                 }
@@ -248,20 +207,24 @@ namespace FluoriteAnalyzer.PatternDetectors
             // Treat the move as an insertion
             else if (oldChange.DeletedFrom != CurrentFile && oldChange.InsertedTo == CurrentFile)
             {
+                int NS = newChange.Offset;
+
+                int IS = oldChange.InsertionOffset;
+                int IE = oldChange.InsertionOffset + oldChange.InsertionLength;
+
                 // Trivial case
-                if (newChange.Offset <= oldChange.InsertionOffset)
+                if (NS <= IS)
                 {
                     oldChange.InsertionOffset += newChange.Length;
                 }
                 // Trivial case
-                else if (oldChange.InsertionOffset < newChange.Offset &&
-                    newChange.Offset < oldChange.InsertionOffset + oldChange.InsertionLength)
+                else if (IS < NS && NS < IE)
                 {
                     //oldChange.InsertionLength += newChange.Length;
                     AddPatternInstance(oldChange, newChange, "MI-01");
                 }
                 // Trivial case
-                else if (oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset)
+                else if (IE <= NS)
                 {
                     // Do nothing.
                 }
@@ -275,25 +238,32 @@ namespace FluoriteAnalyzer.PatternDetectors
             {
                 if (oldChange.DeletionOffset <= oldChange.InsertionOffset)
                 {
+                    int NS = newChange.Offset;
+
+                    int DO = oldChange.DeletionOffset;
+
+                    int IS = oldChange.InsertionOffset;
+                    int IE = oldChange.InsertionOffset + oldChange.InsertionLength;
+
                     // Trivial case
-                    if (newChange.Offset <= oldChange.DeletionOffset)
+                    if (NS <= DO)
                     {
                         oldChange.DeletionOffset += newChange.Length;
                         oldChange.InsertionOffset += newChange.Length;
                     }
                     // Trivial case
-                    else if (oldChange.DeletionOffset < newChange.Offset && newChange.Offset <= oldChange.InsertionOffset)
+                    else if (DO < NS && NS <= IS)
                     {
                         oldChange.InsertionOffset += newChange.Length;
                     }
                     // Trivial case
-                    else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset < oldChange.InsertionOffset + oldChange.InsertionLength)
+                    else if (IS < NS && NS < IE)
                     {
                         //oldChange.InsertionLength += newChange.Length;
                         AddPatternInstance(oldChange, newChange, "MI-02");
                     }
                     // Trivial case
-                    else if (oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset)
+                    else if (IE <= NS)
                     {
                         // Do nothing.
                     }
@@ -304,25 +274,32 @@ namespace FluoriteAnalyzer.PatternDetectors
                 }
                 else if (oldChange.InsertionOffset < oldChange.DeletionOffset)
                 {
+                    int NS = newChange.Offset;
+
+                    int DO = oldChange.DeletionOffset + oldChange.InsertionLength;
+
+                    int IS = oldChange.InsertionOffset;
+                    int IE = oldChange.InsertionOffset + oldChange.InsertionLength;
+
                     // Trivial case
-                    if (newChange.Offset <= oldChange.InsertionOffset)
+                    if (NS <= IS)
                     {
                         oldChange.InsertionOffset += newChange.Length;
                         oldChange.DeletionOffset += newChange.Length;
                     }
                     // Trivial case
-                    else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset < oldChange.InsertionOffset + oldChange.InsertionLength)
+                    else if (IS < NS && NS < IE)
                     {
                         //oldChange.InsertionLength += newChange.Length;
                         AddPatternInstance(oldChange, newChange, "MI-03");
                     }
                     // Trivial case
-                    else if (oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset && newChange.Offset < oldChange.DeletionOffset + oldChange.InsertionLength)
+                    else if (IE <= NS && NS < DO)
                     {
                         oldChange.DeletionOffset += newChange.Length;
                     }
                     // Trivial case
-                    else if (oldChange.DeletionOffset + oldChange.InsertionLength <= newChange.Offset)
+                    else if (DO <= NS)
                     {
                         // Do nothing.
                     }
@@ -353,38 +330,44 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void ProcessInsertBeforeDelete(Insert oldChange, Delete newChange)
         {
+            int NS = newChange.Offset;
+            int NE = newChange.Offset + newChange.Length;
+
+            int IS = oldChange.Offset;
+            int IE = oldChange.Offset + oldChange.Length;
+
             // Trivial case
-            if (newChange.Offset + newChange.Length <= oldChange.Offset)
+            if (NE <= IS)
             {
                 oldChange.Offset -= newChange.Length;
             }
             // CONFLICTING CASE!!
-            else if (newChange.Offset <= oldChange.Offset && oldChange.Offset < newChange.Offset + newChange.Length && newChange.Offset + newChange.Length < oldChange.Offset + oldChange.Length)
+            else if (NS <= IS && IS < NE && NE < IE)
             {
                 AddPatternInstance(oldChange, newChange, "ID-01");
             }
             // CONFLICTING CASE!!
-            else if (newChange.Offset <= oldChange.Offset && oldChange.Offset + oldChange.Length <= newChange.Offset + newChange.Length)
+            else if (NS <= IS && IE <= NE)
             {
                 AddPatternInstance(oldChange, newChange, "ID-02");
             }
             // Trivial case
-            //else if (oldChange.Offset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.Offset + oldChange.Length)
+            //else if (IS < NS && NE < IE)
             //{
             //    oldChange.Length -= newChange.Length;
             //}
             // CONFLICTING CASE!!
-            else if (oldChange.Offset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.Offset + oldChange.Length)
+            else if (IS < NS && NE < IE)
             {
                 AddPatternInstance(oldChange, newChange, "ID-025");
             }
             // CONFLICTING CASE!!
-            else if (oldChange.Offset < newChange.Offset && newChange.Offset < oldChange.Offset + oldChange.Length && oldChange.Offset + oldChange.Length <= newChange.Offset + newChange.Length)
+            else if (IS < NS && NS < IE && IE <= NE)
             {
                 AddPatternInstance(oldChange, newChange, "ID-03");
             }
             // Trivial case
-            else if (oldChange.Offset + oldChange.Length <= newChange.Offset)
+            else if (IE <= NS)
             {
                 // Do noting.
             }
@@ -396,18 +379,22 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void ProcessDeleteBeforeDelete(Delete oldChange, Delete newChange)
         {
+            int NS = newChange.Offset;
+            int NE = newChange.Offset + newChange.Length;
+
+            int DO = oldChange.Offset;
+
             // Trivial case
-            if (newChange.Offset + newChange.Length <= oldChange.Offset)
+            if (NE <= DO)
             {
                 oldChange.Offset -= newChange.Length;
             }
             // CONFLICTING CASE!!
-            else if (newChange.Offset < oldChange.Offset && oldChange.Offset < newChange.Offset + newChange.Length)
+            else if (NS < DO && DO < NE)
             {
-                //oldChange.Offset = newChange.Offset;
                 AddPatternInstance(oldChange, newChange, "DD-01");
             }
-            else if (oldChange.Offset <= newChange.Offset)
+            else if (DO <= NS)
             {
                 // Do nothing.
             }
@@ -428,7 +415,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             // Trivial case
             if (NE <= RS)
             {
-                RS -= newChange.Length;
+                oldChange.Offset -= newChange.Length;
             }
             // CONFLICTING CASE!!
             else if (NS <= RS && RS < NE && NE < RE)
@@ -467,18 +454,23 @@ namespace FluoriteAnalyzer.PatternDetectors
             // Treat the move as a deletion
             if (oldChange.DeletedFrom == CurrentFile && oldChange.InsertedTo != CurrentFile)
             {
+                int NS = newChange.Offset;
+                int NE = newChange.Offset + newChange.Length;
+
+                int DO = oldChange.DeletionOffset;
+
                 // Trivial case
-                if (newChange.Offset + newChange.Length <= oldChange.DeletionOffset)
+                if (NE <= DO)
                 {
                     oldChange.DeletionOffset -= newChange.Length;
                 }
                 // CONFLICTING CASE!!
-                else if (newChange.Offset < oldChange.DeletionOffset && oldChange.DeletionOffset < newChange.Offset + newChange.Length)
+                else if (NS < DO && DO < NE)
                 {
                     AddPatternInstance(oldChange, newChange, "MD-01");
                 }
                 // Trivial case
-                else if (oldChange.DeletionOffset <= newChange.Offset)
+                else if (DO <= NS)
                 {
                     // Do nothing.
                 }
@@ -491,38 +483,41 @@ namespace FluoriteAnalyzer.PatternDetectors
             // Treat the move as an insertion
             else if (oldChange.DeletedFrom != CurrentFile && oldChange.InsertedTo == CurrentFile)
             {
+                int NS = newChange.Offset;
+                int NE = newChange.Offset + newChange.Length;
+
+                int IS = oldChange.InsertionOffset;
+                int IE = oldChange.InsertionOffset + oldChange.InsertionLength;
+
                 // Trivial case
-                if (newChange.Offset + newChange.Length <= oldChange.InsertionOffset)
+                if (NE <= IS)
                 {
                     oldChange.InsertionOffset -= newChange.Length;
                 }
                 // CONFLICTING CASE!!
-                else if (newChange.Offset <= oldChange.InsertionOffset && oldChange.InsertionOffset < newChange.Offset + newChange.Length && newChange.Offset + newChange.Length < oldChange.InsertionOffset + oldChange.InsertionLength)
+                else if (NS <= IS && IS < NE && NE < IE)
                 {
                     AddPatternInstance(oldChange, newChange, "MD-02");
                 }
                 // CONFLICTING CASE!!
-                else if (newChange.Offset <= oldChange.InsertionOffset && oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset + newChange.Length)
+                else if (NS <= IS && IE <= NE)
                 {
                     AddPatternInstance(oldChange, newChange, "MD-03");
                 }
                 // Trivial case
-                //else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.InsertionOffset + oldChange.InsertionLength)
-                //{
-                //    oldChange.InsertionLength -= newChange.Length;
-                //}
                 // CONFLICTING CASE!!
-                else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.InsertionOffset + oldChange.InsertionLength)
+                else if (IS < NS && NE < IE)
                 {
+                    //oldChange.InsertionLength -= newChange.Length;
                     AddPatternInstance(oldChange, newChange, "MD-035");
                 }
                 // CONFLICTING CASE!!
-                else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset < oldChange.InsertionOffset + oldChange.InsertionLength && oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset + newChange.Length)
+                else if (IS < NS && NS < IE && IE <= NE)
                 {
                     AddPatternInstance(oldChange, newChange, "MD-04");
                 }
                 // Trivial case
-                else if (oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset)
+                else if (IE <= NS)
                 {
                     // Do nothing.
                 }
@@ -536,59 +531,63 @@ namespace FluoriteAnalyzer.PatternDetectors
             {
                 if (oldChange.DeletionOffset <= oldChange.InsertionOffset)
                 {
+                    int NS = newChange.Offset;
+                    int NE = newChange.Offset + newChange.Length;
+
+                    int DO = oldChange.DeletionOffset;
+
+                    int IS = oldChange.InsertionOffset;
+                    int IE = oldChange.InsertionOffset + oldChange.InsertionLength;
+
                     // Trivial case
-                    if (newChange.Offset + newChange.Length <= oldChange.DeletionOffset)
+                    if (NE <= DO)
                     {
                         oldChange.DeletionOffset -= newChange.Length;
                         oldChange.InsertionOffset -= newChange.Length;
                     }
                     // CONFLICTING CASE!!
-                    else if (newChange.Offset <= oldChange.DeletionOffset && oldChange.DeletionOffset < newChange.Offset + newChange.Length && newChange.Offset + newChange.Length <= oldChange.InsertionOffset)
+                    else if (NS <= DO && DO < NE && NE <= IS)
                     {
                         AddPatternInstance(oldChange, newChange, "MD-05");
                     }
                     // CONFLICTING CASE!!
-                    else if (newChange.Offset <= oldChange.DeletionOffset && oldChange.InsertionOffset < newChange.Offset + newChange.Length && newChange.Offset + newChange.Length < oldChange.InsertionOffset + oldChange.InsertionLength)
+                    else if (NS <= DO && IS < NE && NE < IE)
                     {
                         AddPatternInstance(oldChange, newChange, "MD-06");
                     }
                     // CONFLICTING CASE!!
-                    else if (newChange.Offset <= oldChange.DeletionOffset && oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset + newChange.Length)
+                    else if (NS <= DO && IE <= NE)
                     {
                         AddPatternInstance(oldChange, newChange, "MD-07");
                     }
                     // Trivial case
-                    else if (oldChange.DeletionOffset < newChange.Offset && newChange.Offset + newChange.Length <= oldChange.InsertionOffset)
+                    else if (DO < NS && NE <= IS)
                     {
                         oldChange.InsertionOffset -= newChange.Length;
                     }
                     // CONFLICTING CASE!!
-                    else if (oldChange.DeletionOffset < newChange.Offset && newChange.Offset <= oldChange.InsertionOffset && oldChange.InsertionOffset < newChange.Offset + newChange.Length && newChange.Offset + newChange.Length < oldChange.InsertionOffset + oldChange.InsertionLength)
+                    else if (DO < NS && NS <= IS && IS < NE && NE < IE)
                     {
                         AddPatternInstance(oldChange, newChange, "MD-08");
                     }
                     // CONFLICTING CASE!!
-                    else if (oldChange.DeletionOffset < newChange.Offset && newChange.Offset <= oldChange.InsertionOffset && oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset + newChange.Length)
+                    else if (DO < NS && NS <= IS && IE <= NE)
                     {
                         AddPatternInstance(oldChange, newChange, "MD-09");
                     }
                     // Trivial case
-                    //else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.InsertionOffset + oldChange.InsertionLength)
-                    //{
-                    //    oldChange.InsertionLength -= newChange.Length;
-                    //}
                     // CONFLICTING CASE!!
-                    // CONFLICTING CASE!!
-                    else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset + newChange.Length < oldChange.InsertionOffset + oldChange.InsertionLength)
+                    else if (IS < NS && NE < IE)
                     {
+                        //oldChange.InsertionLength -= newChange.Length;
                         AddPatternInstance(oldChange, newChange, "MD-095");
                     }
-                    else if (oldChange.InsertionOffset < newChange.Offset && newChange.Offset < oldChange.InsertionOffset + oldChange.InsertionLength && oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset + newChange.Length)
+                    else if (IS < NS && NS < IE && IE <= NE)
                     {
                         AddPatternInstance(oldChange, newChange, "MD-10");
                     }
                     // Trivial case
-                    else if (oldChange.InsertionOffset + oldChange.InsertionLength <= newChange.Offset)
+                    else if (IE <= NS)
                     {
                         // Do nothing.
                     }
@@ -602,10 +601,10 @@ namespace FluoriteAnalyzer.PatternDetectors
                     int NS = newChange.Offset;
                     int NE = newChange.Offset + newChange.Length;
 
+                    int DO = oldChange.DeletionOffset + oldChange.InsertionLength;
+
                     int IS = oldChange.InsertionOffset;
                     int IE = oldChange.InsertionOffset + oldChange.InsertionLength;
-
-                    int DO = oldChange.DeletionOffset + oldChange.InsertionLength;
 
                     // Trivial case
                     if (NE <= IS)
@@ -681,6 +680,8 @@ namespace FluoriteAnalyzer.PatternDetectors
                 else if (oldChange is Move) { ProcessMoveBeforeReplace((Move)oldChange, newChange); }
             }
         }
+
+        #region <Some operation> -> Replace
 
         private void ProcessInsertBeforeReplace(Insert oldChange, Replace newChange)
         {
@@ -942,10 +943,10 @@ namespace FluoriteAnalyzer.PatternDetectors
                     int NS = newChange.Offset;
                     int NE = newChange.Offset + newChange.Length;
 
+                    int DO = oldChange.DeletionOffset + oldChange.InsertionLength;
+
                     int IS = oldChange.InsertionOffset;
                     int IE = oldChange.InsertionOffset + oldChange.InsertionLength;
-
-                    int DO = oldChange.DeletionOffset + oldChange.InsertionLength;
 
                     if (NE <= IS)
                     {
@@ -996,6 +997,8 @@ namespace FluoriteAnalyzer.PatternDetectors
                 }
             }
         }
+
+        #endregion
 
         private void ProcessMove(Move newChange)
         {
