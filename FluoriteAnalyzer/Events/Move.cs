@@ -44,5 +44,16 @@ namespace FluoriteAnalyzer.Events
         public int DeletionLength { get { return base.Length; } internal set { base.Length = value; } }
 
         public int OriginalDeleteID { get; private set; }
+
+        public int EffectiveDeletionOffset
+        {
+            get
+            {
+                if (DeletedFrom == InsertedTo && InsertionOffset < DeletionOffset)
+                    return DeletionOffset + InsertionLength;
+                else
+                    return DeletionOffset;
+            }
+        }
     }
 }

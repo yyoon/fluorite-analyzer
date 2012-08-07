@@ -13,8 +13,21 @@ namespace FluoriteAnalyzer.PatternDetectors
     {
         private List<OperationConflictPatternInstance> DetectedPatterns { get; set; }
         private Dictionary<string, List<DocumentChange>> ProcessedChangesDict { get; set; }
-        private List<DocumentChange> ProcessedChanges { get; set; }
         private string CurrentFile { get; set; }
+
+        private List<DocumentChange> ProcessedChanges
+        {
+            get
+            {
+                if (ProcessedChangesDict == null) { return null; }
+                if (CurrentFile == null) { return null; }
+                if (!ProcessedChangesDict.ContainsKey(CurrentFile)) { return null; }
+
+                return ProcessedChangesDict[CurrentFile];
+            }
+        }
+
+        private List<DocumentChange> TemporaryIgnoreList { get; set; }
 
         // Remembers all the "first" document changes involved in any of the conflicting cases.
         private HashSet<DocumentChange> ConflictedChanges { get; set; }
@@ -42,9 +55,9 @@ namespace FluoriteAnalyzer.PatternDetectors
         {
             DetectedPatterns = new List<OperationConflictPatternInstance>();
             ProcessedChangesDict = new Dictionary<string, List<DocumentChange>>();
-            ProcessedChanges = null;
             CurrentFile = null;
             ConflictedChanges = new HashSet<DocumentChange>();
+            TemporaryIgnoreList = new List<DocumentChange>();
 
             // should consider "FileOpenCommand"s and all "DocumentChange"s
             foreach (Event anEvent in logProvider.LoggedEvents)
@@ -56,8 +69,6 @@ namespace FluoriteAnalyzer.PatternDetectors
 
                     if (ProcessedChangesDict.ContainsKey(CurrentFile) == false)
                         ProcessedChangesDict.Add(CurrentFile, new List<DocumentChange>());
-
-                    ProcessedChanges = ProcessedChangesDict[CurrentFile];
 
                     if (fileOpenCommand.Snapshot != null)
                     {
@@ -71,18 +82,39 @@ namespace FluoriteAnalyzer.PatternDetectors
                 {
                     if (ProcessedChanges == null) { continue; }  // This should never happen, but just in case.
 
+                    TemporaryIgnoreList.Clear();
+
                     DocumentChange newChange = (DocumentChange)anEvent;
 
-                    if (newChange is Insert) ProcessInsert((Insert)newChange);
-                    else if (newChange is Delete) ProcessDelete((Delete)newChange);
-                    else if (newChange is Replace) ProcessReplace((Replace)newChange);
-                    else if (newChange is Move) ProcessMove((Move)newChange);
+                    if (newChange is Move)
+                    {
+                        Move move = (Move)newChange;
+                        Debug.Assert(move.InsertedTo == CurrentFile);
 
-                    ProcessedChanges.Add(ObjectCopier.Clone(newChange));
+                        if (move.DeletedFrom != move.InsertedTo)
+                        {
+                            // change the current file as DeletedFrom (temporarily)
+                            CurrentFile = move.DeletedFrom;
+                            ProcessChange(move);
+                            CurrentFile = move.InsertedTo;
+                        }
+                    }
+
+                    ProcessChange(newChange);
                 }
             }
 
             return DetectedPatterns;
+        }
+
+        private void ProcessChange(DocumentChange newChange)
+        {
+            if (newChange is Insert) ProcessInsert((Insert)newChange);
+            else if (newChange is Delete) ProcessDelete((Delete)newChange);
+            else if (newChange is Replace) ProcessReplace((Replace)newChange);
+            else if (newChange is Move) ProcessMove((Move)newChange);
+
+            ProcessedChanges.Add(ObjectCopier.Clone(newChange));
         }
 
         private void ProcessInsert(Insert newChange)
@@ -276,7 +308,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 {
                     int NS = newChange.Offset;
 
-                    int DO = oldChange.DeletionOffset + oldChange.InsertionLength;
+                    int DO = oldChange.EffectiveDeletionOffset;
 
                     int IS = oldChange.InsertionOffset;
                     int IE = oldChange.InsertionOffset + oldChange.InsertionLength;
@@ -598,7 +630,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                     int NS = newChange.Offset;
                     int NE = newChange.Offset + newChange.Length;
 
-                    int DO = oldChange.DeletionOffset + oldChange.InsertionLength;
+                    int DO = oldChange.EffectiveDeletionOffset;
 
                     int IS = oldChange.InsertionOffset;
                     int IE = oldChange.InsertionOffset + oldChange.InsertionLength;
@@ -940,7 +972,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                     int NS = newChange.Offset;
                     int NE = newChange.Offset + newChange.Length;
 
-                    int DO = oldChange.DeletionOffset + oldChange.InsertionLength;
+                    int DO = oldChange.EffectiveDeletionOffset;
 
                     int IS = oldChange.InsertionOffset;
                     int IE = oldChange.InsertionOffset + oldChange.InsertionLength;
@@ -999,11 +1031,18 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void ProcessMove(Move newChange)
         {
-            return;
+            if (newChange.DeletedFrom == newChange.InsertedTo &&
+                newChange.DeletionOffset == newChange.InsertionOffset &&
+                newChange.DeletionLength == newChange.InsertionLength)
+            {
+                // Do nothing. It is likely that this operation is a "recover mistake."
+                return;
+            }
 
             foreach (DocumentChange oldChange in ProcessedChanges.ToArray())
             {
                 if (ConflictedChanges.Contains(oldChange)) { continue; }
+                if (TemporaryIgnoreList.Contains(oldChange)) { continue; }
 
                 if (oldChange is Insert) { ProcessInsertBeforeMove((Insert)oldChange, newChange); }
                 else if (oldChange is Delete) { ProcessDeleteBeforeMove((Delete)oldChange, newChange); }
@@ -1014,17 +1053,402 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void ProcessInsertBeforeMove(Insert oldChange, Move newChange)
         {
-            throw new NotImplementedException();
+            // Case #1: some code is being moved from the current file to another file.
+            if (newChange.DeletedFrom == CurrentFile && newChange.InsertedTo != CurrentFile)
+            {
+                int NDS = newChange.DeletionOffset;
+                int NDE = newChange.DeletionOffset + newChange.DeletionLength;
+
+                int IS = oldChange.Offset;
+                int IE = oldChange.Offset + oldChange.Length;
+
+                if (NDE <= IS)
+                {
+                    oldChange.Offset -= newChange.DeletionLength;
+                }
+                else if (NDS <= IS && IS < NDE && NDE < IE)
+                {
+                    AddPatternInstance(oldChange, newChange, "IM-01");
+                }
+                // Special case.
+                else if (NDS <= IS && IE <= NDE)
+                {
+                    Debug.Assert(newChange.DeletionLength == newChange.InsertionLength);
+
+                    oldChange.Offset = oldChange.Offset - newChange.DeletionOffset + newChange.InsertionOffset;
+                    ProcessedChangesDict[newChange.DeletedFrom].Remove(oldChange);
+                    ProcessedChangesDict[newChange.InsertedTo].Add(oldChange);
+
+                    TemporaryIgnoreList.Add(oldChange);
+                }
+                else if (IS < NDS && NDE < IE)
+                {
+                    AddPatternInstance(oldChange, newChange, "IM-02");
+                }
+                else if (IS < NDS && NDS < IE && IE <= NDE)
+                {
+                    AddPatternInstance(oldChange, newChange, "IM-03");
+                }
+                else if (IE <= NDS)
+                {
+                    // Do nothing.
+                }
+                else
+                {
+                    Debug.Assert(false);
+                }
+            }
+            // Case #2: some code is being moved from another file to the current file.
+            else if (newChange.DeletedFrom != CurrentFile && newChange.InsertedTo == CurrentFile)
+            {
+                int NIS = newChange.InsertionOffset;
+
+                int IS = oldChange.Offset;
+                int IE = oldChange.Offset + oldChange.Length;
+
+                if (NIS <= IS)
+                {
+                    oldChange.Offset += newChange.InsertionLength;
+                }
+                else if (IS < NIS && NIS < IE)
+                {
+                    AddPatternInstance(oldChange, newChange, "IM-04");
+                }
+                else if (IE <= NIS)
+                {
+                    // Do nothing.
+                }
+                else
+                {
+                    Debug.Assert(false);
+                }
+            }
+            // Case #3: some code is being moved within the current file.
+            else if (newChange.DeletedFrom == CurrentFile && newChange.InsertedTo == CurrentFile)
+            {
+                // Process deletion part first.
+                {
+                    int NDS = newChange.DeletionOffset;
+                    int NDE = newChange.DeletionOffset + newChange.DeletionLength;
+
+                    int IS = oldChange.Offset;
+                    int IE = oldChange.Offset + oldChange.Length;
+
+                    if (NDE <= IS)
+                    {
+                        oldChange.Offset -= newChange.DeletionLength;
+                    }
+                    else if (NDS <= IS && IS < NDE && NDE < IE)
+                    {
+                        AddPatternInstance(oldChange, newChange, "IM-05");
+                        return;
+                    }
+                    else if (NDS <= IS && IE <= NDE)
+                    {
+                        // Special case.
+                        oldChange.Offset += newChange.InsertionOffset - newChange.DeletionOffset;
+
+                        // Do not process further.
+                        return;
+                    }
+                    else if (IS < NDS && NDE < IE)
+                    {
+                        AddPatternInstance(oldChange, newChange, "IM-06");
+                        return;
+                    }
+                    else if (IS < NDS && NDS < IE && IE <= NDE)
+                    {
+                        AddPatternInstance(oldChange, newChange, "IM-07");
+                        return;
+                    }
+                    else if (IE <= NDS)
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        Debug.Assert(false);
+                    }
+                }
+
+                // Process insertion part.
+                {
+                    int NIS = newChange.InsertionOffset;
+
+                    int IS = oldChange.Offset;
+                    int IE = oldChange.Offset + oldChange.Length;
+
+                    if (NIS <= IS)
+                    {
+                        oldChange.Offset += newChange.InsertionLength;
+                    }
+                    else if (IS < NIS && NIS < IE)
+                    {
+                        AddPatternInstance(oldChange, newChange, "IM-08");
+                    }
+                    else if (IE <= NIS)
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        Debug.Assert(false);
+                    }
+                }
+            }
         }
 
         private void ProcessDeleteBeforeMove(Delete oldChange, Move newChange)
         {
-            throw new NotImplementedException();
+            // Case #1: some code is being moved from the current file to another file.
+            if (newChange.DeletedFrom == CurrentFile && newChange.InsertedTo != CurrentFile)
+            {
+                int NDS = newChange.DeletionOffset;
+                int NDE = newChange.DeletionOffset + newChange.DeletionLength;
+
+                int DO = oldChange.Offset;
+
+                if (NDE <= DO)
+                {
+                    oldChange.Offset -= newChange.DeletionLength;
+                }
+                else if (NDS < DO && DO < NDE)
+                {
+                    // Special case.
+                    oldChange.Offset = oldChange.Offset - newChange.DeletionOffset + newChange.InsertionOffset;
+
+                    ProcessedChangesDict[newChange.DeletedFrom].Remove(oldChange);
+                    ProcessedChangesDict[newChange.InsertedTo].Add(oldChange);
+
+                    TemporaryIgnoreList.Add(oldChange);
+                }
+                else if (DO <= NDS)
+                {
+                    // Do nothing.
+                }
+                else
+                {
+                    Debug.Assert(false);
+                }
+            }
+            // Case #2: some code is being moved from another file to the current file.
+            else if (newChange.DeletedFrom != CurrentFile && newChange.InsertedTo == CurrentFile)
+            {
+                int NIS = newChange.InsertionOffset;
+
+                int DO = oldChange.Offset;
+
+                if (NIS <= DO)
+                {
+                    oldChange.Offset += newChange.InsertionLength;
+                }
+                else if (DO < NIS)
+                {
+                    // Do nothing.
+                }
+                else
+                {
+                    Debug.Assert(false);
+                }
+            }
+            // Case #3: some code is being moved within the current file.
+            else if (newChange.DeletedFrom == CurrentFile && newChange.InsertedTo == CurrentFile)
+            {
+                // Process deletion part first.
+                {
+                    int NDS = newChange.DeletionOffset;
+                    int NDE = newChange.DeletionOffset + newChange.DeletionLength;
+
+                    int DO = oldChange.Offset;
+
+                    if (NDE <= DO)
+                    {
+                        oldChange.Offset -= newChange.DeletionLength;
+                    }
+                    else if (NDS < DO && DO < NDE)
+                    {
+                        // Special case.
+                        oldChange.Offset = oldChange.Offset - newChange.DeletionOffset + newChange.InsertionOffset;
+
+                        // Do not process further.
+                        return;
+                    }
+                    else if (DO <= NDS)
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        Debug.Assert(false);
+                    }
+                }
+
+                // Process insertion part.
+                {
+                    int NIS = newChange.InsertionOffset;
+
+                    int DO = oldChange.Offset;
+
+                    if (NIS <= DO)
+                    {
+                        oldChange.Offset += newChange.InsertionLength;
+                    }
+                    else if (DO < NIS)
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        Debug.Assert(false);
+                    }
+                }
+            }
         }
 
         private void ProcessReplaceBeforeMove(Replace oldChange, Move newChange)
         {
-            throw new NotImplementedException();
+            // Case #1: some code is being moved from the current file to another file.
+            if (newChange.DeletedFrom == CurrentFile && newChange.InsertedTo != CurrentFile)
+            {
+                int NDS = newChange.DeletionOffset;
+                int NDE = newChange.DeletionOffset + newChange.DeletionLength;
+
+                int RS = oldChange.Offset;
+                int RE = oldChange.Offset + oldChange.InsertionLength;
+
+                if (NDE <= RS)
+                {
+                    oldChange.Offset -= newChange.DeletionLength;
+                }
+                else if (NDS <= RS && RS < NDE && NDE < RE)
+                {
+                    AddPatternInstance(oldChange, newChange, "RM-01");
+                }
+                else if (NDS <= RS && RE <= NDE)
+                {
+                    // Special case.
+                    oldChange.Offset = oldChange.Offset - newChange.DeletionOffset + newChange.InsertionOffset;
+
+                    ProcessedChangesDict[newChange.DeletedFrom].Remove(oldChange);
+                    ProcessedChangesDict[newChange.InsertedTo].Add(oldChange);
+
+                    TemporaryIgnoreList.Add(oldChange);
+                }
+                else if (RS < NDS && NDE < RE)
+                {
+                    AddPatternInstance(oldChange, newChange, "RM-02");
+                }
+                else if (RS < NDS && NDS < RE && RE <= NDE)
+                {
+                    AddPatternInstance(oldChange, newChange, "RM-03");
+                }
+                else if (RE <= NDS)
+                {
+                    // Do nothing.
+                }
+                else
+                {
+                    Debug.Assert(false);
+                }
+            }
+            // Case #2: some code is being moved from another file to the current file.
+            else if (newChange.DeletedFrom != CurrentFile && newChange.InsertedTo == CurrentFile)
+            {
+                int NIS = newChange.InsertionOffset;
+
+                int RS = oldChange.Offset;
+                int RE = oldChange.Offset + oldChange.InsertionLength;
+
+                if (NIS <= RS)
+                {
+                    oldChange.Offset += newChange.InsertionLength;
+                }
+                else if (RS < NIS && NIS < RE)
+                {
+                    AddPatternInstance(oldChange, newChange, "RM-04");
+                }
+                else if (RE <= NIS)
+                {
+                    // Do nothing.
+                }
+                else
+                {
+                    Debug.Assert(false);
+                }
+            }
+            // Case #3: some code is being moved within the current file.
+            else if (newChange.DeletedFrom == CurrentFile && newChange.InsertedTo == CurrentFile)
+            {
+                // Process deletion part first.
+                {
+                    int NDS = newChange.DeletionOffset;
+                    int NDE = newChange.DeletionOffset + newChange.DeletionLength;
+
+                    int RS = oldChange.Offset;
+                    int RE = oldChange.Offset + oldChange.InsertionLength;
+
+                    if (NDE <= RS)
+                    {
+                        oldChange.Offset -= newChange.DeletionLength;
+                    }
+                    else if (NDS <= RS && RS < NDE && NDE < RE)
+                    {
+                        AddPatternInstance(oldChange, newChange, "RM-05");
+                        return;
+                    }
+                    else if (NDS <= RS && RE <= NDE)
+                    {
+                        // Special case.
+                        oldChange.Offset = oldChange.Offset - newChange.DeletionOffset + newChange.InsertionOffset;
+
+                        // Do not process further.
+                        return;
+                    }
+                    else if (RS < NDS && NDE < RE)
+                    {
+                        AddPatternInstance(oldChange, newChange, "RM-06");
+                        return;
+                    }
+                    else if (RS < NDS && NDS < RE && RE <= NDE)
+                    {
+                        AddPatternInstance(oldChange, newChange, "RM-07");
+                        return;
+                    }
+                    else if (RE <= NDS)
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        Debug.Assert(false);
+                    }
+                }
+
+                // Process insertion part.
+                {
+                    int NIS = newChange.InsertionOffset;
+
+                    int RS = oldChange.Offset;
+                    int RE = oldChange.Offset + oldChange.InsertionLength;
+
+                    if (NIS <= RS)
+                    {
+                        oldChange.Offset += newChange.InsertionLength;
+                    }
+                    else if (RS < NIS && NIS < RE)
+                    {
+                        AddPatternInstance(oldChange, newChange, "RM-08");
+                    }
+                    else if (RE <= NIS)
+                    {
+                        // Do nothing.
+                    }
+                    else
+                    {
+                        Debug.Assert(false);
+                    }
+                }
+            }
         }
 
         private void ProcessMoveBeforeMove(Move oldChange, Move newChange)
