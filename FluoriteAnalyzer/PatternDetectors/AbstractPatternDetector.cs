@@ -11,7 +11,7 @@ namespace FluoriteAnalyzer.PatternDetectors
     {
         public abstract IEnumerable<PatternInstance> DetectAsPatternInstances(ILogProvider logProvider);
 
-        public IEnumerable<ListViewItem> DetectAsListViewItems(ILogProvider logProvider)
+        public virtual IEnumerable<ListViewItem> DetectAsListViewItems(ILogProvider logProvider)
         {
             return DetectAsPatternInstances(logProvider)
                 .Select(x => new ListViewItem(new string[] {

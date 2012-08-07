@@ -5,6 +5,7 @@ using System.Text;
 using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.Utils;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {
@@ -22,6 +23,19 @@ namespace FluoriteAnalyzer.PatternDetectors
         internal static OperationConflictDetector GetInstance()
         {
             return _instance ?? (_instance = new OperationConflictDetector());
+        }
+
+        public override IEnumerable<ListViewItem> DetectAsListViewItems(Analyses.ILogProvider logProvider)
+        {
+            return DetectAsPatternInstances(logProvider)
+                .Cast<OperationConflictPatternInstance>()
+                .OrderBy(x => x.ConflictType)
+                .Select(x => new ListViewItem(new string[] {
+                    x.PrimaryEvent.ID.ToString(),
+                    x.PatternLength.ToString(),
+                    logProvider.GetVideoTime(x.PrimaryEvent),
+                    x.Description
+                }) { Tag = x });
         }
 
         public override IEnumerable<PatternInstance> DetectAsPatternInstances(Analyses.ILogProvider logProvider)
