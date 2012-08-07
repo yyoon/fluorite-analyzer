@@ -33,8 +33,8 @@ namespace FluoriteAnalyzer.Events
         public string DeletedText { get; private set; }
         public string InsertedText { get; private set; }
 
-        public string DeletedFrom { get; private set; }
-        public string InsertedTo { get; private set; }
+        public string DeletedFrom { get; internal set; }
+        public string InsertedTo { get; internal set; }
 
         // normal "offset" and "length" are used for deletion info.
         public int InsertionOffset { get; internal set; }
