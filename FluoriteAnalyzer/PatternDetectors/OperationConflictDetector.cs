@@ -352,13 +352,10 @@ namespace FluoriteAnalyzer.PatternDetectors
                 AddPatternInstance(oldChange, newChange, "ID-02");
             }
             // Trivial case
-            //else if (IS < NS && NE < IE)
-            //{
-            //    oldChange.Length -= newChange.Length;
-            //}
             // CONFLICTING CASE!!
             else if (IS < NS && NE < IE)
             {
+                //oldChange.Length -= newChange.Length;
                 AddPatternInstance(oldChange, newChange, "ID-025");
             }
             // CONFLICTING CASE!!
