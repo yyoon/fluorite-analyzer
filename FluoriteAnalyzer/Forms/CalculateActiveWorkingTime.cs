@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using FluoriteAnalyzer.Analyses;
-using System.IO;
+using FluoriteAnalyzer.Common;
 using FluoriteAnalyzer.Events;
 
 namespace FluoriteAnalyzer.Forms

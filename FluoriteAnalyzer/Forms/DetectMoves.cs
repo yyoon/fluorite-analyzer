@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using FluoriteAnalyzer.Analyses;
-using FluoriteAnalyzer.PatternDetectors;
+using FluoriteAnalyzer.Common;
 using FluoriteAnalyzer.Events;
+using FluoriteAnalyzer.PatternDetectors;
 
 namespace FluoriteAnalyzer.Forms
 {
