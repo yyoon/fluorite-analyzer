@@ -133,7 +133,7 @@ namespace FluoriteAnalyzer.Common
 
             if (!result.FilePaths.Contains(currentFile))
             {
-                result.FilePaths.Add(currentFile);
+                result.FilePaths.Insert(0, currentFile);
                 lastDocChanges.Add(currentFile, null);
 
                 if (foc.Snapshot == null)
