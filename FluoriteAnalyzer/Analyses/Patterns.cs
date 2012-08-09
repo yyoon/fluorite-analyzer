@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using FluoriteAnalyzer.Common;
+using FluoriteAnalyzer.Commons;
 using FluoriteAnalyzer.PatternDetectors;
 
 namespace FluoriteAnalyzer.Analyses

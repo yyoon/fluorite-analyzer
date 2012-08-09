@@ -1,6 +1,6 @@
 ﻿using FluoriteAnalyzer.Events;
 
-namespace FluoriteAnalyzer.Common
+namespace FluoriteAnalyzer.Commons
 {
     class FileSnapshot
     {

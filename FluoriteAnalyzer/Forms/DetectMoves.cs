@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Xml;
-using FluoriteAnalyzer.Common;
+using FluoriteAnalyzer.Commons;
 using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.PatternDetectors;
 

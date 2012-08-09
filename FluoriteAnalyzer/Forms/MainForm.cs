@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using FluoriteAnalyzer.Analyses;
-using FluoriteAnalyzer.Common;
+using FluoriteAnalyzer.Commons;
 using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.Properties;
 using FluoriteAnalyzer.Utils;

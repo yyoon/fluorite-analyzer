@@ -6,7 +6,7 @@ using FluoriteAnalyzer.Events;
 using System.Xml;
 using System.Windows.Forms;
 
-namespace FluoriteAnalyzer.Common
+namespace FluoriteAnalyzer.Commons
 {
     class LogProvider : ILogProvider
     {

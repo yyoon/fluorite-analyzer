@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FluoriteAnalyzer.Common;
+using FluoriteAnalyzer.Commons;
 using FluoriteAnalyzer.Events;
 
 namespace FluoriteAnalyzer.PatternDetectors
