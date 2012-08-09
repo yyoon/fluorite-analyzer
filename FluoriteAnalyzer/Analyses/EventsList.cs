@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using FluoriteAnalyzer.Commons;
 using FluoriteAnalyzer.Events;
@@ -245,9 +244,11 @@ namespace FluoriteAnalyzer.Analyses
                 return;
             }
 
+            // Do the calculation.
             SnapshotCalculator snapshotCalculator = new SnapshotCalculator(LogProvider);
             EntireSnapshot entireSnapshot = snapshotCalculator.CalculateSnapshotAtEvent(selectedEvent);
 
+            // Error handling.
             if (entireSnapshot.CurrentFile == null) { return; }
             FileSnapshot curSnapshot = entireSnapshot.FileSnapshots[entireSnapshot.CurrentFile];
 
@@ -256,103 +257,8 @@ namespace FluoriteAnalyzer.Analyses
             // Set the current file name
             textCurrentFileName.Text = Path.GetFileName(entireSnapshot.CurrentFile);
 
-            int insertionOffset, insertionLength, deletionOffset;
-            string deletedText = GetOffsetAndLength(curSnapshot.LastChange, out insertionOffset, out insertionLength, out deletionOffset);
-            int deletionLength = deletedText.Length;
-
-            string currentSourceCode = curSnapshot.Content;
-            currentSourceCode = currentSourceCode.Insert(deletionOffset, deletedText);
-
-            // Set the text box content
-            richTextSourceCode.Text = currentSourceCode;
-
-            // Highlight the last change
-            HighlightLastChange(curSnapshot.Content, curSnapshot.LastChange, insertionOffset, insertionLength, deletionOffset, deletionLength);
-        }
-
-        private void HighlightLastChange(string content, DocumentChange lastDocChange, int insertionOffset, int insertionLength, int deletionOffset, int deletionLength)
-        {
-            if (lastDocChange != null)
-            {
-                // Stupid workaround due to the weird behavior of RichTextBox (it translates \r\n into \n automatically).
-                insertionOffset -= content.Substring(0, insertionOffset).Count(x => x == '\r');
-                deletionOffset -= content.Substring(0, deletionOffset).Count(x => x == '\r');
-
-                richTextSourceCode.Select(deletionOffset, deletionLength);
-                richTextSourceCode.SelectionFont = StrikeoutFont;
-                richTextSourceCode.SelectionBackColor = Color.Pink;
-
-                richTextSourceCode.Select(insertionOffset, insertionLength);
-                richTextSourceCode.SelectionBackColor = Color.LightGreen;
-
-                if (insertionLength == 0)
-                {
-                    richTextSourceCode.Select(deletionOffset, 0);
-                }
-                else
-                {
-                    richTextSourceCode.Select(insertionOffset, 0);
-                }
-                richTextSourceCode.ScrollToCaret();
-            }
-        }
-
-        private string GetOffsetAndLength(DocumentChange lastDocChange, out int insertionOffset, out int insertionLength, out int deletionOffset)
-        {
-            insertionOffset = 0;
-            insertionLength = 0;
-            deletionOffset = 0;
-
-            if (lastDocChange is Delete)
-            {
-                var delete = (Delete) lastDocChange;
-                deletionOffset = delete.Offset;
-                insertionLength = 0;
-                return delete.Text.Replace("\r\n", "\n");
-            }
-            else if (lastDocChange is Insert)
-            {
-                var insert = (Insert) lastDocChange;
-                insertionOffset = insert.Offset;
-                insertionLength = insert.Length - insert.Text.Count(x => x == '\r');
-            }
-            else if (lastDocChange is Replace)
-            {
-                var replace = (Replace) lastDocChange;
-                string deletedText = replace.DeletedText.Replace("\r\n", "\n");
-                insertionOffset = replace.Offset + deletedText.Length;
-                insertionLength = replace.InsertedText.Length - replace.InsertedText.Count(x => x == '\r');
-                deletionOffset = replace.Offset;
-                return deletedText;
-            }
-            else if (lastDocChange is Move)
-            {
-                // only consider the current file
-                var move = (Move) lastDocChange;
-                insertionOffset = move.InsertionOffset;
-                insertionLength = move.InsertionLength - move.InsertedText.Count(x => x == '\r');
-
-                //return "";
-
-                if (move.DeletedFrom == move.InsertedTo)
-                {
-                    deletionOffset = move.Offset;
-                    string deletedText = move.DeletedText.Replace("\r\n", "\n");
-
-                    if (deletionOffset > insertionOffset)
-                    {
-                        deletionOffset += insertionLength;
-                    }
-                    else
-                    {
-                        insertionOffset += deletedText.Length;
-                    }
-
-                    return deletedText;
-                }
-            }
-
-            return "";
+            // Display the content while the most recent change being highlighted.
+            curSnapshot.DisplayInRichTextBox(this.richTextSourceCode, StrikeoutFont);
         }
 
         internal void SearchString(string str)

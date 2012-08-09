@@ -45,6 +45,7 @@ namespace FluoriteAnalyzer.Commons
             foreach (string filePath in result.FilePaths)
             {
                 FileSnapshot fileSnapshot = new FileSnapshot();
+                fileSnapshot.FilePath = filePath;
                 fileSnapshot.Content = files[filePath] != null ? files[filePath].ToString() : null;
                 fileSnapshot.LastChange = lastDocChanges[filePath];
 
