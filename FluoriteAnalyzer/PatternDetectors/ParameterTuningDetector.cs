@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using FluoriteAnalyzer.Common;
 using FluoriteAnalyzer.Events;
-using System.Windows.Forms;
-using FluoriteAnalyzer.Analyses;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {

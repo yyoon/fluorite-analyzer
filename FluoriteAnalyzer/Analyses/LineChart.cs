@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using FluoriteAnalyzer.Common;
 using FluoriteAnalyzer.Events;
 
 namespace FluoriteAnalyzer.Analyses

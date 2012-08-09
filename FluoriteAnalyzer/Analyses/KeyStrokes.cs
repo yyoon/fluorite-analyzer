@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using FluoriteAnalyzer.Events;
-using System;
-using System.IO;
 using System.Xml.Serialization;
-using System.Text;
+using FluoriteAnalyzer.Common;
+using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.Forms;
-using System.Text.RegularExpressions;
 
 namespace FluoriteAnalyzer.Analyses
 {

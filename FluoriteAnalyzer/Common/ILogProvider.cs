@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using FluoriteAnalyzer.Events;
 
-namespace FluoriteAnalyzer.Analyses
+namespace FluoriteAnalyzer.Common
 {
     public interface ILogProvider
     {

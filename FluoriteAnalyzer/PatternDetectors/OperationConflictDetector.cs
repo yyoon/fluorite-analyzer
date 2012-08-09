@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Windows.Forms;
+using FluoriteAnalyzer.Common;
 using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.Utils;
-using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {
@@ -38,7 +37,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             return _instance ?? (_instance = new OperationConflictDetector());
         }
 
-        public override IEnumerable<ListViewItem> DetectAsListViewItems(Analyses.ILogProvider logProvider)
+        public override IEnumerable<ListViewItem> DetectAsListViewItems(ILogProvider logProvider)
         {
             return DetectAsPatternInstances(logProvider)
                 .Cast<OperationConflictPatternInstance>()
@@ -51,7 +50,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 }) { Tag = x });
         }
 
-        public override IEnumerable<PatternInstance> DetectAsPatternInstances(Analyses.ILogProvider logProvider)
+        public override IEnumerable<PatternInstance> DetectAsPatternInstances(ILogProvider logProvider)
         {
             DetectedPatterns = new List<OperationConflictPatternInstance>();
             ProcessedChangesDict = new Dictionary<string, List<DocumentChange>>();

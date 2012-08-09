@@ -65,7 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Analyses\LogProvider.cs" />
+    <Compile Include="Common\LogProvider.cs" />
     <Compile Include="Analyses\Patterns.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -92,7 +92,7 @@
     <Compile Include="Analyses\EventsList.Designer.cs">
       <DependentUpon>EventsList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Analyses\ILogProvider.cs" />
+    <Compile Include="Common\ILogProvider.cs" />
     <Compile Include="Analyses\IRedrawable.cs" />
     <Compile Include="Analyses\KeyStrokes.cs">
       <SubType>UserControl</SubType>
