@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using FluoriteAnalyzer.Common;
+using FluoriteAnalyzer.Commons;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {

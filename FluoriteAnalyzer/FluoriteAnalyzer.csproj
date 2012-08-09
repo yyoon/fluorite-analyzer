@@ -65,16 +65,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\FileSnapshot.cs" />
-    <Compile Include="Common\LogProvider.cs" />
+    <Compile Include="Commons\FileSnapshot.cs" />
+    <Compile Include="Commons\LogProvider.cs" />
     <Compile Include="Analyses\Patterns.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Analyses\Patterns.Designer.cs">
       <DependentUpon>Patterns.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\EntireSnapshot.cs" />
-    <Compile Include="Common\SnapshotCalculator.cs" />
+    <Compile Include="Commons\EntireSnapshot.cs" />
+    <Compile Include="Commons\SnapshotCalculator.cs" />
     <Compile Include="Events\Move.cs" />
     <Compile Include="Forms\AdjustTimeForm.cs">
       <SubType>Form</SubType>
@@ -95,7 +95,7 @@
     <Compile Include="Analyses\EventsList.Designer.cs">
       <DependentUpon>EventsList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Common\ILogProvider.cs" />
+    <Compile Include="Commons\ILogProvider.cs" />
     <Compile Include="Analyses\IRedrawable.cs" />
     <Compile Include="Analyses\KeyStrokes.cs">
       <SubType>UserControl</SubType>

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace FluoriteAnalyzer.Common
+namespace FluoriteAnalyzer.Commons
 {
     class EntireSnapshot
     {

@@ -5,7 +5,7 @@ using System.Text;
 using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.Utils;
 
-namespace FluoriteAnalyzer.Common
+namespace FluoriteAnalyzer.Commons
 {
     class SnapshotCalculator
     {
