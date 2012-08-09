@@ -44,6 +44,8 @@ namespace FluoriteAnalyzer.Forms.Controls
                 RichTextBox richText = new RichTextBox();
                 richText.Dock = DockStyle.Fill;
                 richText.Font = CodeFont;
+                richText.ReadOnly = true;
+                richText.BackColor = Color.White;
 
                 snapshot.FileSnapshots[filePath].DisplayInRichTextBox(richText, StrikeoutFont);
 
