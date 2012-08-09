@@ -65,6 +65,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\Controls\ListViewNF.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\SnapshotPreview.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\Controls\SnapshotPreview.Designer.cs">
+      <DependentUpon>SnapshotPreview.cs</DependentUpon>
+    </Compile>
     <Compile Include="Commons\FileSnapshot.cs" />
     <Compile Include="Commons\LogProvider.cs" />
     <Compile Include="Analyses\Patterns.cs">
@@ -202,6 +211,9 @@
     <Compile Include="Utils\Utils.cs" />
     <EmbeddedResource Include="Analyses\Patterns.resx">
       <DependentUpon>Patterns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Controls\SnapshotPreview.resx">
+      <DependentUpon>SnapshotPreview.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\AdjustTimeForm.resx">
       <DependentUpon>AdjustTimeForm.cs</DependentUpon>

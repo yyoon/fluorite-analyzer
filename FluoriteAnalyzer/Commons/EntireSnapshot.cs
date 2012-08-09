@@ -2,7 +2,7 @@
 
 namespace FluoriteAnalyzer.Commons
 {
-    class EntireSnapshot
+    public class EntireSnapshot
     {
         public EntireSnapshot()
         {

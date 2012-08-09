@@ -5,7 +5,7 @@ using FluoriteAnalyzer.Events;
 
 namespace FluoriteAnalyzer.Commons
 {
-    class FileSnapshot
+    public class FileSnapshot
     {
         public string FilePath { get; set; }
         public string Content { get; set; }

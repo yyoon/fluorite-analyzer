@@ -34,7 +34,7 @@
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.treeEvents = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.listViewEvents = new System.Windows.Forms.ListView();
+            this.listViewEvents = new FluoriteAnalyzer.Forms.Controls.ListViewNF();
             this.columnID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnTimeInVideo = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -43,10 +43,7 @@
             this.columnParameters = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelParameters = new System.Windows.Forms.Label();
             this.textParameters = new System.Windows.Forms.TextBox();
-            this.textCurrentFileName = new System.Windows.Forms.TextBox();
-            this.buttonNext = new System.Windows.Forms.Button();
-            this.buttonPrev = new System.Windows.Forms.Button();
-            this.richTextSourceCode = new System.Windows.Forms.RichTextBox();
+            this.snapshotPreview = new FluoriteAnalyzer.Forms.Controls.SnapshotPreview();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -75,10 +72,7 @@
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.textCurrentFileName);
-            this.splitContainer1.Panel2.Controls.Add(this.buttonNext);
-            this.splitContainer1.Panel2.Controls.Add(this.buttonPrev);
-            this.splitContainer1.Panel2.Controls.Add(this.richTextSourceCode);
+            this.splitContainer1.Panel2.Controls.Add(this.snapshotPreview);
             this.splitContainer1.Size = new System.Drawing.Size(1000, 500);
             this.splitContainer1.SplitterDistance = 674;
             this.splitContainer1.SplitterWidth = 5;
@@ -230,50 +224,13 @@
             this.textParameters.Size = new System.Drawing.Size(490, 132);
             this.textParameters.TabIndex = 0;
             // 
-            // textCurrentFileName
+            // snapshotPreview
             // 
-            this.textCurrentFileName.Location = new System.Drawing.Point(0, 0);
-            this.textCurrentFileName.Name = "textCurrentFileName";
-            this.textCurrentFileName.ReadOnly = true;
-            this.textCurrentFileName.Size = new System.Drawing.Size(320, 21);
-            this.textCurrentFileName.TabIndex = 3;
-            // 
-            // buttonNext
-            // 
-            this.buttonNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonNext.Enabled = false;
-            this.buttonNext.Location = new System.Drawing.Point(224, 476);
-            this.buttonNext.Name = "buttonNext";
-            this.buttonNext.Size = new System.Drawing.Size(87, 21);
-            this.buttonNext.TabIndex = 2;
-            this.buttonNext.Text = "Next";
-            this.buttonNext.UseVisualStyleBackColor = true;
-            // 
-            // buttonPrev
-            // 
-            this.buttonPrev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonPrev.Enabled = false;
-            this.buttonPrev.Location = new System.Drawing.Point(3, 476);
-            this.buttonPrev.Name = "buttonPrev";
-            this.buttonPrev.Size = new System.Drawing.Size(87, 21);
-            this.buttonPrev.TabIndex = 1;
-            this.buttonPrev.Text = "Previous";
-            this.buttonPrev.UseVisualStyleBackColor = true;
-            // 
-            // richTextSourceCode
-            // 
-            this.richTextSourceCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextSourceCode.BackColor = System.Drawing.SystemColors.Window;
-            this.richTextSourceCode.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextSourceCode.HideSelection = false;
-            this.richTextSourceCode.Location = new System.Drawing.Point(0, 24);
-            this.richTextSourceCode.Name = "richTextSourceCode";
-            this.richTextSourceCode.ReadOnly = true;
-            this.richTextSourceCode.Size = new System.Drawing.Size(314, 447);
-            this.richTextSourceCode.TabIndex = 0;
-            this.richTextSourceCode.Text = "";
+            this.snapshotPreview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.snapshotPreview.Location = new System.Drawing.Point(0, 0);
+            this.snapshotPreview.Name = "snapshotPreview";
+            this.snapshotPreview.Size = new System.Drawing.Size(321, 500);
+            this.snapshotPreview.TabIndex = 0;
             // 
             // EventsList
             // 
@@ -283,7 +240,6 @@
             this.Size = new System.Drawing.Size(1000, 500);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
-            this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.splitContainer.Panel1.ResumeLayout(false);
@@ -305,21 +261,18 @@
         private System.Windows.Forms.Button buttonShowHideCode;
         private System.Windows.Forms.SplitContainer splitContainer;
         private System.Windows.Forms.TreeView treeEvents;
-        private System.Windows.Forms.ListView listViewEvents;
+        private FluoriteAnalyzer.Forms.Controls.ListViewNF listViewEvents;
         private System.Windows.Forms.ColumnHeader columnID;
         private System.Windows.Forms.ColumnHeader columnTimestamp;
         private System.Windows.Forms.ColumnHeader columnTimeInVideo;
         private System.Windows.Forms.ColumnHeader columnCategory;
         private System.Windows.Forms.ColumnHeader columnType;
         private System.Windows.Forms.ColumnHeader columnParameters;
-        private System.Windows.Forms.RichTextBox richTextSourceCode;
-        private System.Windows.Forms.Button buttonNext;
-        private System.Windows.Forms.Button buttonPrev;
-        private System.Windows.Forms.TextBox textCurrentFileName;
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Label labelParameters;
         private System.Windows.Forms.TextBox textParameters;
         private System.Windows.Forms.Button buttonGoto;
+        private FluoriteAnalyzer.Forms.Controls.SnapshotPreview snapshotPreview;
 
     }
 }

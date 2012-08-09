@@ -21,25 +21,16 @@ namespace FluoriteAnalyzer.Analyses
 
             LogProvider = logProvider;
 
-            StrikeoutFont = new Font(richTextSourceCode.Font, FontStyle.Strikeout);
-
             SelectedEvent = null;
-
-
-            SuppressNoInitialSnapshotWarning = false;
         }
 
         private ILogProvider LogProvider { get; set; }
 
         private List<Event> FilteredEvents { get; set; }
 
-        private Font StrikeoutFont { get; set; }
-
         private ListViewItem SelectedListViewItem { get; set; }
         private Event SelectedEvent { get; set; }
 
-
-        private bool SuppressNoInitialSnapshotWarning { get; set; }
 
         private void treeEvents_AfterCheck(object sender, TreeViewEventArgs e)
         {
@@ -198,7 +189,7 @@ namespace FluoriteAnalyzer.Analyses
 
         private void DrawSnapshot()
         {
-            Utils.Utils.LockWindowUpdate(richTextSourceCode.Handle);
+            Utils.Utils.LockWindowUpdate(this.Handle);
             ReproduceSnapshot();
             Utils.Utils.LockWindowUpdate((IntPtr) 0);
         }
@@ -226,39 +217,20 @@ namespace FluoriteAnalyzer.Analyses
 
         private void ReproduceSnapshot()
         {
-            textCurrentFileName.Text = "";
-            richTextSourceCode.Text = "";
+            snapshotPreview.Clear();
 
-            if (listViewEvents.SelectedIndices.Count == 0)
-            {
-                // Nothing is selected. Just leave.
-                return;
-            }
+            if (listViewEvents.SelectedIndices.Count == 0) { return; }
 
             int selectedIndex = listViewEvents.SelectedIndices[0];
             ListViewItem item = listViewEvents.Items[selectedIndex];
             var selectedEvent = item.Tag as Event;
-            if (selectedEvent == null)
-            {
-                // Tag is not properly set. Leave.
-                return;
-            }
+            if (selectedEvent == null) { return; }
 
             // Do the calculation.
             SnapshotCalculator snapshotCalculator = new SnapshotCalculator(LogProvider);
             EntireSnapshot entireSnapshot = snapshotCalculator.CalculateSnapshotAtEvent(selectedEvent);
 
-            // Error handling.
-            if (entireSnapshot.CurrentFile == null) { return; }
-            FileSnapshot curSnapshot = entireSnapshot.FileSnapshots[entireSnapshot.CurrentFile];
-
-            if (curSnapshot.Content == null) { return; }
-
-            // Set the current file name
-            textCurrentFileName.Text = Path.GetFileName(entireSnapshot.CurrentFile);
-
-            // Display the content while the most recent change being highlighted.
-            curSnapshot.DisplayInRichTextBox(this.richTextSourceCode, StrikeoutFont);
+            snapshotPreview.SetSnapshot(entireSnapshot);
         }
 
         internal void SearchString(string str)
