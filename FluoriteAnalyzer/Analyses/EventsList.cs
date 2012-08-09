@@ -245,105 +245,38 @@ namespace FluoriteAnalyzer.Analyses
                 return;
             }
 
-            // Calculate from the beginning.
-            var files = new Dictionary<string, StringBuilder>();
-            IEnumerable<Event> docChangeEvents = LogProvider.LoggedEvents
-                .TakeUntil(x => x == selectedEvent)
-                .Where(x => ((x is FileOpenCommand && ((FileOpenCommand) x).FilePath != "null") || x is DocumentChange));
+            SnapshotCalculator snapshotCalculator = new SnapshotCalculator(LogProvider);
+            EntireSnapshot entireSnapshot = snapshotCalculator.CalculateSnapshotAtEvent(selectedEvent);
 
-            string currentFile = null;
-            DocumentChange lastDocChange = null;
-            foreach (Event docChangeEvent in docChangeEvents)
-            {
-                if (docChangeEvent is FileOpenCommand)
-                {
-                    var fileOpenCommand = (FileOpenCommand) docChangeEvent;
-                    currentFile = fileOpenCommand.FilePath;
-                    lastDocChange = null;
+            if (entireSnapshot.CurrentFile == null) { return; }
+            FileSnapshot curSnapshot = entireSnapshot.FileSnapshots[entireSnapshot.CurrentFile];
 
-                    if (!files.ContainsKey(currentFile))
-                    {
-                        // The first snapshot of this file is needed here.
-                        // If we don't have, show an error message and leave.
-                        if (fileOpenCommand.Snapshot == null)
-                        {
-                            if (!SuppressNoInitialSnapshotWarning)
-                            {
-                                MessageBox.Show(
-                                    "This log file does not have initial snapshots. Source code cannot be reproduced!",
-                                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                SuppressNoInitialSnapshotWarning = true;
-                            }
-
-                            files.Add(currentFile, null);
-                        }
-                        else
-                        {
-                            string snapshot = fileOpenCommand.Snapshot;
-                            //snapshot = snapshot.Replace("\r\n", "\n");
-                            files.Add(currentFile, new StringBuilder(snapshot));
-                        }
-                    }
-                    else if (fileOpenCommand.Snapshot != null)
-                    {
-                        string snapshot = fileOpenCommand.Snapshot;
-                        //snapshot = snapshot.Replace("\r\n", "\n");
-                        files[currentFile] = new StringBuilder(snapshot);
-                    }
-                }
-                else if (docChangeEvent is DocumentChange)
-                {
-                    if (currentFile == null)
-                    {
-                        MessageBox.Show(
-                            "Invalid log file. No FileOpenCommand before a DocumentChange event",
-                            "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    ApplyDocumentChange(files, currentFile, docChangeEvent);
-
-                    lastDocChange = (DocumentChange) docChangeEvent;
-                }
-            }
-
-            if (currentFile == null)
-            {
-                //MessageBox.Show(
-                //    "This log file does not have any FileOpenCommand.", "Error", MessageBoxButtons.OK,
-                //    MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (files[currentFile] == null)
-            {
-                return;
-            }
+            if (curSnapshot.Content == null) { return; }
 
             // Set the current file name
-            textCurrentFileName.Text = Path.GetFileName(currentFile);
+            textCurrentFileName.Text = Path.GetFileName(entireSnapshot.CurrentFile);
 
             int insertionOffset, insertionLength, deletionOffset;
-            string deletedText = GetOffsetAndLength(lastDocChange, out insertionOffset, out insertionLength, out deletionOffset);
+            string deletedText = GetOffsetAndLength(curSnapshot.LastChange, out insertionOffset, out insertionLength, out deletionOffset);
             int deletionLength = deletedText.Length;
 
-            string currentSourceCode = files[currentFile].ToString();
+            string currentSourceCode = curSnapshot.Content;
             currentSourceCode = currentSourceCode.Insert(deletionOffset, deletedText);
 
             // Set the text box content
             richTextSourceCode.Text = currentSourceCode;
 
             // Highlight the last change
-            HighlightLastChange(files, currentFile, lastDocChange, insertionOffset, insertionLength, deletionOffset, deletionLength);
+            HighlightLastChange(curSnapshot.Content, curSnapshot.LastChange, insertionOffset, insertionLength, deletionOffset, deletionLength);
         }
 
-        private void HighlightLastChange(Dictionary<string, StringBuilder> files, string currentFile, DocumentChange lastDocChange, int insertionOffset, int insertionLength, int deletionOffset, int deletionLength)
+        private void HighlightLastChange(string content, DocumentChange lastDocChange, int insertionOffset, int insertionLength, int deletionOffset, int deletionLength)
         {
             if (lastDocChange != null)
             {
                 // Stupid workaround due to the weird behavior of RichTextBox (it translates \r\n into \n automatically).
-                insertionOffset -= files[currentFile].ToString().Substring(0, insertionOffset).Count(x => x == '\r');
-                deletionOffset -= files[currentFile].ToString().Substring(0, deletionOffset).Count(x => x == '\r');
+                insertionOffset -= content.Substring(0, insertionOffset).Count(x => x == '\r');
+                deletionOffset -= content.Substring(0, deletionOffset).Count(x => x == '\r');
 
                 richTextSourceCode.Select(deletionOffset, deletionLength);
                 richTextSourceCode.SelectionFont = StrikeoutFont;
@@ -361,47 +294,6 @@ namespace FluoriteAnalyzer.Analyses
                     richTextSourceCode.Select(insertionOffset, 0);
                 }
                 richTextSourceCode.ScrollToCaret();
-            }
-        }
-
-        private void ApplyDocumentChange(Dictionary<string, StringBuilder> files, string currentFile, Event docChangeEvent)
-        {
-            StringBuilder builder = files[currentFile];
-            if (builder == null)
-            {
-                return;
-            }
-
-            if (docChangeEvent is Delete)
-            {
-                var delete = (Delete) docChangeEvent;
-                builder.Remove(delete.Offset, delete.Length);
-            }
-            else if (docChangeEvent is Insert)
-            {
-                var insert = (Insert) docChangeEvent;
-                builder.Insert(insert.Offset, insert.Text);
-            }
-            else if (docChangeEvent is Replace)
-            {
-                var replace = (Replace) docChangeEvent;
-                builder.Remove(replace.Offset, replace.Length);
-                builder.Insert(replace.Offset, replace.InsertedText);
-            }
-            else if (docChangeEvent is Move)
-            {
-                var move = (Move) docChangeEvent;
-
-                if (files.ContainsKey(move.DeletedFrom) == false ||
-                    files.ContainsKey(move.InsertedTo) == false ||
-                    files[move.DeletedFrom] == null ||
-                    files[move.InsertedTo] == null)
-                {
-                    return;
-                }
-
-                files[move.DeletedFrom].Remove(move.Offset, move.Length);
-                files[move.InsertedTo].Insert(move.InsertionOffset, move.InsertedText);
             }
         }
 

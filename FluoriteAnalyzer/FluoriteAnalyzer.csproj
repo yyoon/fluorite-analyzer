@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\FileSnapshot.cs" />
     <Compile Include="Common\LogProvider.cs" />
     <Compile Include="Analyses\Patterns.cs">
       <SubType>UserControl</SubType>
@@ -72,6 +73,8 @@
     <Compile Include="Analyses\Patterns.Designer.cs">
       <DependentUpon>Patterns.cs</DependentUpon>
     </Compile>
+    <Compile Include="Common\EntireSnapshot.cs" />
+    <Compile Include="Common\SnapshotCalculator.cs" />
     <Compile Include="Events\Move.cs" />
     <Compile Include="Forms\AdjustTimeForm.cs">
       <SubType>Form</SubType>
