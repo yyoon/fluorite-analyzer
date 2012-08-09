@@ -33,7 +33,7 @@ namespace FluoriteAnalyzerTestProject
                     // Try ILogProvider. All the analysis panels use this constructor.
                     else
                     {
-                        constructor = type.GetConstructor(new Type[] { typeof(FluoriteAnalyzer.Analyses.ILogProvider) });
+                        constructor = type.GetConstructor(new Type[] { typeof(FluoriteAnalyzer.Common.ILogProvider) });
                         if (constructor != null)
                             container = constructor.Invoke(new object[] { null }) as ContainerControl;
                     }
