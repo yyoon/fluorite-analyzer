@@ -37,11 +37,44 @@ namespace FluoriteAnalyzer.PatternDetectors
             return _instance ?? (_instance = new OperationConflictDetector());
         }
 
+        // IComparer
+        private class OperationConflictPatternComparer : IComparer<OperationConflictPatternInstance>
+        {
+            public int Compare(OperationConflictPatternInstance x, OperationConflictPatternInstance y)
+            {
+                List<string> typeOrder = new string[]{
+                    "II", "DI", "RI", "MI",
+                    "ID", "DD", "RD", "MD",
+                    "IR", "DR", "RR", "MR",
+                    "IM", "DM", "RM", "MM"
+                }.ToList();
+
+                int tempResult;
+
+                // Conflict Type
+                tempResult = typeOrder.IndexOf(x.ConflictType.Substring(0, 2)).CompareTo(typeOrder.IndexOf(y.ConflictType.Substring(0, 2)));
+                if (tempResult != 0) { return tempResult; }
+
+                tempResult = x.ConflictType.CompareTo(y.ConflictType);
+                if (tempResult != 0) { return tempResult; }
+
+                // ID Dist.
+                tempResult = (x.After.ID - x.Before.ID).CompareTo(y.After.ID - y.Before.ID);
+                if (tempResult != 0) { return tempResult * -1; }
+
+                // Second ID
+                tempResult = x.After.ID.CompareTo(y.After.ID);
+                if (tempResult != 0) { return tempResult; }
+
+                return 0;
+            }
+        }
+
         public override IEnumerable<ListViewItem> DetectAsListViewItems(ILogProvider logProvider)
         {
             return DetectAsPatternInstances(logProvider)
                 .Cast<OperationConflictPatternInstance>()
-                .OrderBy(x => x.ConflictType)
+                .OrderBy(x => x, new OperationConflictPatternComparer())
                 .Select(x => new ListViewItem(new string[] {
                     x.PrimaryEvent.ID.ToString(),
                     x.PatternLength.ToString(),
