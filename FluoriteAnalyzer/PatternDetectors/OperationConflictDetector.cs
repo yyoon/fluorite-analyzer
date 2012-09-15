@@ -410,7 +410,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 oldChange.Offset -= newChange.Length;
             }
             // CONFLICTING CASE!!
-            else if (NS <= IS && IS < NE && NE < IE)
+            else if (NS < IS && IS < NE && NE < IE)
             {
                 AddPatternInstance(oldChange, newChange, "ID-01");
             }
@@ -420,14 +420,14 @@ namespace FluoriteAnalyzer.PatternDetectors
                 AddPatternInstance(oldChange, newChange, "ID-02");
             }
             // Trivial case
-            // CONFLICTING CASE!!
-            else if (IS < NS && NE < IE)
+            else if (IS <= NS && NE <= IE)
             {
-                //oldChange.Length -= newChange.Length;
-                AddPatternInstance(oldChange, newChange, "ID-025");
+                oldChange.Text = oldChange.Text.Substring(0, NS - IS) + oldChange.Text.Substring(NE - IS, IE - NE);
+                oldChange.Length -= newChange.Length;
+                //AddPatternInstance(oldChange, newChange, "ID-025");
             }
             // CONFLICTING CASE!!
-            else if (IS < NS && NS < IE && IE <= NE)
+            else if (IS < NS && NS < IE && IE < NE)
             {
                 AddPatternInstance(oldChange, newChange, "ID-03");
             }
@@ -483,7 +483,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 oldChange.Offset -= newChange.Length;
             }
             // CONFLICTING CASE!!
-            else if (NS <= RS && RS < NE && NE < RE)
+            else if (NS < RS && RS < NE && NE < RE)
             {
                 AddPatternInstance(oldChange, newChange, "RD-01");
             }
@@ -493,12 +493,12 @@ namespace FluoriteAnalyzer.PatternDetectors
                 AddPatternInstance(oldChange, newChange, "RD-02");
             }
             // CONFLICTING CASE!!
-            else if (RS < NS && NE < RE)
+            else if (RS <= NS && NE <= RE)
             {
                 AddPatternInstance(oldChange, newChange, "RD-03");
             }
             // CONFLICTING CASE!!
-            else if (RS < NS && NS < RE && RE <= NE)
+            else if (RS < NS && NS < RE && RE < NE)
             {
                 AddPatternInstance(oldChange, newChange, "RD-04");
             }
@@ -766,7 +766,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 oldChange.Offset += newChange.LengthDiff;
             }
             // CONFLICTING CASE!!
-            else if (NS <= IS && IS < NE && NE <= IE)
+            else if (NS < IS && IS < NE && NE < IE)
             {
                 AddPatternInstance(oldChange, newChange, "IR-01");
             }
@@ -776,13 +776,14 @@ namespace FluoriteAnalyzer.PatternDetectors
                 AddPatternInstance(oldChange, newChange, "IR-02");
             }
             // Trivial case
-            else if (IS < NS && NE < IE)
+            else if (IS <= NS && NE <= IE)
             {
-                //oldChange.Length += newChange.LengthDiff;
-                AddPatternInstance(oldChange, newChange, "IR-025");
+                oldChange.Text = oldChange.Text.Substring(0, NS - IS) + newChange.InsertedText + oldChange.Text.Substring(NE - IS, IE - NE);
+                oldChange.Length += newChange.LengthDiff;
+                //AddPatternInstance(oldChange, newChange, "IR-025");
             }
             // CONFLICTING CASE!!
-            else if (IS < NS && NS < IE && IE <= NE)
+            else if (IS < NS && NS < IE && IE < NE)
             {
                 AddPatternInstance(oldChange, newChange, "IR-03");
             }
@@ -839,7 +840,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 oldChange.Offset += newChange.LengthDiff;
             }
             // CONFLICTING CASE!!
-            else if (NS <= RS && RS < NE && NE < RE)
+            else if (NS < RS && RS < NE && NE < RE)
             {
                 AddPatternInstance(oldChange, newChange, "RR-01");
             }
@@ -849,12 +850,12 @@ namespace FluoriteAnalyzer.PatternDetectors
                 AddPatternInstance(oldChange, newChange, "RR-02");
             }
             // CONFLICTING CASE!!
-            else if (RS < NS && NE < RE)
+            else if (RS <= NS && NE <= RE)
             {
                 AddPatternInstance(oldChange, newChange, "RR-03");
             }
             // CONFLICTING CASE!!
-            else if (RS < NS && NS < RE && RE <= NE)
+            else if (RS < NS && NS < RE && RE < NE)
             {
                 AddPatternInstance(oldChange, newChange, "RR-04");
             }
@@ -2338,16 +2339,48 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void AddPatternInstance(DocumentChange oldChange, DocumentChange newChange, string conflictType)
         {
-            var patternInstance = new OperationConflictPatternInstance(
-                oldChange, 2,
-                string.Format("Type: {4}, {0}({1}) -> {2}({3})", oldChange.GetType().Name[0], oldChange.ID, newChange.GetType().Name[0], newChange.ID, conflictType),
-                oldChange, newChange, conflictType);
+            if (!IsWhitespaceEdit(oldChange) && !IsWhitespaceEdit(newChange))
+            {
+                var patternInstance = new OperationConflictPatternInstance(
+                    oldChange, 2,
+                    string.Format("{4}, {0}({1}) -> {2}({3})", oldChange.GetType().Name[0], oldChange.ID, newChange.GetType().Name[0], newChange.ID, conflictType),
+                    oldChange, newChange, conflictType);
 
-            patternInstance.AddInvolvingEvent(string.Format("Jump to the 1st {0}({1})", oldChange.GetType().Name, oldChange.ID), oldChange.ID);
-            patternInstance.AddInvolvingEvent(string.Format("Jump to the 2nd {0}({1})", newChange.GetType().Name, newChange.ID), newChange.ID);
+                patternInstance.AddInvolvingEvent(string.Format("Jump to the 1st {0}({1})", oldChange.GetType().Name, oldChange.ID), oldChange.ID);
+                patternInstance.AddInvolvingEvent(string.Format("Jump to the 2nd {0}({1})", newChange.GetType().Name, newChange.ID), newChange.ID);
 
-            DetectedPatterns.Add(patternInstance);
+                DetectedPatterns.Add(patternInstance);
+            }
+
             ConflictedChanges.Add(oldChange);
+        }
+
+        private bool IsWhitespaceEdit(DocumentChange docChange)
+        {
+            if (docChange is Insert)
+            {
+                Insert insert = (Insert)docChange;
+                return string.IsNullOrWhiteSpace(insert.Text);
+            }
+            else if (docChange is Delete)
+            {
+                Delete delete = (Delete)docChange;
+                return string.IsNullOrWhiteSpace(delete.Text);
+            }
+            else if (docChange is Replace)
+            {
+                Replace replace = (Replace)docChange;
+                return string.IsNullOrWhiteSpace(replace.DeletedText) &&
+                    string.IsNullOrWhiteSpace(replace.InsertedText);
+            }
+            else if (docChange is Move)
+            {
+                Move move = (Move)docChange;
+                return string.IsNullOrWhiteSpace(move.DeletedText) &&
+                    string.IsNullOrWhiteSpace(move.InsertedText);
+            }
+            
+            return false;
         }
     }
 }

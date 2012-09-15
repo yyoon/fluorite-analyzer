@@ -52,7 +52,7 @@ namespace FluoriteAnalyzer.Commons
 
                 richText.Select(deletionOffset, deletedText.Length - deletedText.Count(x => x == '\r'));
                 richText.SelectionFont = strikeoutFont;
-                richText.SelectionBackColor = Color.Pink;
+                richText.SelectionBackColor = Color.LightGray;
             }
 
             if (insertionOffset != -1)

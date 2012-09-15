@@ -104,9 +104,19 @@ namespace FluoriteAnalyzer.Forms
                 Delete delete = documentChanges[startIndex + 0] as Delete;
                 Insert insert = documentChanges[startIndex + 1] as Insert;
 
-                // Transform Insert -> Move and then remove Delete.
-                SetMoveElement(xmlDoc, pattern, delete, insert);
-                xmlDoc.DocumentElement.RemoveChild(Event.FindCorrespondingXmlElementFromXmlDocument(xmlDoc, delete));
+                // Same file, same place
+                if (pattern.FromFile == pattern.ToFile && delete.Offset == insert.Offset)
+                {
+                    // Just cancel them out.
+                    xmlDoc.DocumentElement.RemoveChild(Event.FindCorrespondingXmlElementFromXmlDocument(xmlDoc, delete));
+                    xmlDoc.DocumentElement.RemoveChild(Event.FindCorrespondingXmlElementFromXmlDocument(xmlDoc, insert));
+                }
+                else
+                {
+                    // Transform Insert -> Move and then remove Delete.
+                    SetMoveElement(xmlDoc, pattern, delete, insert);
+                    xmlDoc.DocumentElement.RemoveChild(Event.FindCorrespondingXmlElementFromXmlDocument(xmlDoc, delete));
+                }
             }
 
             string newPath = Path.Combine(fileInfo.DirectoryName,

@@ -121,5 +121,55 @@ namespace FluoriteAnalyzer.Analyses
 
             DetectPattern(patternDetector);
         }
+
+        private void splitContainer2_DoubleClick(object sender, EventArgs e)
+        {
+            // This one is fired only when the splitter area is double-clicked.
+            splitContainer2.SplitterDistance = (splitContainer2.Height - 4) / 2;
+        }
+
+        private void listViewPatterns_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ListViewItem selectedListViewItem = null;
+            PatternInstance selectedPatternInstance = null;
+
+            Utils.Utils.LockWindowUpdate(this.Handle);
+
+            if (listViewPatterns.SelectedIndices.Count > 0)
+            {
+                selectedListViewItem = listViewPatterns.Items[listViewPatterns.SelectedIndices[0]];
+                selectedPatternInstance = selectedListViewItem.Tag as PatternInstance;
+
+                if (selectedPatternInstance is OperationConflictPatternInstance)
+                {
+                    OperationConflictPatternInstance ocpi = (OperationConflictPatternInstance)selectedPatternInstance;
+
+                    SnapshotCalculator snapshotCalculator = new SnapshotCalculator(LogProvider);
+                    snapshotPreview1.SetSnapshot(snapshotCalculator.CalculateSnapshotAtID(ocpi.Before.ID));
+                    snapshotPreview2.SetSnapshot(snapshotCalculator.CalculateSnapshotAtID(ocpi.After.ID));
+                }
+            }
+            else
+            {
+                snapshotPreview1.Clear();
+                snapshotPreview2.Clear();
+            }
+
+            Utils.Utils.LockWindowUpdate((IntPtr)0);
+        }
+
+        private void listViewPatterns_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.C && (e.Modifiers & Keys.Control) == Keys.Control)
+            {
+                if (listViewPatterns.SelectedIndices.Count == 1)
+                {
+                    PatternInstance patternInst = listViewPatterns.Items[
+                        listViewPatterns.SelectedIndices[0]].Tag as PatternInstance;
+
+                    patternInst.CopyToClipboard();
+                }
+            }
+        }
     }
 }

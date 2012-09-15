@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
+using FluoriteAnalyzer.Commons;
 
 namespace FluoriteAnalyzer.Events
 {
@@ -51,6 +52,8 @@ namespace FluoriteAnalyzer.Events
         public int RepeatCount { get; private set; }
 
         public abstract EventType EventType { get; }
+
+        public string LogFilePath { get; internal set; }
 
         public virtual string TypeOrCommandString
         {

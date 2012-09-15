@@ -10,10 +10,10 @@ namespace FluoriteAnalyzer.Commons
 {
     class LogProvider : ILogProvider
     {
-        public long? TimeDiff { get; set; }
-
         public string LogPath { get; private set; }
         public List<Event> LoggedEvents { get; private set; }
+
+        public long? TimeDiff { get; set; }
 
         public void OpenLog(string filePath)
         {
@@ -114,6 +114,11 @@ namespace FluoriteAnalyzer.Commons
             {
                 LoggedEvents =
                     events.ChildNodes.OfType<XmlElement>().Select(x => Event.CreateEventFromXmlElement(x)).ToList();
+
+                foreach (Event anEvent in LoggedEvents)
+                {
+                    anEvent.LogFilePath = logPath;
+                }
             }
             catch (Exception e)
             {

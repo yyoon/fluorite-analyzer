@@ -16,6 +16,18 @@ namespace FluoriteAnalyzer.Commons
 
         public ILogProvider LogProvider { get; private set; }
 
+        public EntireSnapshot CalculateSnapshotAtID(int id)
+        {
+            // Make sure that the given id is valid.
+            Event anEvent = LogProvider.LoggedEvents.FirstOrDefault(x => x.ID == id);
+            if (anEvent != null)
+            {
+                return CalculateSnapshotAtEvent(anEvent);
+            }
+
+            return new EntireSnapshot();
+        }
+
         public EntireSnapshot CalculateSnapshotAtEvent(Event anEvent)
         {
             EntireSnapshot result = new EntireSnapshot();

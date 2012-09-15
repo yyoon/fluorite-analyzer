@@ -51,5 +51,10 @@ namespace FluoriteAnalyzer.PatternDetectors
                 return _involvingEvents;
             }
         }
+
+        public virtual void CopyToClipboard()
+        {
+            // Do nothing here.
+        }
     }
 }
