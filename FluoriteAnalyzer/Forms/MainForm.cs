@@ -10,6 +10,7 @@ using FluoriteAnalyzer.Commons;
 using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.Properties;
 using FluoriteAnalyzer.Utils;
+using System.Text;
 
 namespace FluoriteAnalyzer.Forms
 {
@@ -41,6 +42,7 @@ namespace FluoriteAnalyzer.Forms
         private void MainForm_Load(object sender, EventArgs e)
         {
             RecentFiles.Load();
+            Profiles.Load();
         }
 
         private void openLogToolStripMenuItem_Click(object sender, EventArgs e)
@@ -304,6 +306,56 @@ namespace FluoriteAnalyzer.Forms
             log.Save(saveFileName);
         }
 
+        private void logClosingFixToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var folderBrowser = new FolderBrowserDialog();
+            folderBrowser.SelectedPath = Profiles.GetInstance().LastLogClosingFixPath;
+            DialogResult result = folderBrowser.ShowDialog();
+
+            if (result == DialogResult.Cancel) { return; }
+
+            var dinfo = new DirectoryInfo(folderBrowser.SelectedPath);
+            var files = dinfo.GetFiles("*.xml");
+
+            foreach (var file in files)
+            {
+                LogProvider logProvider = new LogProvider();
+
+                bool exceptionThrown = false;
+
+                try
+                {
+                    logProvider.OpenLog(file.FullName);
+                }
+                catch (XmlException xe)
+                {
+                    exceptionThrown = true;
+                }
+
+                if (!exceptionThrown) { continue; }
+
+                // Do the fix.
+                string fileContent = null;
+                using (StreamReader reader = new StreamReader(file.FullName, Encoding.Default))
+                {
+                    fileContent = reader.ReadToEnd();
+                }
+
+                if (fileContent != null)
+                {
+                    using (StreamWriter writer = new StreamWriter(file.FullName, false, Encoding.Default))
+                    {
+                        writer.Write(fileContent);
+                        writer.WriteLine("</Events>");
+                    }
+                }
+            }
+
+            // Save the last selected path.
+            Profiles.GetInstance().LastLogClosingFixPath = folderBrowser.SelectedPath;
+            Profiles.Save();
+        }
+
         private void adjustTimeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var atForm = new AdjustTimeForm();
@@ -380,6 +432,7 @@ namespace FluoriteAnalyzer.Forms
         {
             SaveCustomGroups();
             RecentFiles.Save();
+            Profiles.Save();
         }
 
         private void fileToolStripMenuItem_DropDownOpening(object sender, EventArgs e)

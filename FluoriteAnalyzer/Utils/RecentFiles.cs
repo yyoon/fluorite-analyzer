@@ -22,7 +22,7 @@ namespace FluoriteAnalyzer.Utils
                                       "FluoriteAnalyzer");
         }
 
-        public RecentFiles()
+        private RecentFiles()
         {
             _list = new List<string>();
         }
