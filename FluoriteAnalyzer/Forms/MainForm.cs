@@ -327,7 +327,7 @@ namespace FluoriteAnalyzer.Forms
                 {
                     logProvider.OpenLog(file.FullName);
                 }
-                catch (XmlException xe)
+                catch (XmlException)
                 {
                     exceptionThrown = true;
                 }
