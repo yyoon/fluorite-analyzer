@@ -428,6 +428,12 @@ namespace FluoriteAnalyzer.Forms
             extractor.ShowDialog(this);
         }
 
+        private void countEditedFilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CountEditedFiles countFiles = new CountEditedFiles();
+            countFiles.ShowDialog(this);
+        }
+
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             SaveCustomGroups();

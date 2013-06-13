@@ -38,6 +38,7 @@
             this.logMergerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fixInsertStringCommandRepeatCountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateFixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logClosingFixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adjustTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extractAnnotationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeTyposToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,7 +56,7 @@
             this.toolStripButtonLogMerger = new System.Windows.Forms.ToolStripButton();
             this.toolStripTextSearch = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.logClosingFixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.countEditedFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.toolMain.SuspendLayout();
             this.SuspendLayout();
@@ -123,7 +124,8 @@
             this.removeTyposToolStripMenuItem,
             this.detectMovesToolStripMenuItem,
             this.calculateActiveWorkingTimeToolStripMenuItem,
-            this.extractOperationConflictsToolStripMenuItem});
+            this.extractOperationConflictsToolStripMenuItem,
+            this.countEditedFilesToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "&Tools";
@@ -150,6 +152,13 @@
             this.duplicateFixToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
             this.duplicateFixToolStripMenuItem.Text = "&Duplicate Fix";
             this.duplicateFixToolStripMenuItem.Click += new System.EventHandler(this.duplicateFixToolStripMenuItem_Click);
+            // 
+            // logClosingFixToolStripMenuItem
+            // 
+            this.logClosingFixToolStripMenuItem.Name = "logClosingFixToolStripMenuItem";
+            this.logClosingFixToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.logClosingFixToolStripMenuItem.Text = "Log Closing Fix";
+            this.logClosingFixToolStripMenuItem.Click += new System.EventHandler(this.logClosingFixToolStripMenuItem_Click);
             // 
             // adjustTimeToolStripMenuItem
             // 
@@ -286,12 +295,12 @@
             this.toolStripLabel1.Size = new System.Drawing.Size(45, 22);
             this.toolStripLabel1.Text = "Search:";
             // 
-            // logClosingFixToolStripMenuItem
+            // countEditedFilesToolStripMenuItem
             // 
-            this.logClosingFixToolStripMenuItem.Name = "logClosingFixToolStripMenuItem";
-            this.logClosingFixToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
-            this.logClosingFixToolStripMenuItem.Text = "Log Closing Fix";
-            this.logClosingFixToolStripMenuItem.Click += new System.EventHandler(this.logClosingFixToolStripMenuItem_Click);
+            this.countEditedFilesToolStripMenuItem.Name = "countEditedFilesToolStripMenuItem";
+            this.countEditedFilesToolStripMenuItem.Size = new System.Drawing.Size(237, 22);
+            this.countEditedFilesToolStripMenuItem.Text = "Count Edited Files";
+            this.countEditedFilesToolStripMenuItem.Click += new System.EventHandler(this.countEditedFilesToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -346,6 +355,7 @@
         private System.Windows.Forms.ToolStripMenuItem calculateActiveWorkingTimeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem extractOperationConflictsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logClosingFixToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem countEditedFilesToolStripMenuItem;
     }
 }
 
