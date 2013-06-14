@@ -9,7 +9,7 @@
     <ProjectGuid>{0760F5B9-EF1E-45F1-9307-4F7F70EC1EE7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluoriteAnalyzerTestProject</RootNamespace>
+    <RootNamespace>FluoriteAnalyzer</RootNamespace>
     <AssemblyName>FluoriteAnalyzerTestProject</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -52,6 +52,7 @@
     <Compile Include="Pipelines\BaseFilterTest.cs" />
     <Compile Include="Pipelines\MergeFilterTest.cs" />
     <Compile Include="Pipelines\RemoveTyposFilterTest.cs" />
+    <Compile Include="Pipelines\DetectMovesFilterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

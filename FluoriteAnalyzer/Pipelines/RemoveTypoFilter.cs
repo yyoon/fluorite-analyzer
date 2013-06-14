@@ -79,7 +79,7 @@ namespace FluoriteAnalyzer.Pipelines
             }
 
             string newPath = Path.Combine(fileInfo.DirectoryName,
-                Path.GetFileNameWithoutExtension(fileInfo.Name) + _settings.Postfix + fileInfo.Extension);
+                _settings.Prefix + Path.GetFileNameWithoutExtension(fileInfo.Name) + _settings.Postfix + fileInfo.Extension);
 
             xmlDoc.Save(newPath);
 

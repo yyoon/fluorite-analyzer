@@ -210,6 +210,7 @@
     <Compile Include="PatternDetectors\ParameterTuningDetector.cs" />
     <Compile Include="PatternDetectors\TypoCorrectionDetector.cs" />
     <Compile Include="Pipelines\BasePipelineFilter.cs" />
+    <Compile Include="Pipelines\DetectMovesFilter.cs" />
     <Compile Include="Pipelines\IPipelineFilter.cs" />
     <Compile Include="Pipelines\MergeFilter.cs" />
     <Compile Include="Pipelines\MissingParameterException.cs" />
