@@ -49,8 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainTest.cs" />
+    <Compile Include="Pipelines\BaseFilterTest.cs" />
     <Compile Include="Pipelines\MergeFilterTest.cs" />
-    <Compile Include="Pipelines\RemoveTyposTest.cs" />
+    <Compile Include="Pipelines\RemoveTyposFilterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

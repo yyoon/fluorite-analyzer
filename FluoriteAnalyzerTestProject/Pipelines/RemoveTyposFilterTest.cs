@@ -5,19 +5,19 @@ using System.IO;
 namespace FluoriteAnalyzer.Pipelines
 {
     [TestClass]
-    public class RemoveTyposTest
+    public class RemoveTyposFilterTest : BaseFilterTest
     {
         [TestMethod]
         public void BasicTest()
         {
-            string path = @"Data\RemoveTyposFilterTest\BasicTest\";
+            string path = GetDataPath();
             string postfix = "_TyposRemoved";
 
             RemoveTyposFilter filter = new RemoveTyposFilter("", postfix);
 
-            filter.Compute(new FileInfo(path + "test.xml"));
+            filter.Compute(new FileInfo(Path.Combine(path, "test.xml")));
 
-            string filepath = path + "test" + postfix + ".xml";
+            string filepath = Path.Combine(path, "test" + postfix + ".xml");
             Assert.IsTrue(new FileInfo(filepath).Exists);
 
             using (StreamReader reader1 = new StreamReader(filepath))
@@ -28,6 +28,10 @@ namespace FluoriteAnalyzer.Pipelines
                     Assert.AreEqual(reader1.ReadToEnd(), reader2.ReadToEnd());
                 }
             }
+
+            // Delete the output file.
+            new FileInfo(filepath).Delete();
+            Assert.IsFalse(new FileInfo(filepath).Exists);
         }
     }
 }

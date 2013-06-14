@@ -5,20 +5,20 @@ using System.IO;
 namespace FluoriteAnalyzer.Pipelines
 {
     [TestClass]
-    public class MergeFilterTest
+    public class MergeFilterTest : BaseFilterTest
     {
         [TestMethod]
         public void BasicTest()
         {
-            string path = @"Data\MergeFilterTest\BasicTest\";
+            string path = GetDataPath();
             string dirname = "test";
             string postfix = "_Merged";
 
             MergeFilter filter = new MergeFilter("", postfix, "");
 
-            filter.Compute(new DirectoryInfo(path + dirname));
+            filter.Compute(new DirectoryInfo(Path.Combine(path, dirname)));
 
-            string filepath = path + dirname + postfix + ".xml";
+            string filepath = Path.Combine(path, dirname + postfix + ".xml");
             Assert.IsTrue(new FileInfo(filepath).Exists);
 
             using (StreamReader reader1 = new StreamReader(filepath))
