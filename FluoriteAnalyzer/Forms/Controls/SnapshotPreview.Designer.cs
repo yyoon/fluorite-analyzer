@@ -42,8 +42,7 @@
             // 
             // SnapshotPreview
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.Controls.Add(this.tabControl);
             this.Name = "SnapshotPreview";
             this.Size = new System.Drawing.Size(500, 500);
