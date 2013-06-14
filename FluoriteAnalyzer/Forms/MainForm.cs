@@ -11,6 +11,7 @@ using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.Properties;
 using FluoriteAnalyzer.Utils;
 using System.Text;
+using FluoriteAnalyzer.Pipelines;
 
 namespace FluoriteAnalyzer.Forms
 {
@@ -432,6 +433,28 @@ namespace FluoriteAnalyzer.Forms
         {
             CountEditedFiles countFiles = new CountEditedFiles();
             countFiles.ShowDialog(this);
+        }
+
+        private void performPipelinedAnalysisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var folderBrowser = new FolderBrowserDialog();
+            folderBrowser.SelectedPath = Profiles.GetInstance().LastPipelineAnalysisPath;
+            DialogResult result = folderBrowser.ShowDialog();
+
+            if (result == DialogResult.Cancel) { return; }
+
+            var dinfo = new DirectoryInfo(folderBrowser.SelectedPath);
+            var dirs = dinfo.GetDirectories("p*", SearchOption.TopDirectoryOnly);
+
+            dirs.AsParallel()
+                .Select(new MergeFilter().Compute)
+                .Select(new RemoveTyposFilter().Compute)
+                .Select(new DetectMovesFilter().Compute)
+                .ToList();
+
+            // Save the last selected path.
+            Profiles.GetInstance().LastPipelineAnalysisPath = folderBrowser.SelectedPath;
+            Profiles.Save();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)

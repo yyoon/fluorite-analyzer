@@ -16,6 +16,7 @@ namespace FluoriteAnalyzer.Utils
         private static readonly string FILE_NAME = "Profiles.xml";
 
         public string LastLogClosingFixPath;
+        public string LastPipelineAnalysisPath;
 
         static Profiles()
         {
