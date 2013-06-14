@@ -45,20 +45,27 @@ namespace FluoriteAnalyzer.Pipelines
 
         public override FileInfo Compute(DirectoryInfo input)
         {
-            // Get all the file infos.
-            List<FileInfo> fileInfos = input.EnumerateFiles("*.xml").ToList();
+            try
+            {
+                // Get all the file infos.
+                List<FileInfo> fileInfos = input.EnumerateFiles("*.xml").ToList();
 
-            // Next, determine the mergedFilePath.
-            string outputFolder = string.IsNullOrWhiteSpace(_settings.OutputFolder)
-                ? Path.Combine(input.FullName, "..")
-                : _settings.OutputFolder;
+                // Next, determine the mergedFilePath.
+                string outputFolder = string.IsNullOrWhiteSpace(_settings.OutputFolder)
+                    ? Path.Combine(input.FullName, "..")
+                    : _settings.OutputFolder;
 
-            string mergedFilePath = Path.Combine(outputFolder, _settings.Prefix + input.Name + _settings.Postfix + ".xml");
+                string mergedFilePath = Path.Combine(outputFolder, _settings.Prefix + input.Name + _settings.Postfix + ".xml");
 
-            // Call the merge method.
-            Merge(fileInfos, mergedFilePath);
+                // Call the merge method.
+                Merge(fileInfos, mergedFilePath);
 
-            return new FileInfo(mergedFilePath);
+                return new FileInfo(mergedFilePath);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("MergeFilter: Exception thrown while processing \"" + input.FullName + "\"", e);
+            }
         }
 
         private void Merge(List<FileInfo> fileInfos, string mergedFilePath)

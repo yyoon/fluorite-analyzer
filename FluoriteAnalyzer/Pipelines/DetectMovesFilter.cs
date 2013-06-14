@@ -44,7 +44,15 @@ namespace FluoriteAnalyzer.Pipelines
 
         public override FileInfo Compute(FileInfo input)
         {
-            return DetectMovesFromFile(input);
+            try
+            {
+
+                return DetectMovesFromFile(input);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("DetectMovesFilter: Exception thrown while processing \"" + input.FullName + "\"", e);
+            }
         }
 
         private FileInfo DetectMovesFromFile(FileInfo fileInfo)

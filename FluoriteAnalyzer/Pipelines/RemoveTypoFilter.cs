@@ -44,7 +44,14 @@ namespace FluoriteAnalyzer.Pipelines
 
         public override FileInfo Compute(FileInfo input)
         {
-            return RemoveTyposFromFile(input);
+            try
+            {
+                return RemoveTyposFromFile(input);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("RemoveTyposFilter: Exception thrown while processing \"" + input.FullName + "\"", e);
+            }
         }
 
         private FileInfo RemoveTyposFromFile(FileInfo fileInfo)
