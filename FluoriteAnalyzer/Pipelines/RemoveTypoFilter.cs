@@ -56,6 +56,10 @@ namespace FluoriteAnalyzer.Pipelines
 
         private FileInfo RemoveTyposFromFile(FileInfo fileInfo)
         {
+            AppendResult(fileInfo.DirectoryName, fileInfo.Name,
+                "=========================================" + Environment.NewLine + 
+                "Remove Typos Start: " + DateTime.Now.ToString());
+
             LogProvider provider = new LogProvider();
             provider.OpenLog(fileInfo.FullName);
 
@@ -89,6 +93,9 @@ namespace FluoriteAnalyzer.Pipelines
                 _settings.Prefix + Path.GetFileNameWithoutExtension(fileInfo.Name) + _settings.Postfix + fileInfo.Extension);
 
             xmlDoc.Save(newPath);
+
+            AppendResult(fileInfo.DirectoryName, fileInfo.Name,
+                string.Format("{0} typo corrections have been removed" + Environment.NewLine, patterns.Count()));
 
             return new FileInfo(newPath);
         }

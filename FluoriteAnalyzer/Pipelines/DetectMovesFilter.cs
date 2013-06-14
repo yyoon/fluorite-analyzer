@@ -46,7 +46,6 @@ namespace FluoriteAnalyzer.Pipelines
         {
             try
             {
-
                 return DetectMovesFromFile(input);
             }
             catch (Exception e)
@@ -57,6 +56,10 @@ namespace FluoriteAnalyzer.Pipelines
 
         private FileInfo DetectMovesFromFile(FileInfo fileInfo)
         {
+            AppendResult(fileInfo.DirectoryName, fileInfo.Name,
+                "=========================================" + Environment.NewLine +
+                "Detect Moves Start: " + DateTime.Now.ToString());
+
             LogProvider provider = new LogProvider();
             provider.OpenLog(fileInfo.FullName);
 
@@ -94,6 +97,9 @@ namespace FluoriteAnalyzer.Pipelines
                 _settings.Prefix + Path.GetFileNameWithoutExtension(fileInfo.Name) + _settings.Postfix + fileInfo.Extension);
 
             xmlDoc.Save(newPath);
+
+            AppendResult(fileInfo.DirectoryName, fileInfo.Name,
+                string.Format("{0} moves have been detected and written in the log" + Environment.NewLine, patterns.Count()));
 
             return new FileInfo(newPath);
         }

@@ -47,6 +47,10 @@ namespace FluoriteAnalyzer.Pipelines
         {
             try
             {
+                AppendResult(Path.Combine(input.FullName, ".."), input.Name,
+                    "=========================================" + Environment.NewLine + 
+                    "Merge Start: " + DateTime.Now.ToString());
+
                 // Get all the file infos.
                 List<FileInfo> fileInfos = input.EnumerateFiles("*.xml").ToList();
 
@@ -59,6 +63,9 @@ namespace FluoriteAnalyzer.Pipelines
 
                 // Call the merge method.
                 Merge(fileInfos, mergedFilePath);
+
+                AppendResult(Path.Combine(input.FullName, ".."), input.Name,
+                    "Merge End: " + DateTime.Now.ToString() + Environment.NewLine);
 
                 return new FileInfo(mergedFilePath);
             }
