@@ -1,0 +1,44 @@
+<Events startTimestamp="1371177580973" logVersion="0.7.0.qualifier">
+  <Command __id="0" _type="FileOpenCommand" docASTNodeCount="36" docActiveCodeLength="270" docExpressionCount="22" docLength="270" projectName="HelloSwing" timestamp="27">
+    <snapshot><![CDATA[package helloswing;
+
+import java.awt.Label;
+
+import javax.swing.JFrame;
+
+public class AboutFrame extends JFrame {
+
+	public AboutFrame() {
+		super();
+		
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		add(new Label("This is the about dialog!!"));
+	}
+}
+]]></snapshot>
+    <filePath><![CDATA[D:\Programming\RuntimeWorkspaces\runtime-Azurite\HelloSwing\src\helloswing\AboutFrame.java]]></filePath>
+  </Command>
+  <Command __id="1" _type="MoveCaretCommand" caretOffset="0" docOffset="0" timestamp="324" />
+  <Command __id="2" _type="MoveCaretCommand" caretOffset="240" docOffset="270" timestamp="4870" />
+  <Command __id="3" _type="MoveCaretCommand" caretOffset="178" docOffset="208" timestamp="5653" />
+  <Command __id="4" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.LINE_UP" repeat="6" timestamp="6697" timestamp2="7362" />
+  <Command __id="10" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.LINE_DOWN" timestamp="7938" />
+  <Command __id="11" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.wordPrevious" repeat="5" timestamp="9005" timestamp2="9586" />
+  <Command __id="16" _type="AssistCommand" assist_type="QUICK_ASSIST" auto_activated="false" start_end="START" timestamp="10617" />
+  <Command __id="17" _type="EclipseCommand" commandID="org.eclipse.jdt.ui.edit.text.java.correction.assist.proposals" timestamp="10884" />
+  <Command __id="18" _type="AssistCommand" assist_type="QUICK_ASSIST" auto_activated="false" start_end="END" timestamp="13821" />
+  <DocumentChange __id="19" _type="Insert" docASTNodeCount="44" docActiveCodeLength="326" docExpressionCount="24" docLength="341" length="71" offset="124" repeat="6" timestamp="14033" timestamp2="14150">
+    <text><![CDATA[/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	]]></text>
+  </DocumentChange>
+  <Command __id="25" _type="InsertStringCommand" timestamp="14233">
+    <data><![CDATA[]]></data>
+  </Command>
+  <Command __id="26" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.textEnd" timestamp="15554" />
+  <Command __id="27" _type="EclipseCommand" commandID="org.eclipse.ui.file.save" timestamp="24657" />
+</Events>
