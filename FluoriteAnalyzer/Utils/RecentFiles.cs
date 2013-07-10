@@ -108,6 +108,14 @@ namespace FluoriteAnalyzer.Utils
             }
         }
 
+        public void Remove(string filePath)
+        {
+            if (_list.Contains(filePath))
+            {
+                _list.Remove(filePath);
+            }
+        }
+
         public bool IsEmpty()
         {
             return _list.Count == 0;
