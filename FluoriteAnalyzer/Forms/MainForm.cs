@@ -460,7 +460,25 @@ namespace FluoriteAnalyzer.Forms
                         .Select(x => new ToolStripMenuItem(
                                          "&" + (x + 1) + ": " + RecentFiles.GetInstance().List[count - 1 - x],
                                          null,
-                                         delegate { OpenLog(RecentFiles.GetInstance().List[count - 1 - x]); }))
+                                         delegate
+                                         {
+                                             // Check if the file exists first.
+                                             string filePath = RecentFiles.GetInstance().List[count - 1 - x];
+                                             FileInfo finfo = new FileInfo(filePath);
+                                             if (finfo.Exists)
+                                             {
+                                                 OpenLog(filePath);
+                                             }
+                                             else
+                                             {
+                                                 MessageBox.Show(
+                                                     "The following file does not exist." + Environment.NewLine +
+                                                     "Removing it from the recent files list." + Environment.NewLine +
+                                                     Environment.NewLine +
+                                                     "\"" + filePath + "\"", "File not found");
+                                                 RecentFiles.GetInstance().Remove(filePath);
+                                             }
+                                         }))
                         .ToArray()
                     );
             }
