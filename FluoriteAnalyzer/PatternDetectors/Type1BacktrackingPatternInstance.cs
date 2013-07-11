@@ -8,7 +8,7 @@ namespace FluoriteAnalyzer.PatternDetectors
 {
     class Type1BacktrackingPatternInstance : BacktrackingPatternInstance
     {
-        public Type1BacktrackingPatternInstance(Insert insert, Delete delete, string description)
+        public Type1BacktrackingPatternInstance(Event insert, Event delete, string description)
             : base(insert, 2, description)
         {
             this.Insert = insert;
@@ -18,8 +18,8 @@ namespace FluoriteAnalyzer.PatternDetectors
             AddInvolvingEvent("Delete", delete.ID);
         }
 
-        public Insert Insert { get; set; }
-        public Delete Delete { get; set; }
+        public Event Insert { get; set; }
+        public Event Delete { get; set; }
 
         public override BacktrackingPatternInstance.BacktrackingType Type
         {
