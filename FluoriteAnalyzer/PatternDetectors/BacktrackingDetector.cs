@@ -10,6 +10,8 @@ namespace FluoriteAnalyzer.PatternDetectors
 {
     class BacktrackingDetector : AbstractPatternDetector
     {
+        private static readonly int TYPE1_SIZE_THRESHOLD = 10;
+
         private static BacktrackingDetector _instance = null;
         internal static BacktrackingDetector GetInstance()
         {
@@ -89,8 +91,18 @@ namespace FluoriteAnalyzer.PatternDetectors
                 {
                     // Process as if this was a two separate Delete / Insert commands.
                     Replace replace = (Replace)dcList[i];
-                    ProcessDelete(replace, replace.Offset, replace.Length);
-                    ProcessInsert(replace, replace.Offset, replace.InsertedText);
+                    if (replace.InsertedText.StartsWith(replace.DeletedText))
+                    {
+                        if (replace.InsertedText.Length > replace.DeletedText.Length)
+                        {
+                            ProcessInsert(replace, replace.Offset + replace.Length, replace.InsertedText.Substring(replace.Length));
+                        }
+                    }
+                    else
+                    {
+                        ProcessDelete(replace, replace.Offset, replace.Length);
+                        ProcessInsert(replace, replace.Offset, replace.InsertedText);
+                    }
                 }
             }
 
@@ -294,6 +306,12 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private bool FilterType1Backtracking(InsertSegment insergSegment, string deletedText)
         {
+            // Size heuristic.
+            if (deletedText.Trim().Length < TYPE1_SIZE_THRESHOLD)
+            {
+                return false;
+            }
+
             return true;
         }
     }
