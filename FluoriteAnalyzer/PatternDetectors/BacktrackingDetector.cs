@@ -271,6 +271,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 .GroupBy(x => x.Event.ID)
                 .OrderBy(x => x.Key)
                 .Select(grp => grp.First())
+                .Where(x => FilterType1Backtracking(x, deletedText))
                 .Select(x => new Type1BacktrackingPatternInstance(
                     x.Event,
                     anEvent,
@@ -289,6 +290,11 @@ namespace FluoriteAnalyzer.PatternDetectors
                 snapshot = snapshot.Substring(0, offset) + snapshot.Substring(offset + length);
                 Snapshots[CurrentFile] = snapshot;
             }
+        }
+
+        private bool FilterType1Backtracking(InsertSegment insergSegment, string deletedText)
+        {
+            return true;
         }
     }
 }
