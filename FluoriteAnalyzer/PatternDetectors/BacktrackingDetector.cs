@@ -373,7 +373,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             }
         }
 
-        private bool FilterType1Backtracking(InsertSegment insergSegment, string deletedText)
+        private bool FilterType1Backtracking(InsertSegment insertSegment, string deletedText)
         {
             if (deletedText == null)
             {
