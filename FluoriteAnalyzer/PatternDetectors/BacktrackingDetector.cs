@@ -10,7 +10,8 @@ namespace FluoriteAnalyzer.PatternDetectors
 {
     class BacktrackingDetector : AbstractPatternDetector
     {
-        private static readonly int TYPE1_SIZE_THRESHOLD = 10;
+        private static readonly int TYPE1_SIZE_THRESHOLD = 30;
+        private static readonly int TYPE2_SIZE_THRESHOLD = 30;
 
         private static BacktrackingDetector _instance = null;
         internal static BacktrackingDetector GetInstance()
@@ -59,6 +60,23 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private Dictionary<string, List<InsertSegment>> InsertSegments { get; set; }
 
+        // For Type II Backtracking
+        private class DeleteSegment
+        {
+            public DeleteSegment(Event anEvent, string file, string text)
+            {
+                Event = anEvent;
+                File = file;
+                Text = text;
+            }
+
+            public Event Event { get; set; }
+            public string File { get; set; }
+            public string Text { get; set; }
+        }
+
+        private List<DeleteSegment> DeleteSegments { get; set; }
+
         public override IEnumerable<PatternInstance> DetectAsPatternInstances(Commons.ILogProvider logProvider)
         {
             List<Event> completeList = logProvider.LoggedEvents.ToList();
@@ -70,6 +88,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             CurrentFile = null;
             Snapshots = new Dictionary<string, string>();
             InsertSegments = new Dictionary<string, List<InsertSegment>>();
+            DeleteSegments = new List<DeleteSegment>();
 
             foreach (int i in Enumerable.Range(0, dcList.Count))
             {
@@ -175,6 +194,20 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void ProcessInsert(Event anEvent, int offset, string insertedText)
         {
+            ProcessInsertType1(anEvent, offset, insertedText);
+            ProcessInsertType2(anEvent, offset, insertedText);
+
+            // Update the snapshot.
+            string snapshot = Snapshots[CurrentFile];
+            if (snapshot != null)
+            {
+                snapshot = snapshot.Substring(0, offset) + insertedText + snapshot.Substring(offset);
+                Snapshots[CurrentFile] = snapshot;
+            }
+        }
+
+        private void ProcessInsertType1(Event anEvent, int offset, string insertedText)
+        {
             // Iterate the segments list
             List<InsertSegment> list = InsertSegments[CurrentFile];
             InsertSegment segmentToBeAdded = new InsertSegment(anEvent, offset, insertedText.Length, insertedText);
@@ -215,17 +248,56 @@ namespace FluoriteAnalyzer.PatternDetectors
                 list.Add(segmentToBeAdded);
                 added = true;
             }
+        }
 
-            // Update the snapshot.
-            string snapshot = Snapshots[CurrentFile];
-            if (snapshot != null)
+        private void ProcessInsertType2(Event anEvent, int offset, string insertedText)
+        {
+            // See if there is are any previous deletions that contains this insertedText.
+            foreach (var delete in DeleteSegments)
             {
-                snapshot = snapshot.Substring(0, offset) + insertedText + snapshot.Substring(offset);
-                Snapshots[CurrentFile] = snapshot;
+                if (delete.Text.Contains(insertedText.Trim()))
+                {
+                    if (FilterType2Backtracking(delete, insertedText))
+                    {
+                        Patterns.Add(
+                            new Type2BacktrackingPatternInstance(
+                                delete.Event,
+                                anEvent,
+                                string.Format("Type2 [{2} -> {3}]: \"{0}\" - \"{1}\"",
+                                    delete.Text,
+                                    insertedText,
+                                    delete.Event.ID,
+                                    anEvent.ID
+                                )
+                            )
+                        );
+                    }
+                }
+
+                // TODO Maybe consider very similar piece of code?
             }
         }
 
         private void ProcessDelete(Event anEvent, int offset, int length)
+        {
+            // Current snapshot.
+            string snapshot = Snapshots[CurrentFile];
+
+            // Deleted text
+            string deletedText = snapshot == null ? null : snapshot.Substring(offset, length);
+
+            ProcessDeleteType1(anEvent, offset, length, deletedText);
+            ProcessDeleteType2(anEvent, offset, length, deletedText);
+
+            // Update the snapshot.
+            if (snapshot != null)
+            {
+                snapshot = snapshot.Substring(0, offset) + snapshot.Substring(offset + length);
+                Snapshots[CurrentFile] = snapshot;
+            }
+        }
+
+        private void ProcessDeleteType1(Event anEvent, int offset, int length, string deletedText)
         {
             int endOffset = offset + length;
 
@@ -271,12 +343,6 @@ namespace FluoriteAnalyzer.PatternDetectors
                 }
             }
 
-            // Current snapshot.
-            string snapshot = Snapshots[CurrentFile];
-
-            // Deleted text
-            string deletedText = snapshot == null ? "null" : snapshot.Substring(offset, length);
-
             // Add Type1 backtracking instances.
             Patterns.AddRange(
                 detectedInserts
@@ -295,19 +361,43 @@ namespace FluoriteAnalyzer.PatternDetectors
                     )
                 ))
             );
+        }
 
-            // Update the snapshot.
-            if (snapshot != null)
+        private void ProcessDeleteType2(Event anEvent, int offset, int length, string deletedText)
+        {
+            // Add to the deleted list
+            if (deletedText != null)
             {
-                snapshot = snapshot.Substring(0, offset) + snapshot.Substring(offset + length);
-                Snapshots[CurrentFile] = snapshot;
+                DeleteSegments.Add(new DeleteSegment(
+                    anEvent, CurrentFile, deletedText));
             }
         }
 
         private bool FilterType1Backtracking(InsertSegment insergSegment, string deletedText)
         {
+            if (deletedText == null)
+            {
+                return false;
+            }
+
             // Size heuristic.
             if (deletedText.Trim().Length < TYPE1_SIZE_THRESHOLD)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool FilterType2Backtracking(DeleteSegment deleteSegment, string insertedText)
+        {
+            if (insertedText == null)
+            {
+                return false;
+            }
+
+            // Size heuristic.
+            if (insertedText.Trim().Length < TYPE2_SIZE_THRESHOLD)
             {
                 return false;
             }

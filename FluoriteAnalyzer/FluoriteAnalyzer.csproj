@@ -214,6 +214,7 @@
     <Compile Include="PatternDetectors\IPatternDetector.cs" />
     <Compile Include="PatternDetectors\ParameterTuningDetector.cs" />
     <Compile Include="PatternDetectors\Type1BacktrackingPatternInstance.cs" />
+    <Compile Include="PatternDetectors\Type2BacktrackingPatternInstance.cs" />
     <Compile Include="PatternDetectors\TypoCorrectionDetector.cs" />
     <Compile Include="Pipelines\BasePipelineFilter.cs" />
     <Compile Include="Pipelines\DetectMovesFilter.cs" />
