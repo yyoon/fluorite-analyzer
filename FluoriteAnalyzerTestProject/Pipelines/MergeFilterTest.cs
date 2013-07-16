@@ -8,7 +8,7 @@ namespace FluoriteAnalyzer.Pipelines
     public class MergeFilterTest : BaseFilterTest
     {
         [TestMethod]
-        public void BasicTest()
+        public void MergeFilterBasicTest()
         {
             string path = GetDataPath();
             string dirname = "test";
