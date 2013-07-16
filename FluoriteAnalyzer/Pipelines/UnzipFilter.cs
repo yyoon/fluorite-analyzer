@@ -12,7 +12,7 @@ namespace FluoriteAnalyzer.Pipelines
     /// collects all the xml files under the directory itself,
     /// and returns the DirectoryInfo object as is.
     /// </summary>
-    class UnzipFilter : BasePipelineFilter<DirectoryInfo, DirectoryInfo>
+    public class UnzipFilter : BasePipelineFilter<DirectoryInfo, DirectoryInfo>
     {
         public UnzipFilter()
         {
@@ -56,10 +56,10 @@ namespace FluoriteAnalyzer.Pipelines
                 var logFiles = input.GetFiles("*.xml", SearchOption.AllDirectories);
                 foreach (var logFile in logFiles)
                 {
-                    if (!logFile.Directory.Equals(input))
+                    if (logFile.DirectoryName != input.FullName)
                     {
                         // Move the file!
-                        logFile.CopyTo(Path.Combine(input.FullName, logFile.Name));
+                        logFile.CopyTo(Path.Combine(input.FullName, logFile.Name), true);
                         logFile.Delete();
                     }
                 }
