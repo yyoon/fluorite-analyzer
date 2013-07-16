@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using FluoriteAnalyzer.Events;
+using System;
 
 namespace FluoriteAnalyzer.Commons
 {
@@ -66,16 +67,33 @@ namespace FluoriteAnalyzer.Commons
             if (insertionOffset == -1 && deletionOffset == -1)
             {
                 richText.Select(0, 0);
+                richText.ScrollToCaret();
             }
             else if (insertionOffset == -1)
             {
-                richText.Select(deletionOffset, 0);
+                MoveScrollToOffset(richText, deletionOffset);
             }
             else
             {
-                richText.Select(insertionOffset, 0);
+                MoveScrollToOffset(richText, insertionOffset);
+            }
+        }
+
+        private static readonly int PRECEDING_CONTEXT_SIZE = 5;
+        private static void MoveScrollToOffset(RichTextBox richText, int desiredOffset)
+        {
+            // Find desired offset
+            for (int i = 0; i < PRECEDING_CONTEXT_SIZE; ++i)
+            {
+                int lastLineEndingIndex = richText.Text.Substring(0, desiredOffset)
+                    .LastIndexOf('\n');
+                if (lastLineEndingIndex != -1)
+                {
+                    desiredOffset = Math.Max(0, lastLineEndingIndex - 1);
+                }
             }
 
+            richText.Select(desiredOffset, 0);
             richText.ScrollToCaret();
         }
 
