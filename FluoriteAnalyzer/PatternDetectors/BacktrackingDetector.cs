@@ -48,11 +48,12 @@ namespace FluoriteAnalyzer.PatternDetectors
                     Event,
                     offset,
                     Offset + Length - offset,
-                    Text
+                    Text.Substring(offset - Offset)
                 );
 
                 // Adjust my own length.
                 Length = offset - Offset;
+                Text = Text.Substring(0, offset - Offset);
 
                 return result;
             }
@@ -304,7 +305,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             // Iterate the segments list
             var list = InsertSegments[CurrentFile];
 
-            var detectedInserts = new List<InsertSegment>();
+            var detectedInserts = new List<Tuple<InsertSegment, string>>();
 
             for (int i = 0; i < list.Count; ++i)
             {
@@ -314,7 +315,12 @@ namespace FluoriteAnalyzer.PatternDetectors
                 }
                 else if (offset <= list[i].Offset && list[i].Offset < endOffset && endOffset < list[i].EndOffset)
                 {
-                    detectedInserts.Add(list[i]);
+                    detectedInserts.Add(
+                        Tuple.Create(
+                            list[i],
+                            list[i].Text.Substring(0, endOffset - list[i].Offset)
+                        )
+                    );
 
                     list.Insert(i + 1, list[i].Split(endOffset));
                     list.RemoveAt(i);
@@ -322,15 +328,18 @@ namespace FluoriteAnalyzer.PatternDetectors
                 }
                 else if (offset <= list[i].Offset && list[i].EndOffset <= endOffset)
                 {
-                    detectedInserts.Add(list[i]);
+                    detectedInserts.Add(
+                        Tuple.Create(
+                            list[i],
+                            list[i].Text
+                        )
+                    );
 
                     list.RemoveAt(i);
                     --i;
                 }
                 else if (list[i].Offset < offset && offset < list[i].EndOffset)
                 {
-                    detectedInserts.Add(list[i]);
-
                     list.Insert(i + 1, list[i].Split(offset));
                 }
                 else if (list[i].EndOffset <= offset)
@@ -346,17 +355,18 @@ namespace FluoriteAnalyzer.PatternDetectors
             // Add Type1 backtracking instances.
             Patterns.AddRange(
                 detectedInserts
-                .GroupBy(x => x.Event.ID)
+                .OrderByDescending(x => x.Item2.Length)
+                .GroupBy(x => x.Item1.Event.ID)
                 .OrderBy(x => x.Key)
                 .Select(grp => grp.First())
-                .Where(x => FilterType1Backtracking(x, deletedText))
+                .Where(x => FilterType1Backtracking(x.Item1, x.Item2))
                 .Select(x => new Type1BacktrackingPatternInstance(
-                    x.Event,
+                    x.Item1.Event,
                     anEvent,
                     string.Format("Type1 [{2} -> {3}]: \"{0}\" - \"{1}\"",
-                        x.Text,
-                        deletedText,
-                        x.Event.ID,
+                        x.Item1.Text,
+                        x.Item2,
+                        x.Item1.Event.ID,
                         anEvent.ID
                     )
                 ))
