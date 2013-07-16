@@ -456,6 +456,7 @@ namespace FluoriteAnalyzer.Forms
             var dirs = dinfo.GetDirectories("p*", SearchOption.TopDirectoryOnly);
 
             dirs.AsParallel()
+                .Select(new UnzipFilter().Compute)
                 .Select(new MergeFilter().Compute)
                 .Select(new RemoveTyposFilter().Compute)
                 .Select(new DetectMovesFilter().Compute)
