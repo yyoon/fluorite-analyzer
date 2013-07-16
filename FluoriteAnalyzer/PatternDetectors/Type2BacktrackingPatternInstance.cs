@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {
-    class Type2BacktrackingPatternInstance : BacktrackingPatternInstance
+    class Type2BacktrackingPatternInstance : BacktrackingPatternInstance, IPreviewablePatternInstance
     {
         public Type2BacktrackingPatternInstance(Event delete, Event insert, string description)
             : base(delete, 2, description)
@@ -24,6 +24,16 @@ namespace FluoriteAnalyzer.PatternDetectors
         public override BacktrackingPatternInstance.BacktrackingType Type
         {
             get { return BacktrackingType.TYPE2; }
+        }
+
+        public int FirstID
+        {
+            get { return Delete.ID; }
+        }
+
+        public int SecondID
+        {
+            get { return Insert.ID; }
         }
     }
 }
