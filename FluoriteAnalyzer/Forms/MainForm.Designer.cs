@@ -46,19 +46,24 @@
             this.calculateActiveWorkingTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extractOperationConflictsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.countEditedFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.performPipelinedAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.tileHorizontallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.snapCurrentWindowLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.snapCurrentWindowRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolMain = new System.Windows.Forms.ToolStrip();
             this.toolStripButtonOpen = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripButtonLogMerger = new System.Windows.Forms.ToolStripButton();
             this.toolStripTextSearch = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
-            this.performPipelinedAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButtonSnapLeft = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButtonSnapRight = new System.Windows.Forms.ToolStripButton();
+            this.juxtaposePatternsEventsWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.toolMain.SuspendLayout();
             this.SuspendLayout();
@@ -213,13 +218,29 @@
             this.countEditedFilesToolStripMenuItem.Text = "Count Edited Files";
             this.countEditedFilesToolStripMenuItem.Click += new System.EventHandler(this.countEditedFilesToolStripMenuItem_Click);
             // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(236, 6);
+            // 
+            // performPipelinedAnalysisToolStripMenuItem
+            // 
+            this.performPipelinedAnalysisToolStripMenuItem.Name = "performPipelinedAnalysisToolStripMenuItem";
+            this.performPipelinedAnalysisToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
+            this.performPipelinedAnalysisToolStripMenuItem.Text = "Perform Pipelined Analysis";
+            this.performPipelinedAnalysisToolStripMenuItem.Click += new System.EventHandler(this.performPipelinedAnalysisToolStripMenuItem_Click);
+            // 
             // windowToolStripMenuItem
             // 
             this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cascadeToolStripMenuItem,
             this.toolStripMenuItem2,
             this.tileHorizontallyToolStripMenuItem,
-            this.toolStripSeparator2});
+            this.toolStripSeparator2,
+            this.snapCurrentWindowLeftToolStripMenuItem,
+            this.snapCurrentWindowRightToolStripMenuItem,
+            this.juxtaposePatternsEventsWindowToolStripMenuItem,
+            this.toolStripSeparator3});
             this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
             this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.windowToolStripMenuItem.Text = "&Window";
@@ -228,37 +249,59 @@
             // cascadeToolStripMenuItem
             // 
             this.cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";
-            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.cascadeToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.cascadeToolStripMenuItem.Text = "&Cascade";
             this.cascadeToolStripMenuItem.Click += new System.EventHandler(this.cascadeToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(161, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(260, 22);
             this.toolStripMenuItem2.Text = "Tile &Vertically";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // tileHorizontallyToolStripMenuItem
             // 
             this.tileHorizontallyToolStripMenuItem.Name = "tileHorizontallyToolStripMenuItem";
-            this.tileHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.tileHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
             this.tileHorizontallyToolStripMenuItem.Text = "Tile &Horizontally";
             this.tileHorizontallyToolStripMenuItem.Click += new System.EventHandler(this.tileHorizontallyToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(158, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(257, 6);
+            // 
+            // snapCurrentWindowLeftToolStripMenuItem
+            // 
+            this.snapCurrentWindowLeftToolStripMenuItem.Image = global::FluoriteAnalyzer.Properties.Resources.FillLeftHS;
+            this.snapCurrentWindowLeftToolStripMenuItem.Name = "snapCurrentWindowLeftToolStripMenuItem";
+            this.snapCurrentWindowLeftToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.snapCurrentWindowLeftToolStripMenuItem.Text = "Snap Current Window &Left";
+            this.snapCurrentWindowLeftToolStripMenuItem.Click += new System.EventHandler(this.snapCurrentWindowLeftToolStripMenuItem_Click);
+            // 
+            // snapCurrentWindowRightToolStripMenuItem
+            // 
+            this.snapCurrentWindowRightToolStripMenuItem.Image = global::FluoriteAnalyzer.Properties.Resources.FillRightHS;
+            this.snapCurrentWindowRightToolStripMenuItem.Name = "snapCurrentWindowRightToolStripMenuItem";
+            this.snapCurrentWindowRightToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.snapCurrentWindowRightToolStripMenuItem.Text = "Snap Current Window &Right";
+            this.snapCurrentWindowRightToolStripMenuItem.Click += new System.EventHandler(this.snapCurrentWindowRightToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(257, 6);
             // 
             // toolMain
             // 
             this.toolMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButtonOpen,
             this.toolStripSeparator1,
-            this.toolStripButtonLogMerger,
             this.toolStripTextSearch,
-            this.toolStripLabel1});
+            this.toolStripLabel1,
+            this.toolStripButtonSnapLeft,
+            this.toolStripButtonSnapRight});
             this.toolMain.Location = new System.Drawing.Point(0, 24);
             this.toolMain.Name = "toolMain";
             this.toolMain.Size = new System.Drawing.Size(1105, 25);
@@ -280,16 +323,6 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // toolStripButtonLogMerger
-            // 
-            this.toolStripButtonLogMerger.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButtonLogMerger.Image = global::FluoriteAnalyzer.Properties.Resources.Merge;
-            this.toolStripButtonLogMerger.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButtonLogMerger.Name = "toolStripButtonLogMerger";
-            this.toolStripButtonLogMerger.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButtonLogMerger.Text = "toolStripButton1";
-            this.toolStripButtonLogMerger.Click += new System.EventHandler(this.logMergerToolStripMenuItem_Click);
-            // 
             // toolStripTextSearch
             // 
             this.toolStripTextSearch.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -306,17 +339,33 @@
             this.toolStripLabel1.Size = new System.Drawing.Size(46, 22);
             this.toolStripLabel1.Text = "Search:";
             // 
-            // toolStripMenuItem3
+            // toolStripButtonSnapLeft
             // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(236, 6);
+            this.toolStripButtonSnapLeft.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSnapLeft.Image = global::FluoriteAnalyzer.Properties.Resources.FillLeftHS;
+            this.toolStripButtonSnapLeft.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonSnapLeft.Name = "toolStripButtonSnapLeft";
+            this.toolStripButtonSnapLeft.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonSnapLeft.Text = "Snap Current Window Left";
+            this.toolStripButtonSnapLeft.Click += new System.EventHandler(this.snapCurrentWindowLeftToolStripMenuItem_Click);
             // 
-            // performPipelinedAnalysisToolStripMenuItem
+            // toolStripButtonSnapRight
             // 
-            this.performPipelinedAnalysisToolStripMenuItem.Name = "performPipelinedAnalysisToolStripMenuItem";
-            this.performPipelinedAnalysisToolStripMenuItem.Size = new System.Drawing.Size(239, 22);
-            this.performPipelinedAnalysisToolStripMenuItem.Text = "Perform Pipelined Analysis";
-            this.performPipelinedAnalysisToolStripMenuItem.Click += new System.EventHandler(this.performPipelinedAnalysisToolStripMenuItem_Click);
+            this.toolStripButtonSnapRight.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButtonSnapRight.Image = global::FluoriteAnalyzer.Properties.Resources.FillRightHS;
+            this.toolStripButtonSnapRight.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButtonSnapRight.Name = "toolStripButtonSnapRight";
+            this.toolStripButtonSnapRight.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButtonSnapRight.Text = "Snap Current Window Right";
+            this.toolStripButtonSnapRight.ToolTipText = "Snap Current Window Right";
+            this.toolStripButtonSnapRight.Click += new System.EventHandler(this.snapCurrentWindowRightToolStripMenuItem_Click);
+            // 
+            // juxtaposePatternsEventsWindowToolStripMenuItem
+            // 
+            this.juxtaposePatternsEventsWindowToolStripMenuItem.Name = "juxtaposePatternsEventsWindowToolStripMenuItem";
+            this.juxtaposePatternsEventsWindowToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.juxtaposePatternsEventsWindowToolStripMenuItem.Text = "Juxtapose Patterns/Events Window";
+            this.juxtaposePatternsEventsWindowToolStripMenuItem.Click += new System.EventHandler(this.juxtaposePatternsEventsWindowToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -356,7 +405,6 @@
         private System.Windows.Forms.ToolStripMenuItem duplicateFixToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recentFilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton toolStripButtonLogMerger;
         private System.Windows.Forms.ToolStripMenuItem windowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cascadeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
@@ -374,6 +422,12 @@
         private System.Windows.Forms.ToolStripMenuItem countEditedFilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem performPipelinedAnalysisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem snapCurrentWindowLeftToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem snapCurrentWindowRightToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripButton toolStripButtonSnapLeft;
+        private System.Windows.Forms.ToolStripButton toolStripButtonSnapRight;
+        private System.Windows.Forms.ToolStripMenuItem juxtaposePatternsEventsWindowToolStripMenuItem;
     }
 }
 

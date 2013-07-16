@@ -515,7 +515,12 @@ namespace FluoriteAnalyzer.Forms
         private void windowToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
             // toolStripSeparator2 is the one under "Window" menu.
-            int sepIndex = windowToolStripMenuItem.DropDownItems.IndexOf(toolStripSeparator2);
+            int sepIndex = windowToolStripMenuItem.DropDownItems.IndexOf(toolStripSeparator3);
+
+            // Enable / Disable the snap menus.
+            bool focusedToolWindowExists = childToolWindows.Any(x => x.ContainsFocus);
+            snapCurrentWindowLeftToolStripMenuItem.Enabled = focusedToolWindowExists;
+            snapCurrentWindowRightToolStripMenuItem.Enabled = focusedToolWindowExists;
 
             // Clear the windows list
             while (windowToolStripMenuItem.DropDownItems.Count > sepIndex + 1)
@@ -611,6 +616,50 @@ namespace FluoriteAnalyzer.Forms
                 }
 
                 e.SuppressKeyPress = true;
+            }
+        }
+
+        private void snapCurrentWindowLeftToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SnapCurrentWindowLeft();
+        }
+
+        private void snapCurrentWindowRightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SnapCurrentWindowRight();
+        }
+
+        private void SnapCurrentWindowLeft()
+        {
+            if (childToolWindows.Any(x => x.ContainsFocus))
+            {
+                childToolWindows.First(x => x.ContainsFocus).SnapLeft();
+            }
+            else
+            {
+                MessageBox.Show("No focused tool window.");
+            }
+        }
+
+        private void SnapCurrentWindowRight()
+        {
+            if (childToolWindows.Any(x => x.ContainsFocus))
+            {
+                childToolWindows.First(x => x.ContainsFocus).SnapRight();
+            }
+            else
+            {
+                MessageBox.Show("No focused tool window.");
+            }
+        }
+
+        private void juxtaposePatternsEventsWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (childToolWindows.Any(x => x.Text == Resources.Form_Title_Patterns) &&
+                childToolWindows.Any(x => x.Text == Resources.Form_Title_EventsList))
+            {
+                childToolWindows.First(x => x.Text == Resources.Form_Title_Patterns).SnapLeft();
+                childToolWindows.First(x => x.Text == Resources.Form_Title_EventsList).SnapRight();
             }
         }
     }

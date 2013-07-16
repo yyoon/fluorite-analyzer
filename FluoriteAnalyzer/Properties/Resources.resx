@@ -148,4 +148,10 @@
   <data name="Form_Title_Patterns" xml:space="preserve">
     <value>Patterns</value>
   </data>
+  <data name="FillLeftHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FillLeftHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="FillRightHS" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FillRightHS.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
