@@ -205,6 +205,7 @@
     <Compile Include="PatternDetectors\AbstractPatternDetector.cs" />
     <Compile Include="PatternDetectors\BacktrackingDetector.cs" />
     <Compile Include="PatternDetectors\BacktrackingPatternInstance.cs" />
+    <Compile Include="PatternDetectors\IPreviewablePatternInstance.cs" />
     <Compile Include="PatternDetectors\MoveDetector.cs" />
     <Compile Include="PatternDetectors\MovePatternInstance.cs" />
     <Compile Include="PatternDetectors\OperationConflictDetector.cs" />

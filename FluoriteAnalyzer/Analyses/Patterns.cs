@@ -140,13 +140,13 @@ namespace FluoriteAnalyzer.Analyses
                 selectedListViewItem = listViewPatterns.Items[listViewPatterns.SelectedIndices[0]];
                 selectedPatternInstance = selectedListViewItem.Tag as PatternInstance;
 
-                if (selectedPatternInstance is OperationConflictPatternInstance)
+                if (selectedPatternInstance is IPreviewablePatternInstance)
                 {
-                    OperationConflictPatternInstance ocpi = (OperationConflictPatternInstance)selectedPatternInstance;
+                    IPreviewablePatternInstance previewable = (IPreviewablePatternInstance)selectedPatternInstance;
 
                     SnapshotCalculator snapshotCalculator = new SnapshotCalculator(LogProvider);
-                    snapshotPreview1.SetSnapshot(snapshotCalculator.CalculateSnapshotAtID(ocpi.Before.ID));
-                    snapshotPreview2.SetSnapshot(snapshotCalculator.CalculateSnapshotAtID(ocpi.After.ID));
+                    snapshotPreview1.SetSnapshot(snapshotCalculator.CalculateSnapshotAtID(previewable.FirstID));
+                    snapshotPreview2.SetSnapshot(snapshotCalculator.CalculateSnapshotAtID(previewable.SecondID));
                 }
             }
             else
