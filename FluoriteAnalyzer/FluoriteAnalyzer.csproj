@@ -67,7 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DittMatchPatch\DiffMatchPatch.cs" />
+    <Compile Include="DiffMatchPatch\DiffMatchPatch.cs" />
     <Compile Include="Forms\Controls\ListViewNF.cs">
       <SubType>Component</SubType>
     </Compile>
