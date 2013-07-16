@@ -64,7 +64,8 @@
   <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /Y /S "$(ProjectDir)Data\*" "$(TargetDir)Data\*"</PostBuildEvent>
+    <PostBuildEvent>rd /s /q "$(TargetDir)Data"
+xcopy /Y /S "$(ProjectDir)Data\*" "$(TargetDir)Data\*"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -8,7 +8,7 @@ namespace FluoriteAnalyzer.Pipelines
     public class RemoveTyposFilterTest : BaseFilterTest
     {
         [TestMethod]
-        public void BasicTest()
+        public void RemoveTyposFilterBasicTest()
         {
             string path = GetDataPath();
             string postfix = "_TyposRemoved";

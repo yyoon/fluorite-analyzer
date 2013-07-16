@@ -8,7 +8,7 @@ namespace FluoriteAnalyzer.Pipelines
     public class DetectMovesFilterTest : BaseFilterTest
     {
         [TestMethod]
-        public void BasicTest()
+        public void DetectMovesFilterBasicTest()
         {
             string path = GetDataPath();
             string postfix = "_MovesDetected";
