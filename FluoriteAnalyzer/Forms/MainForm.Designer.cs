@@ -380,6 +380,8 @@
             this.Text = "Fluorite Analyzer";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.LocationChanged += new System.EventHandler(this.MainForm_LocationChanged);
+            this.SizeChanged += new System.EventHandler(this.MainForm_SizeChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();

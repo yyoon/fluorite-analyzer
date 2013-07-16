@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
+using System.Windows.Forms;
 using System.Xml.Serialization;
 
 namespace FluoriteAnalyzer.Utils
@@ -17,6 +21,10 @@ namespace FluoriteAnalyzer.Utils
 
         public string LastLogClosingFixPath;
         public string LastPipelineAnalysisPath;
+
+        public Point LastWindowLocation = new Point(100, 100);
+        public Size LastWindowSize = new Size(800, 600);
+        public FormWindowState LastWindowState = FormWindowState.Normal;
 
         static Profiles()
         {

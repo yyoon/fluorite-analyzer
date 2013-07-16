@@ -26,6 +26,7 @@ namespace FluoriteAnalyzer.Forms
         }
 
         private LogProvider LogProvider { get; set; }
+        private bool loaded = false;
 
         #region Child analyze panels
 
@@ -44,6 +45,14 @@ namespace FluoriteAnalyzer.Forms
         {
             RecentFiles.Load();
             Profiles.Load();
+
+            Profiles profiles = Profiles.GetInstance();
+
+            Location = profiles.LastWindowLocation;
+            Size = profiles.LastWindowSize;
+            WindowState = profiles.LastWindowState;
+
+            this.loaded = true;
         }
 
         private void openLogToolStripMenuItem_Click(object sender, EventArgs e)
@@ -660,6 +669,23 @@ namespace FluoriteAnalyzer.Forms
             {
                 childToolWindows.First(x => x.Text == Resources.Form_Title_Patterns).SnapLeft();
                 childToolWindows.First(x => x.Text == Resources.Form_Title_EventsList).SnapRight();
+            }
+        }
+
+        private void MainForm_LocationChanged(object sender, EventArgs e)
+        {
+            if (this.loaded)
+            {
+                Profiles.GetInstance().LastWindowLocation = Location;
+            }
+        }
+
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+            if (this.loaded)
+            {
+                Profiles.GetInstance().LastWindowSize = Size;
+                Profiles.GetInstance().LastWindowState = WindowState;
             }
         }
     }
