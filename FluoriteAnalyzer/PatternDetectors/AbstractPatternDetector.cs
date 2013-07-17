@@ -11,11 +11,16 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         public virtual IEnumerable<ListViewItem> DetectAsListViewItems(ILogProvider logProvider)
         {
-            return DetectAsPatternInstances(logProvider)
-                .Select(x => new ListViewItem(new string[] {
+            return ConvertToListViewItems(logProvider, DetectAsPatternInstances(logProvider));
+        }
+
+        public IEnumerable<ListViewItem> ConvertToListViewItems(ILogProvider logProvider, IEnumerable<PatternInstance> patternInstances)
+        {
+            return patternInstances.Select(x => new ListViewItem(
+                new string[] {
                     x.PrimaryEvent.ID.ToString(),
                     x.PatternLength.ToString(),
-                    logProvider.GetVideoTime(x.PrimaryEvent),
+                    logProvider == null ? "unknown" : logProvider.GetVideoTime(x.PrimaryEvent),
                     x.Description
                 }) { Tag = x });
         }
