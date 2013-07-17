@@ -4,6 +4,11 @@ using System.Reflection;
 using System.Windows.Forms;
 using FluoriteAnalyzer.Commons;
 using FluoriteAnalyzer.PatternDetectors;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using FluoriteAnalyzer.Utils;
 
 namespace FluoriteAnalyzer.Analyses
 {
@@ -102,6 +107,60 @@ namespace FluoriteAnalyzer.Analyses
             labelCount.Text = "Total: " + listViewPatterns.Items.Count;
         }
 
+        private void LoadPatterns(string filePath)
+        {
+            // Deserialize
+            IFormatter formatter = new BinaryFormatter();
+            using (Stream stream = new FileStream(filePath, FileMode.Open))
+            {
+                DetectionResult result = formatter.Deserialize(stream) as DetectionResult;
+                if (result != null)
+                {
+                    LoadPatterns(result);
+                }
+            }
+        }
+
+        private void LoadPatterns(DetectionResult result)
+        {
+            if (result == null)
+                throw new ArgumentNullException();
+
+            if (result.LogPath != LogProvider.LogPath)
+            {
+                MessageBox.Show("This file was not created from the current log file.");
+                return;
+            }
+
+            listViewPatterns.Items.Clear();
+            listViewPatterns.Items.AddRange(
+                AbstractPatternDetector.ConvertToListViewItems(
+                    LogProvider, result.PatternInstances).ToArray());
+        }
+
+        private void SavePatterns(string saveFilePath)
+        {
+            if (listViewPatterns.Items.Count == 0)
+            {
+                MessageBox.Show("No detected patterns to be saved!");
+                return;
+            }
+
+            DetectionResult result = new DetectionResult(
+                LogProvider.LogPath,
+                listViewPatterns.Items
+                    .Cast<ListViewItem>()
+                    .Select(x => x.Tag)
+                    .Cast<PatternInstance>());
+
+            // Serialize
+            IFormatter formatter = new BinaryFormatter();
+            using (Stream stream = new FileStream(saveFilePath, FileMode.Create))
+            {
+                formatter.Serialize(stream, result);
+            }
+        }
+
         private void buttonDetectPatterns_Click(object sender, EventArgs e)
         {
             // Make sure that something is selected.
@@ -170,6 +229,35 @@ namespace FluoriteAnalyzer.Analyses
                     patternInst.CopyToClipboard();
                 }
             }
+        }
+
+        private void buttonLoadResults_Click(object sender, EventArgs e)
+        {
+            var openDialog = new OpenFileDialog();
+            openDialog.Multiselect = false;
+            openDialog.Filter = "Detection Result Files|*.dtr";
+
+            DialogResult result = openDialog.ShowDialog();
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            LoadPatterns(openDialog.FileName);
+        }
+
+        private void buttonSaveResults_Click(object sender, EventArgs e)
+        {
+            var saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "Detection Result Files|*.dtr";
+
+            DialogResult result = saveDialog.ShowDialog();
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            SavePatterns(saveDialog.FileName);
         }
     }
 }

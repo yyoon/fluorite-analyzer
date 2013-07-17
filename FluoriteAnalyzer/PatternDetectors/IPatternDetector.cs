@@ -8,7 +8,5 @@ namespace FluoriteAnalyzer.PatternDetectors
     {
         IEnumerable<PatternInstance> DetectAsPatternInstances(ILogProvider logProvider);
         IEnumerable<ListViewItem> DetectAsListViewItems(ILogProvider logProvider);
-
-        IEnumerable<ListViewItem> ConvertToListViewItems(ILogProvider logProvider, IEnumerable<PatternInstance> patternInstances);
     }
 }

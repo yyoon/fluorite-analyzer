@@ -8,6 +8,7 @@ using System.IO;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {
+    [Serializable]
     class OperationConflictPatternInstance : PatternInstance, IPreviewablePatternInstance
     {
         public OperationConflictPatternInstance(Event primaryEvent, int patternLength, string description,

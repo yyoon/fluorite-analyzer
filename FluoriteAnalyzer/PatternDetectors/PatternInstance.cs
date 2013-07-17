@@ -6,6 +6,7 @@ using FluoriteAnalyzer.Events;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {
+    [Serializable]
     class PatternInstance
     {
         public PatternInstance(Event primaryEvent, int patternLength, string description)

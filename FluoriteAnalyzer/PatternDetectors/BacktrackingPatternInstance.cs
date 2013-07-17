@@ -6,6 +6,7 @@ using System.Text;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {
+    [Serializable]
     abstract class BacktrackingPatternInstance : PatternInstance
     {
         public BacktrackingPatternInstance(Event primaryEvent, int patternLength, string description)
