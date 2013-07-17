@@ -66,6 +66,10 @@ namespace FluoriteAnalyzer.Pipelines
             MoveDetector moveDetector = MoveDetector.GetInstance();
             var patterns = moveDetector.DetectAsPatternInstances(provider);
 
+            // Save the results to a file.
+            DetectionResult result = new DetectionResult(provider.LogPath, patterns);
+            result.SaveToFile(GetSaveFileName(fileInfo.DirectoryName, fileInfo.Name));
+
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(fileInfo.FullName);
 

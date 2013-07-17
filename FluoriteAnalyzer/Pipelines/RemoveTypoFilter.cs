@@ -66,6 +66,10 @@ namespace FluoriteAnalyzer.Pipelines
             TypoCorrectionDetector typoDetector = TypoCorrectionDetector.GetInstance();
             var patterns = typoDetector.DetectAsPatternInstances(provider);
 
+            // Save the results to a file.
+            DetectionResult result = new DetectionResult(provider.LogPath, patterns);
+            result.SaveToFile(GetSaveFileName(fileInfo.DirectoryName, fileInfo.Name));
+
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(fileInfo.FullName);
 

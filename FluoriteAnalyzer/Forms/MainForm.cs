@@ -453,13 +453,22 @@ namespace FluoriteAnalyzer.Forms
             if (result == DialogResult.Cancel) { return; }
 
             var dinfo = new DirectoryInfo(folderBrowser.SelectedPath);
+
+            // Delete the xml, txt, dtr files
+            dinfo.DeleteAllFilesWithPattern("*.xml");
+            dinfo.DeleteAllFilesWithPattern("*.txt");
+            dinfo.DeleteAllFilesWithPattern("*.dtr");
+
+            // Run the analyses
             var dirs = dinfo.GetDirectories("p*", SearchOption.TopDirectoryOnly);
 
             dirs.AsParallel()
                 .Select(new UnzipFilter().Compute)
+                .Select(new FixClosingFilter().Compute)
                 .Select(new MergeFilter().Compute)
                 .Select(new RemoveTyposFilter().Compute)
                 .Select(new DetectMovesFilter().Compute)
+                .Select(new DetectBacktrackingFilter().Compute)
                 .ToList();
 
             // Save the last selected path.
