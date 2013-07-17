@@ -454,10 +454,11 @@ namespace FluoriteAnalyzer.Forms
 
             var dinfo = new DirectoryInfo(folderBrowser.SelectedPath);
 
-            // Delete the xml, txt, dtr files
-            dinfo.DeleteAllFilesWithPattern("*.xml");
-            dinfo.DeleteAllFilesWithPattern("*.txt");
-            dinfo.DeleteAllFilesWithPattern("*.dtr");
+            // Save the last selected path.
+            Profiles.GetInstance().LastPipelineAnalysisPath = folderBrowser.SelectedPath;
+            Profiles.Save();
+
+            CleanPipelinedAnalysisResults(dinfo);
 
             // Run the analyses
             var dirs = dinfo.GetDirectories("p*", SearchOption.TopDirectoryOnly);
@@ -470,10 +471,32 @@ namespace FluoriteAnalyzer.Forms
                 .Select(new DetectMovesFilter().Compute)
                 .Select(new DetectBacktrackingFilter().Compute)
                 .ToList();
+        }
+
+        private static void CleanPipelinedAnalysisResults(DirectoryInfo dinfo)
+        {
+            // Delete the xml, lck, txt, dtr files
+            dinfo.DeleteAllFilesWithPattern("*.xml");
+            dinfo.DeleteAllFilesWithPattern("*.lck");
+            dinfo.DeleteAllFilesWithPattern("*.txt");
+            dinfo.DeleteAllFilesWithPattern("*.dtr");
+        }
+
+        private void cleanPipelinedAnalysisResultsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var folderBrowser = new FolderBrowserDialog();
+            folderBrowser.SelectedPath = Profiles.GetInstance().LastPipelineAnalysisPath;
+            DialogResult result = folderBrowser.ShowDialog();
+
+            if (result == DialogResult.Cancel) { return; }
+
+            var dinfo = new DirectoryInfo(folderBrowser.SelectedPath);
 
             // Save the last selected path.
             Profiles.GetInstance().LastPipelineAnalysisPath = folderBrowser.SelectedPath;
             Profiles.Save();
+
+            CleanPipelinedAnalysisResults(dinfo);
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
