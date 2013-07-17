@@ -15,14 +15,14 @@ namespace FluoriteAnalyzer.PatternDetectors
             PatternLength = patternLength;
             Description = description;
 
-            _involvingEvents = new List<KeyValuePair<string, int>>();
+            _involvingEvents = new List<Tuple<string, int>>();
         }
 
         public Event PrimaryEvent { get; private set; }
         public int PatternLength { get; private set; }
         public string Description { get; private set; }
 
-        private List<KeyValuePair<string, int>> _involvingEvents;
+        private List<Tuple<string, int>> _involvingEvents;
 
         public override string ToString()
         {
@@ -31,20 +31,20 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         public void AddInvolvingEvent(string description, int id)
         {
-            _involvingEvents.Add(new KeyValuePair<string, int>(description, id));
+            _involvingEvents.Add(Tuple.Create(description, id));
         }
 
-        public IEnumerable<KeyValuePair<string, int>> GetInvolvingEvents()
+        public IEnumerable<Tuple<string, int>> GetInvolvingEvents()
         {
             if (_involvingEvents.Count == 0)
             {
                 if (PrimaryEvent != null)
                 {
-                    return new KeyValuePair<string, int>[] { new KeyValuePair<string, int>("Primary Event", PrimaryEvent.ID) };
+                    return new Tuple<string, int>[] { Tuple.Create("Primary Event", PrimaryEvent.ID) };
                 }
                 else
                 {
-                    return Enumerable.Empty<KeyValuePair<string, int>>();
+                    return Enumerable.Empty<Tuple<string, int>>();
                 }
             }
             else

@@ -82,8 +82,8 @@ namespace FluoriteAnalyzer.Analyses
                 PatternInstance instance = item.Tag as PatternInstance;
                 foreach (var pair in instance.GetInvolvingEvents())
                 {
-                    ToolStripMenuItem menuItem = new ToolStripMenuItem(pair.Key);
-                    int targetID = pair.Value;
+                    ToolStripMenuItem menuItem = new ToolStripMenuItem(pair.Item1);
+                    int targetID = pair.Item2;
 
                     menuItem.Click += delegate(object s, EventArgs ea)
                     {
