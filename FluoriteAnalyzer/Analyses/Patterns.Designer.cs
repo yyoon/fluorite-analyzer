@@ -38,6 +38,8 @@
             this.comboDetectors = new System.Windows.Forms.ComboBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.buttonLoadResults = new System.Windows.Forms.Button();
+            this.buttonSaveResults = new System.Windows.Forms.Button();
             this.snapshotPreview1 = new FluoriteAnalyzer.Forms.Controls.SnapshotPreview();
             this.snapshotPreview2 = new FluoriteAnalyzer.Forms.Controls.SnapshotPreview();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -52,9 +54,9 @@
             // 
             // listViewPatterns
             // 
-            this.listViewPatterns.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.listViewPatterns.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewPatterns.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnPatternID,
             this.columnPatternLength,
@@ -108,7 +110,7 @@
             this.buttonDetectPatterns.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.buttonDetectPatterns.Location = new System.Drawing.Point(206, 475);
             this.buttonDetectPatterns.Name = "buttonDetectPatterns";
-            this.buttonDetectPatterns.Size = new System.Drawing.Size(200, 21);
+            this.buttonDetectPatterns.Size = new System.Drawing.Size(100, 21);
             this.buttonDetectPatterns.TabIndex = 2;
             this.buttonDetectPatterns.Text = "Detect Patterns";
             this.buttonDetectPatterns.UseVisualStyleBackColor = true;
@@ -132,6 +134,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.buttonSaveResults);
+            this.splitContainer1.Panel1.Controls.Add(this.buttonLoadResults);
             this.splitContainer1.Panel1.Controls.Add(this.listViewPatterns);
             this.splitContainer1.Panel1.Controls.Add(this.comboDetectors);
             this.splitContainer1.Panel1.Controls.Add(this.buttonDetectPatterns);
@@ -161,6 +165,28 @@
             this.splitContainer2.SplitterDistance = 248;
             this.splitContainer2.TabIndex = 0;
             this.splitContainer2.DoubleClick += new System.EventHandler(this.splitContainer2_DoubleClick);
+            // 
+            // buttonLoadResults
+            // 
+            this.buttonLoadResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonLoadResults.Location = new System.Drawing.Point(357, 474);
+            this.buttonLoadResults.Name = "buttonLoadResults";
+            this.buttonLoadResults.Size = new System.Drawing.Size(100, 21);
+            this.buttonLoadResults.TabIndex = 3;
+            this.buttonLoadResults.Text = "Load Results";
+            this.buttonLoadResults.UseVisualStyleBackColor = true;
+            this.buttonLoadResults.Click += new System.EventHandler(this.buttonLoadResults_Click);
+            // 
+            // buttonSaveResults
+            // 
+            this.buttonSaveResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonSaveResults.Location = new System.Drawing.Point(463, 474);
+            this.buttonSaveResults.Name = "buttonSaveResults";
+            this.buttonSaveResults.Size = new System.Drawing.Size(100, 21);
+            this.buttonSaveResults.TabIndex = 4;
+            this.buttonSaveResults.Text = "Save Results";
+            this.buttonSaveResults.UseVisualStyleBackColor = true;
+            this.buttonSaveResults.Click += new System.EventHandler(this.buttonSaveResults_Click);
             // 
             // snapshotPreview1
             // 
@@ -212,5 +238,7 @@
         private System.Windows.Forms.SplitContainer splitContainer2;
         private Forms.Controls.SnapshotPreview snapshotPreview1;
         private Forms.Controls.SnapshotPreview snapshotPreview2;
+        private System.Windows.Forms.Button buttonSaveResults;
+        private System.Windows.Forms.Button buttonLoadResults;
     }
 }
