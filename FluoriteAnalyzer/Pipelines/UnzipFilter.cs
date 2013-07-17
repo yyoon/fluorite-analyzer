@@ -56,6 +56,17 @@ namespace FluoriteAnalyzer.Pipelines
                 var logFiles = input.GetFiles("*.xml", SearchOption.AllDirectories);
                 foreach (var logFile in logFiles)
                 {
+                    // Open the file and check if it has at least "<Events" tag.
+                    using (StreamReader reader = new StreamReader(logFile.FullName, Encoding.Default))
+                    {
+                        if (!reader.ReadToEnd().Contains("<Events"))
+                        {
+                            reader.Close();
+                            logFile.Delete();
+                            continue;
+                        }
+                    }
+
                     if (logFile.DirectoryName != input.FullName)
                     {
                         // Move the file!
@@ -69,7 +80,7 @@ namespace FluoriteAnalyzer.Pipelines
             var subDirs = input.GetDirectories();
             foreach (var subDir in subDirs)
             {
-                subDir.Delete();
+                subDir.Delete(true);
             }
 
             return input;
