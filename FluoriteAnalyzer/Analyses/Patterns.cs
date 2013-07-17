@@ -109,16 +109,7 @@ namespace FluoriteAnalyzer.Analyses
 
         private void LoadPatterns(string filePath)
         {
-            // Deserialize
-            IFormatter formatter = new BinaryFormatter();
-            using (Stream stream = new FileStream(filePath, FileMode.Open))
-            {
-                DetectionResult result = formatter.Deserialize(stream) as DetectionResult;
-                if (result != null)
-                {
-                    LoadPatterns(result);
-                }
-            }
+            LoadPatterns(DetectionResult.LoadFromFile(filePath));
         }
 
         private void LoadPatterns(DetectionResult result)
@@ -153,12 +144,7 @@ namespace FluoriteAnalyzer.Analyses
                     .Select(x => x.Tag)
                     .Cast<PatternInstance>());
 
-            // Serialize
-            IFormatter formatter = new BinaryFormatter();
-            using (Stream stream = new FileStream(saveFilePath, FileMode.Create))
-            {
-                formatter.Serialize(stream, result);
-            }
+            result.SaveToFile(saveFilePath);
         }
 
         private void buttonDetectPatterns_Click(object sender, EventArgs e)

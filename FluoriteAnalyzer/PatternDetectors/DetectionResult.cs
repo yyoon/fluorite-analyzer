@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
 namespace FluoriteAnalyzer.PatternDetectors
@@ -27,5 +30,26 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         public string LogPath { get; private set; }
         public ReadOnlyCollection<PatternInstance> PatternInstances { get; private set; }
+
+        public void SaveToFile(string filePath)
+        {
+            // Serialize
+            IFormatter formatter = new BinaryFormatter();
+            using (Stream stream = new FileStream(filePath, FileMode.Create))
+            {
+                formatter.Serialize(stream, this);
+            }
+        }
+
+        public static DetectionResult LoadFromFile(string filePath)
+        {
+            // Deserialize
+            IFormatter formatter = new BinaryFormatter();
+            using (Stream stream = new FileStream(filePath, FileMode.Open))
+            {
+                DetectionResult result = formatter.Deserialize(stream) as DetectionResult;
+                return result;
+            }
+        }
     }
 }
