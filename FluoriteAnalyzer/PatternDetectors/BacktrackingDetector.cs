@@ -195,6 +195,16 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void ProcessInsert(Event anEvent, int offset, string insertedText)
         {
+            // Check if the offset and length are in valid range.
+            if (Snapshots[CurrentFile] != null)
+            {
+                if (offset < 0 || offset > Snapshots[CurrentFile].Length)
+                {
+                    ResetCurrentFile();
+                    return;
+                }
+            }
+
             ProcessInsertType1(anEvent, offset, insertedText);
             ProcessInsertType2(anEvent, offset, insertedText);
 
@@ -284,6 +294,16 @@ namespace FluoriteAnalyzer.PatternDetectors
             // Current snapshot.
             string snapshot = Snapshots[CurrentFile];
 
+            // Check if the offset and length are in valid range.
+            if (snapshot != null)
+            {
+                if (offset < 0 || offset + length >= snapshot.Length)
+                {
+                    ResetCurrentFile();
+                    return;
+                }
+            }
+
             // Deleted text
             string deletedText = snapshot == null ? null : snapshot.Substring(offset, length);
 
@@ -296,6 +316,12 @@ namespace FluoriteAnalyzer.PatternDetectors
                 snapshot = snapshot.Substring(0, offset) + snapshot.Substring(offset + length);
                 Snapshots[CurrentFile] = snapshot;
             }
+        }
+
+        private void ResetCurrentFile()
+        {
+            Snapshots[CurrentFile] = null;
+            InsertSegments[CurrentFile].Clear();
         }
 
         private void ProcessDeleteType1(Event anEvent, int offset, int length, string deletedText)
