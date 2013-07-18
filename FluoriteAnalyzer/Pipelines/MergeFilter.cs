@@ -84,7 +84,10 @@ namespace FluoriteAnalyzer.Pipelines
             long baseTimestamp = long.Parse(root.Attributes["startTimestamp"].Value);
 
             // last id + 1
-            long id = long.Parse(root.LastChild.Attributes["__id"].Value) + 1;
+            long id = root.LastChild != null
+                ? long.Parse(root.LastChild.Attributes["__id"].Value) + 1
+                : 0;
+
             List<XmlComment> comments = new List<XmlComment>();
             comments.Add(GenerateCommentForFile(mergedLog, fileInfos[0], 0, id));
 
