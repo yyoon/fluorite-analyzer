@@ -102,6 +102,8 @@ namespace FluoriteAnalyzer.Pipelines
                     long delta = startTimestamp - baseTimestamp;
                     long startID = id;
 
+                    List<XmlNode> candidateNodes = new List<XmlNode>();
+
                     foreach (XmlNode node in subsequentLog.DocumentElement.ChildNodes)
                     {
                         XmlNode copiedNode = mergedLog.ImportNode(node, true);
@@ -118,14 +120,20 @@ namespace FluoriteAnalyzer.Pipelines
                         }
 
                         ++id;
-                        root.AppendChild(copiedNode);
+                        candidateNodes.Add(copiedNode);
                     }
 
+                    foreach (var node in candidateNodes)
+                    {
+                        root.AppendChild(node);
+                    }
                     comments.Add(GenerateCommentForFile(mergedLog, fileInfo, startID, id));
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Exception thrown while processing \"" + fileInfo.FullName + "\"", e);
+                    AppendResult(
+                        fileInfo.Directory.Parent.FullName, fileInfo.Directory.Name,
+                        "Exception thrown while processing \"" + fileInfo.FullName + "\"");
                 }
             }
 

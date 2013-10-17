@@ -466,16 +466,23 @@ namespace FluoriteAnalyzer.Forms
                 {
                     MessageBox.Show("Start Analyses");
 
-                    var dirs = dinfo.GetDirectories("p*", SearchOption.TopDirectoryOnly);
+                    try
+                    {
+                        var dirs = dinfo.GetDirectories("p*", SearchOption.TopDirectoryOnly);
 
-                    dirs.AsParallel()
-                        .Select(new UnzipFilter().Compute)
-                        .Select(new FixClosingFilter().Compute)
-                        .Select(new MergeFilter().Compute)
-                        .Select(new RemoveTyposFilter().Compute)
-                        .Select(new DetectMovesFilter().Compute)
-                        .Select(new DetectBacktrackingFilter().Compute)
-                        .ToList();
+                        dirs.AsParallel()
+                            .Select(new UnzipFilter().Compute)
+                            .Select(new FixClosingFilter().Compute)
+                            .Select(new MergeFilter().Compute)
+                            .Select(new RemoveTyposFilter().Compute)
+                            .Select(new DetectMovesFilter().Compute)
+                            .Select(new DetectBacktrackingFilter().Compute)
+                            .ToList();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.ToString(), "Exception thrown");
+                    }
 
                     MessageBox.Show("Completed!");
                 }));
