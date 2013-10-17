@@ -1,6 +1,7 @@
-/bin
-/obj
-TestResults/
+**/bin/*
+**/obj/*
+**/TestResults/*
 ReSharper
-.suo$
-packages
+*.suo
+**/packages/*
+packages.*
