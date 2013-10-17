@@ -12,6 +12,7 @@ using FluoriteAnalyzer.Properties;
 using FluoriteAnalyzer.Utils;
 using System.Text;
 using FluoriteAnalyzer.Pipelines;
+using System.Threading;
 
 namespace FluoriteAnalyzer.Forms
 {
@@ -460,17 +461,26 @@ namespace FluoriteAnalyzer.Forms
 
             CleanPipelinedAnalysisResults(dinfo);
 
-            // Run the analyses
-            var dirs = dinfo.GetDirectories("p*", SearchOption.TopDirectoryOnly);
+            // Run the analyses in a different thread.
+            Thread worker = new Thread(new ThreadStart(delegate()
+                {
+                    MessageBox.Show("Start Analyses");
 
-            dirs.AsParallel()
-                .Select(new UnzipFilter().Compute)
-                .Select(new FixClosingFilter().Compute)
-                .Select(new MergeFilter().Compute)
-                .Select(new RemoveTyposFilter().Compute)
-                .Select(new DetectMovesFilter().Compute)
-                .Select(new DetectBacktrackingFilter().Compute)
-                .ToList();
+                    var dirs = dinfo.GetDirectories("p*", SearchOption.TopDirectoryOnly);
+
+                    dirs.AsParallel()
+                        .Select(new UnzipFilter().Compute)
+                        .Select(new FixClosingFilter().Compute)
+                        .Select(new MergeFilter().Compute)
+                        .Select(new RemoveTyposFilter().Compute)
+                        .Select(new DetectMovesFilter().Compute)
+                        .Select(new DetectBacktrackingFilter().Compute)
+                        .ToList();
+
+                    MessageBox.Show("Completed!");
+                }));
+
+            worker.Start();
         }
 
         private static void CleanPipelinedAnalysisResults(DirectoryInfo dinfo)
