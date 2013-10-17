@@ -93,33 +93,40 @@ namespace FluoriteAnalyzer.Pipelines
 
             foreach (FileInfo fileInfo in fileInfos.Skip(1))
             {
-                var subsequentLog = new XmlDocument();
-                subsequentLog.Load(fileInfo.FullName);
-
-                long startTimestamp = long.Parse(subsequentLog.DocumentElement.Attributes["startTimestamp"].Value);
-                long delta = startTimestamp - baseTimestamp;
-                long startID = id;
-
-                foreach (XmlNode node in subsequentLog.DocumentElement.ChildNodes)
+                try
                 {
-                    XmlNode copiedNode = mergedLog.ImportNode(node, true);
-                    foreach (XmlAttribute attr in copiedNode.Attributes)
+                    var subsequentLog = new XmlDocument();
+                    subsequentLog.Load(fileInfo.FullName);
+
+                    long startTimestamp = long.Parse(subsequentLog.DocumentElement.Attributes["startTimestamp"].Value);
+                    long delta = startTimestamp - baseTimestamp;
+                    long startID = id;
+
+                    foreach (XmlNode node in subsequentLog.DocumentElement.ChildNodes)
                     {
-                        if (attr.Name.StartsWith("timestamp"))
+                        XmlNode copiedNode = mergedLog.ImportNode(node, true);
+                        foreach (XmlAttribute attr in copiedNode.Attributes)
                         {
-                            attr.Value = (long.Parse(attr.Value) + delta).ToString();
+                            if (attr.Name.StartsWith("timestamp"))
+                            {
+                                attr.Value = (long.Parse(attr.Value) + delta).ToString();
+                            }
+                            else if (attr.Name == "__id")
+                            {
+                                attr.Value = id.ToString();
+                            }
                         }
-                        else if (attr.Name == "__id")
-                        {
-                            attr.Value = id.ToString();
-                        }
+
+                        ++id;
+                        root.AppendChild(copiedNode);
                     }
 
-                    ++id;
-                    root.AppendChild(copiedNode);
+                    comments.Add(GenerateCommentForFile(mergedLog, fileInfo, startID, id));
                 }
-
-                comments.Add(GenerateCommentForFile(mergedLog, fileInfo, startID, id));
+                catch (Exception e)
+                {
+                    throw new Exception("Exception thrown while processing \"" + fileInfo.FullName + "\"", e);
+                }
             }
 
             var refChild = mergedLog.FirstChild;
