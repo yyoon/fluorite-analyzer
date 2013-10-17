@@ -124,6 +124,11 @@ namespace FluoriteAnalyzer.PatternDetectors
                         ProcessInsert(replace, replace.Offset, replace.InsertedText);
                     }
                 }
+                else if (dcList[i] is Move)
+                {
+                    // Process the snapshot, but don't count this as backtracking...? How??
+                    Move move = (Move)dcList[i];
+                }
             }
 
             return Patterns;
@@ -422,6 +427,11 @@ namespace FluoriteAnalyzer.PatternDetectors
                 return false;
             }
 
+            if (deletedText.StartsWith("import"))
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -434,6 +444,11 @@ namespace FluoriteAnalyzer.PatternDetectors
 
             // Size heuristic.
             if (insertedText.Trim().Length < TYPE2_SIZE_THRESHOLD)
+            {
+                return false;
+            }
+
+            if (insertedText.Contains("TODO Auto-generated"))
             {
                 return false;
             }
