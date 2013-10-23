@@ -29,9 +29,6 @@ namespace FluoriteAnalyzer.PatternDetectors
         {
             get
             {
-                long t1 = Event1.Timestamp2 ?? Event1.Timestamp;
-                long t2 = Event2.Timestamp2 ?? Event2.Timestamp;
-
                 return string.Join(", ",
                     new object[]
                     {
@@ -39,9 +36,9 @@ namespace FluoriteAnalyzer.PatternDetectors
                         Event1.ID,
                         Event2.ID,
                         Event2.ID - Event1.ID,
-                        t1,
-                        t2,
-                        t2 - t1,
+                        Event1.EndTimestamp,
+                        Event2.EndTimestamp,
+                        Event2.EndTimestamp - Event1.EndTimestamp,
                     });
             }
         }
