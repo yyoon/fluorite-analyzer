@@ -145,6 +145,12 @@ namespace FluoriteAnalyzer.Analyses
                     .Cast<PatternInstance>());
 
             result.SaveToFile(saveFilePath);
+
+            // Also export to csv
+            string csvFilePath = Path.Combine(
+                Path.GetDirectoryName(saveFilePath),
+                Path.GetFileNameWithoutExtension(saveFilePath) + ".csv");
+            result.ExportToCSV(csvFilePath);
         }
 
         private void buttonDetectPatterns_Click(object sender, EventArgs e)

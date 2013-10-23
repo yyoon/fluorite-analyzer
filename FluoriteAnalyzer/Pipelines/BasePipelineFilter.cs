@@ -35,11 +35,16 @@ namespace FluoriteAnalyzer.Pipelines
 
         protected string GetSaveFileName(string outputDir, string inputName)
         {
+            return GetSaveFileName(outputDir, inputName, "dtr");
+        }
+
+        protected string GetSaveFileName(string outputDir, string inputName, string ext)
+        {
             StackTrace stackTrace = new StackTrace();
             MethodBase methodBase = stackTrace.GetFrame(1).GetMethod();
 
             string className = methodBase.DeclaringType.Name;
-            string fileName = string.Format("{0}_{1}.dtr", Path.GetFileNameWithoutExtension(inputName), className);
+            string fileName = string.Format("{0}_{1}.{2}", Path.GetFileNameWithoutExtension(inputName), className, ext);
 
             return Path.Combine(outputDir, fileName);
         }
