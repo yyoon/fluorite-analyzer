@@ -427,7 +427,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 return false;
             }
 
-            if (deletedText.StartsWith("import"))
+            if (deletedText.Trim().StartsWith("import"))
             {
                 return false;
             }
