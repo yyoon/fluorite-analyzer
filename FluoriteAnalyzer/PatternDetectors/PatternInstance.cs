@@ -22,6 +22,14 @@ namespace FluoriteAnalyzer.PatternDetectors
         public int PatternLength { get; private set; }
         public string Description { get; private set; }
 
+        public virtual string CSVLine
+        {
+            get
+            {
+                return string.Empty;
+            }
+        }
+
         private List<Tuple<string, int>> _involvingEvents;
 
         public override string ToString()
