@@ -51,5 +51,26 @@ namespace FluoriteAnalyzer.PatternDetectors
                 return result;
             }
         }
+
+        public void ExportToCSV(string filePath)
+        {
+            using (StreamWriter writer = new StreamWriter(filePath))
+            {
+                foreach (var pattern in PatternInstances)
+                {
+                    string filename = Path.GetFileNameWithoutExtension(LogPath);
+                    int underscoreIndex = filename.IndexOf('_');
+                    string pid = underscoreIndex == -1
+                        ? filename
+                        : filename.Substring(0, underscoreIndex);
+
+                    writer.WriteLine(string.Join(", ", new object[]
+                    {
+                        pid,
+                        pattern.CSVLine
+                    }));
+                }
+            }
+        }
     }
 }

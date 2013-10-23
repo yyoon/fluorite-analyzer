@@ -39,6 +39,7 @@ namespace FluoriteAnalyzer.Pipelines
             // Save the results to a file.
             DetectionResult result = new DetectionResult(provider.LogPath, patterns);
             result.SaveToFile(GetSaveFileName(input.DirectoryName, input.Name));
+            result.ExportToCSV(GetSaveFileName(input.DirectoryName, input.Name, "csv"));
 
             // Return the original input.
             return input;
