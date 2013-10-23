@@ -77,6 +77,8 @@ namespace FluoriteAnalyzer.Pipelines
 
         private void Merge(List<FileInfo> fileInfos, string mergedFilePath)
         {
+            fileInfos = fileInfos.OrderBy(x => x.Name).ToList();
+
             var mergedLog = new XmlDocument();
             mergedLog.Load(fileInfos[0].FullName);
 
