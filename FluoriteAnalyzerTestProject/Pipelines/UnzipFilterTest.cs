@@ -23,7 +23,7 @@ namespace FluoriteAnalyzer.Pipelines
             Assert.AreEqual(dinfo.FullName, result.FullName);
 
             // All the files should be there
-            Assert.AreEqual(5, dinfo.GetFiles("*.xml").Length);
+            Assert.AreEqual(3, dinfo.GetFiles("*.xml").Length);
 
             // No *.lck files
             Assert.AreEqual(0, dinfo.GetFiles("*.lck").Length);
