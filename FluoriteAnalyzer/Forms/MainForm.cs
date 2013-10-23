@@ -459,44 +459,11 @@ namespace FluoriteAnalyzer.Forms
             Profiles.GetInstance().LastPipelineAnalysisPath = folderBrowser.SelectedPath;
             Profiles.Save();
 
-            CleanPipelinedAnalysisResults(dinfo);
-
-            // Run the analyses in a different thread.
-            Thread worker = new Thread(new ThreadStart(delegate()
-                {
-                    MessageBox.Show("Start Analyses");
-
-                    try
-                    {
-                        var dirs = dinfo.GetDirectories("p*", SearchOption.TopDirectoryOnly);
-
-                        dirs.AsParallel()
-                            .Select(new UnzipFilter().Compute)
-                            .Select(new FixClosingFilter().Compute)
-                            .Select(new MergeFilter().Compute)
-                            .Select(new RemoveTyposFilter().Compute)
-                            .Select(new DetectMovesFilter().Compute)
-                            .Select(new DetectBacktrackingFilter().Compute)
-                            .ToList();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString(), "Exception thrown");
-                    }
-
-                    MessageBox.Show("Completed!");
-                }));
-
-            worker.Start();
-        }
-
-        private static void CleanPipelinedAnalysisResults(DirectoryInfo dinfo)
-        {
-            // Delete the xml, lck, txt, dtr files
-            dinfo.DeleteAllFilesWithPattern("*.xml");
-            dinfo.DeleteAllFilesWithPattern("*.lck");
-            dinfo.DeleteAllFilesWithPattern("*.txt");
-            dinfo.DeleteAllFilesWithPattern("*.dtr");
+            PipelinedAnalysis.PerformAnalysis(
+                dinfo,
+                delegate() { MessageBox.Show("StartAnalyses"); },
+                delegate() { MessageBox.Show("Completed!"); },
+                delegate(Exception ex) { MessageBox.Show(ex.ToString(), "Exception thrown"); });
         }
 
         private void cleanPipelinedAnalysisResultsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -513,7 +480,7 @@ namespace FluoriteAnalyzer.Forms
             Profiles.GetInstance().LastPipelineAnalysisPath = folderBrowser.SelectedPath;
             Profiles.Save();
 
-            CleanPipelinedAnalysisResults(dinfo);
+            PipelinedAnalysis.CleanPipelinedAnalysisResults(dinfo);
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)

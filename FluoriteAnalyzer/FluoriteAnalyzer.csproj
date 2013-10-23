@@ -230,6 +230,7 @@
     <Compile Include="Pipelines\IPipelineFilter.cs" />
     <Compile Include="Pipelines\MergeFilter.cs" />
     <Compile Include="Pipelines\MissingParameterException.cs" />
+    <Compile Include="Pipelines\PipelinedAnalysis.cs" />
     <Compile Include="Pipelines\RemoveTypoFilter.cs" />
     <Compile Include="Pipelines\UnzipFilter.cs" />
     <Compile Include="Program.cs" />
