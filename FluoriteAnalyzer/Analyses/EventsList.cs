@@ -117,6 +117,9 @@ namespace FluoriteAnalyzer.Analyses
                 listViewEvents.Items.Add(item);
             }
 
+            // Number of Items.
+            labelNumItems.Text = listViewEvents.Items.Count.ToString();
+
             // Restore the selected item to be selected.
             SelectClosestEventByID(lastSelectedID);
         }

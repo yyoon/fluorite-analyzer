@@ -8,7 +8,8 @@ using System.IO;
 
 namespace FluoriteAnalyzer.PatternDetectors
 {
-    class OperationConflictPatternInstance : PatternInstance
+    [Serializable]
+    class OperationConflictPatternInstance : PatternInstance, IPreviewablePatternInstance
     {
         public OperationConflictPatternInstance(Event primaryEvent, int patternLength, string description,
             DocumentChange before, DocumentChange after, string conflictType)
@@ -37,6 +38,16 @@ namespace FluoriteAnalyzer.PatternDetectors
             builder.AppendLine(string.Format("[{0}, cmdID: {1}]", pID, After.ID));
 
             Clipboard.SetText(builder.ToString());
+        }
+
+        public int FirstID
+        {
+            get { return Before.ID; }
+        }
+
+        public int SecondID
+        {
+            get { return After.ID; }
         }
     }
 }

@@ -34,6 +34,8 @@
             this.splitContainer = new System.Windows.Forms.SplitContainer();
             this.treeEvents = new System.Windows.Forms.TreeView();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.labelNumItems = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.listViewEvents = new FluoriteAnalyzer.Forms.Controls.ListViewNF();
             this.columnID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnTimestamp = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -102,9 +104,9 @@
             // 
             // splitContainer
             // 
-            this.splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer.Location = new System.Drawing.Point(0, 0);
             this.splitContainer.Name = "splitContainer";
@@ -139,6 +141,8 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.labelNumItems);
+            this.splitContainer2.Panel1.Controls.Add(this.label1);
             this.splitContainer2.Panel1.Controls.Add(this.listViewEvents);
             // 
             // splitContainer2.Panel2
@@ -149,8 +153,30 @@
             this.splitContainer2.SplitterDistance = 317;
             this.splitContainer2.TabIndex = 1;
             // 
+            // labelNumItems
+            // 
+            this.labelNumItems.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelNumItems.AutoSize = true;
+            this.labelNumItems.Location = new System.Drawing.Point(117, 304);
+            this.labelNumItems.Name = "labelNumItems";
+            this.labelNumItems.Size = new System.Drawing.Size(0, 13);
+            this.labelNumItems.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 304);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(108, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "# of Items in the List: ";
+            // 
             // listViewEvents
             // 
+            this.listViewEvents.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewEvents.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnID,
             this.columnTimestamp,
@@ -158,14 +184,13 @@
             this.columnCategory,
             this.columnType,
             this.columnParameters});
-            this.listViewEvents.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listViewEvents.FullRowSelect = true;
             this.listViewEvents.HideSelection = false;
             this.listViewEvents.Location = new System.Drawing.Point(0, 0);
             this.listViewEvents.MultiSelect = false;
             this.listViewEvents.Name = "listViewEvents";
             this.listViewEvents.ShowItemToolTips = true;
-            this.listViewEvents.Size = new System.Drawing.Size(496, 317);
+            this.listViewEvents.Size = new System.Drawing.Size(496, 301);
             this.listViewEvents.TabIndex = 0;
             this.listViewEvents.UseCompatibleStateImageBehavior = false;
             this.listViewEvents.View = System.Windows.Forms.View.Details;
@@ -211,9 +236,9 @@
             // 
             // textParameters
             // 
-            this.textParameters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.textParameters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.textParameters.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textParameters.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textParameters.Location = new System.Drawing.Point(3, 15);
@@ -247,6 +272,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).EndInit();
             this.splitContainer.ResumeLayout(false);
             this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);
             this.splitContainer2.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
@@ -273,6 +299,8 @@
         private System.Windows.Forms.TextBox textParameters;
         private System.Windows.Forms.Button buttonGoto;
         private FluoriteAnalyzer.Forms.Controls.SnapshotPreview snapshotPreview;
+        private System.Windows.Forms.Label labelNumItems;
+        private System.Windows.Forms.Label label1;
 
     }
 }

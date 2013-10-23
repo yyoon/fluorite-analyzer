@@ -54,34 +54,44 @@ namespace FluoriteAnalyzer.Forms
                 case 0x00A1:    // WM_NCLBUTTONDOWN
                     if (ModifierKeys == Keys.Shift)
                     {
-                        this.WindowState = FormWindowState.Normal;
-                        this.BringToFront();
-
-                        if (this.Parent != null)
-                        {
-                            this.Location = new Point { X = 0, Y = 0 };
-                            this.Size = new Size { Width = this.Parent.ClientRectangle.Width / 2, Height = this.Parent.ClientRectangle.Height };
-                        }
+                        SnapLeft();
                     }
                     break;
 
                 case 0x00A4:    // WM_NCRBUTTONDOWN
                     if (ModifierKeys == Keys.Shift)
                     {
-                        this.WindowState = FormWindowState.Normal;
-                        this.BringToFront();
-
-                        if (this.Parent != null)
-                        {
-                            int halfWidth = Width = this.Parent.ClientRectangle.Width / 2;
-                            this.Location = new Point { X = halfWidth, Y = 0 };
-                            this.Size = new Size { Width = this.Parent.ClientRectangle.Width - halfWidth, Height = this.Parent.ClientRectangle.Height };
-                        }
+                        SnapRight();
                     }
                     break;
             }
 
             base.WndProc(ref m);
+        }
+
+        internal void SnapLeft()
+        {
+            this.WindowState = FormWindowState.Normal;
+            this.BringToFront();
+
+            if (this.Parent != null)
+            {
+                this.Location = new Point { X = 0, Y = 0 };
+                this.Size = new Size { Width = this.Parent.ClientRectangle.Width / 2, Height = this.Parent.ClientRectangle.Height };
+            }
+        }
+
+        internal void SnapRight()
+        {
+            this.WindowState = FormWindowState.Normal;
+            this.BringToFront();
+
+            if (this.Parent != null)
+            {
+                int halfWidth = Width = this.Parent.ClientRectangle.Width / 2;
+                this.Location = new Point { X = halfWidth, Y = 0 };
+                this.Size = new Size { Width = this.Parent.ClientRectangle.Width - halfWidth, Height = this.Parent.ClientRectangle.Height };
+            }
         }
     }
 }

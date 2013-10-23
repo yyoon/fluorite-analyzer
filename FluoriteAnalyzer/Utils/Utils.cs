@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
@@ -65,6 +66,14 @@ namespace FluoriteAnalyzer.Utils
                 container = control as ContainerControl;
             }
             return control;
+        }
+
+        public static void DeleteAllFilesWithPattern(this DirectoryInfo dinfo, string pattern)
+        {
+            foreach (var finfo in dinfo.GetFiles(pattern, SearchOption.AllDirectories))
+            {
+                finfo.Delete();
+            }
         }
     }
 }

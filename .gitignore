@@ -1,0 +1,7 @@
+**/bin/*
+**/obj/*
+**/TestResults/*
+ReSharper
+*.suo
+**/packages/*
+packages.*

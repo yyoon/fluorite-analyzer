@@ -11,6 +11,8 @@ using FluoriteAnalyzer.Events;
 using FluoriteAnalyzer.Properties;
 using FluoriteAnalyzer.Utils;
 using System.Text;
+using FluoriteAnalyzer.Pipelines;
+using System.Threading;
 
 namespace FluoriteAnalyzer.Forms
 {
@@ -25,6 +27,7 @@ namespace FluoriteAnalyzer.Forms
         }
 
         private LogProvider LogProvider { get; set; }
+        private bool loaded = false;
 
         #region Child analyze panels
 
@@ -43,6 +46,14 @@ namespace FluoriteAnalyzer.Forms
         {
             RecentFiles.Load();
             Profiles.Load();
+
+            Profiles profiles = Profiles.GetInstance();
+
+            Location = profiles.LastWindowLocation;
+            Size = profiles.LastWindowSize;
+            WindowState = profiles.LastWindowState;
+
+            this.loaded = true;
         }
 
         private void openLogToolStripMenuItem_Click(object sender, EventArgs e)
@@ -434,6 +445,44 @@ namespace FluoriteAnalyzer.Forms
             countFiles.ShowDialog(this);
         }
 
+        private void performPipelinedAnalysisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var folderBrowser = new FolderBrowserDialog();
+            folderBrowser.SelectedPath = Profiles.GetInstance().LastPipelineAnalysisPath;
+            DialogResult result = folderBrowser.ShowDialog();
+
+            if (result == DialogResult.Cancel) { return; }
+
+            var dinfo = new DirectoryInfo(folderBrowser.SelectedPath);
+
+            // Save the last selected path.
+            Profiles.GetInstance().LastPipelineAnalysisPath = folderBrowser.SelectedPath;
+            Profiles.Save();
+
+            PipelinedAnalysis.PerformAnalysis(
+                dinfo,
+                delegate() { MessageBox.Show("StartAnalyses"); },
+                delegate() { MessageBox.Show("Completed!"); },
+                delegate(Exception ex) { MessageBox.Show(ex.ToString(), "Exception thrown"); });
+        }
+
+        private void cleanPipelinedAnalysisResultsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var folderBrowser = new FolderBrowserDialog();
+            folderBrowser.SelectedPath = Profiles.GetInstance().LastPipelineAnalysisPath;
+            DialogResult result = folderBrowser.ShowDialog();
+
+            if (result == DialogResult.Cancel) { return; }
+
+            var dinfo = new DirectoryInfo(folderBrowser.SelectedPath);
+
+            // Save the last selected path.
+            Profiles.GetInstance().LastPipelineAnalysisPath = folderBrowser.SelectedPath;
+            Profiles.Save();
+
+            PipelinedAnalysis.CleanPipelinedAnalysisResults(dinfo);
+        }
+
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             SaveCustomGroups();
@@ -460,7 +509,25 @@ namespace FluoriteAnalyzer.Forms
                         .Select(x => new ToolStripMenuItem(
                                          "&" + (x + 1) + ": " + RecentFiles.GetInstance().List[count - 1 - x],
                                          null,
-                                         delegate { OpenLog(RecentFiles.GetInstance().List[count - 1 - x]); }))
+                                         delegate
+                                         {
+                                             // Check if the file exists first.
+                                             string filePath = RecentFiles.GetInstance().List[count - 1 - x];
+                                             FileInfo finfo = new FileInfo(filePath);
+                                             if (finfo.Exists)
+                                             {
+                                                 OpenLog(filePath);
+                                             }
+                                             else
+                                             {
+                                                 MessageBox.Show(
+                                                     "The following file does not exist." + Environment.NewLine +
+                                                     "Removing it from the recent files list." + Environment.NewLine +
+                                                     Environment.NewLine +
+                                                     "\"" + filePath + "\"", "File not found");
+                                                 RecentFiles.GetInstance().Remove(filePath);
+                                             }
+                                         }))
                         .ToArray()
                     );
             }
@@ -474,7 +541,12 @@ namespace FluoriteAnalyzer.Forms
         private void windowToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
             // toolStripSeparator2 is the one under "Window" menu.
-            int sepIndex = windowToolStripMenuItem.DropDownItems.IndexOf(toolStripSeparator2);
+            int sepIndex = windowToolStripMenuItem.DropDownItems.IndexOf(toolStripSeparator3);
+
+            // Enable / Disable the snap menus.
+            bool focusedToolWindowExists = childToolWindows.Any(x => x.ContainsFocus);
+            snapCurrentWindowLeftToolStripMenuItem.Enabled = focusedToolWindowExists;
+            snapCurrentWindowRightToolStripMenuItem.Enabled = focusedToolWindowExists;
 
             // Clear the windows list
             while (windowToolStripMenuItem.DropDownItems.Count > sepIndex + 1)
@@ -570,6 +642,67 @@ namespace FluoriteAnalyzer.Forms
                 }
 
                 e.SuppressKeyPress = true;
+            }
+        }
+
+        private void snapCurrentWindowLeftToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SnapCurrentWindowLeft();
+        }
+
+        private void snapCurrentWindowRightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SnapCurrentWindowRight();
+        }
+
+        private void SnapCurrentWindowLeft()
+        {
+            if (childToolWindows.Any(x => x.ContainsFocus))
+            {
+                childToolWindows.First(x => x.ContainsFocus).SnapLeft();
+            }
+            else
+            {
+                MessageBox.Show("No focused tool window.");
+            }
+        }
+
+        private void SnapCurrentWindowRight()
+        {
+            if (childToolWindows.Any(x => x.ContainsFocus))
+            {
+                childToolWindows.First(x => x.ContainsFocus).SnapRight();
+            }
+            else
+            {
+                MessageBox.Show("No focused tool window.");
+            }
+        }
+
+        private void juxtaposePatternsEventsWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (childToolWindows.Any(x => x.Text == Resources.Form_Title_Patterns) &&
+                childToolWindows.Any(x => x.Text == Resources.Form_Title_EventsList))
+            {
+                childToolWindows.First(x => x.Text == Resources.Form_Title_Patterns).SnapLeft();
+                childToolWindows.First(x => x.Text == Resources.Form_Title_EventsList).SnapRight();
+            }
+        }
+
+        private void MainForm_LocationChanged(object sender, EventArgs e)
+        {
+            if (this.loaded)
+            {
+                Profiles.GetInstance().LastWindowLocation = Location;
+            }
+        }
+
+        private void MainForm_SizeChanged(object sender, EventArgs e)
+        {
+            if (this.loaded)
+            {
+                Profiles.GetInstance().LastWindowSize = Size;
+                Profiles.GetInstance().LastWindowState = WindowState;
             }
         }
     }

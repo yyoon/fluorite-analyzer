@@ -9,7 +9,7 @@
     <ProjectGuid>{0760F5B9-EF1E-45F1-9307-4F7F70EC1EE7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FluoriteAnalyzerTestProject</RootNamespace>
+    <RootNamespace>FluoriteAnalyzer</RootNamespace>
     <AssemblyName>FluoriteAnalyzerTestProject</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +32,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
@@ -47,6 +49,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MainTest.cs" />
+    <Compile Include="Pipelines\BaseFilterTest.cs" />
+    <Compile Include="Pipelines\MergeFilterTest.cs" />
+    <Compile Include="Pipelines\RemoveTyposFilterTest.cs" />
+    <Compile Include="Pipelines\DetectMovesFilterTest.cs" />
+    <Compile Include="Pipelines\UnzipFilterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -55,7 +62,12 @@
       <Name>FluoriteAnalyzer</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>rd /s /q "$(TargetDir)Data"
+xcopy /Y /S "$(ProjectDir)Data\*" "$(TargetDir)Data\*"</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

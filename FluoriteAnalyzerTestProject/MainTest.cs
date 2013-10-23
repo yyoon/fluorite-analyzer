@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace FluoriteAnalyzerTestProject
+namespace FluoriteAnalyzer
 {
     [TestClass]
     public class MainTest

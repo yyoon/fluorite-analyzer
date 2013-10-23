@@ -1,0 +1,182 @@
+<!--Original Log File: Log2013-06-13-22-36-54-445.xml, [0, 53)-->
+<!--Original Log File: Log2013-06-13-22-38-26-186.xml, [53, 72)-->
+<!--Original Log File: Log2013-06-13-22-39-40-973.xml, [72, 86)-->
+<Events startTimestamp="1371177414445" logVersion="0.7.0.qualifier">
+  <Command __id="0" _type="FileOpenCommand" docASTNodeCount="36" docActiveCodeLength="282" docExpressionCount="22" docLength="316" projectName="HelloSwing" timestamp="353">
+    <snapshot><![CDATA[package helloswing;
+
+import java.awt.Label;
+
+import javax.swing.JFrame;
+
+public class AboutFrame extends JFrame {
+
+	public AboutFrame() {
+		super();
+		
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		add(new Label("This is the about dialog!!"));
+		
+		// Inserted Something!
+		// Why unkno
+	}
+}
+]]></snapshot>
+    <filePath><![CDATA[D:\Programming\RuntimeWorkspaces\runtime-Azurite\HelloSwing\src\helloswing\AboutFrame.java]]></filePath>
+  </Command>
+  <Command __id="1" _type="MoveCaretCommand" caretOffset="286" docOffset="316" timestamp="874" />
+  <Command __id="2" _type="MoveCaretCommand" caretOffset="277" docOffset="307" timestamp="1821" />
+  <Command __id="3" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.lineStart" repeat="2" timestamp="2506" timestamp2="2593" />
+  <Command __id="5" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.SELECT_LINE_DOWN" timestamp="2828" />
+  <DocumentChange __id="6" _type="Delete" docASTNodeCount="36" docActiveCodeLength="278" docExpressionCount="22" docLength="300" endLine="17" length="16" offset="293" startLine="16" timestamp="2967">
+    <text><![CDATA[		// Why unkno
+]]></text>
+  </DocumentChange>
+  <Command __id="7" _type="EclipseCommand" commandID="org.eclipse.ui.edit.delete" timestamp="3059" />
+  <Command __id="8" _type="EclipseCommand" commandID="org.eclipse.ui.file.save" timestamp="3292" />
+  <Command __id="9" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.LINE_UP" repeat="6" timestamp="3321" timestamp2="4178" />
+  <Command __id="15" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.lineEnd" timestamp="4337" />
+  <Command __id="16" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.LINE_DOWN" repeat="4" timestamp="4562" timestamp2="5777" />
+  <Command __id="20" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.lineStart" timestamp="5969" />
+  <Command __id="21" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.SELECT_LINE_DOWN" repeat="2" timestamp="6411" timestamp2="6538" />
+  <DocumentChange __id="23" _type="Delete" docASTNodeCount="36" docActiveCodeLength="270" docExpressionCount="22" docLength="270" endLine="16" length="30" offset="263" startLine="14" timestamp="6709">
+    <text><![CDATA[		
+		// Inserted Something!
+]]></text>
+  </DocumentChange>
+  <Command __id="24" _type="EclipseCommand" commandID="org.eclipse.ui.edit.delete" timestamp="6745" />
+  <Command __id="25" _type="EclipseCommand" commandID="org.eclipse.ui.file.save" timestamp="6867" />
+  <Command __id="26" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.LINE_UP" timestamp="7038" />
+  <Command __id="27" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.lineEnd" timestamp="7121" />
+  <Command __id="28" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.LINE_UP" repeat="4" timestamp="9698" timestamp2="10113" />
+  <Command __id="32" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.textEnd" timestamp="11449" />
+  <Command __id="33" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.LINE_UP" repeat="5" timestamp="11681" timestamp2="12257" />
+  <Command __id="38" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.lineEnd" timestamp="12525" />
+  <Command __id="39" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.LINE_DOWN" repeat="2" timestamp="13970" timestamp2="14153" />
+  <Command __id="41" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.lineEnd" timestamp="14691" />
+  <Command __id="42" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.lineStart" repeat="2" timestamp="20813" timestamp2="20946" />
+  <Command __id="44" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.SELECT_LINE_DOWN" timestamp="21226" />
+  <DocumentChange __id="45" _type="Insert" docASTNodeCount="48" docActiveCodeLength="353" docExpressionCount="28" docLength="353" length="83" offset="265" repeat="4" timestamp="31808" timestamp2="31876">
+    <text><![CDATA[
+
+	private void addLabel() {
+		add(new Label("This is the about dialog!!"));
+	}]]></text>
+  </DocumentChange>
+  <DocumentChange __id="49" _type="Delete" docASTNodeCount="41" docActiveCodeLength="308" docExpressionCount="23" docLength="308" endLine="13" length="45" offset="216" startLine="13" timestamp="31889">
+    <text><![CDATA[add(new Label("This is the about dialog!!"));]]></text>
+  </DocumentChange>
+  <DocumentChange __id="50" _type="Insert" docASTNodeCount="44" docActiveCodeLength="319" docExpressionCount="25" docLength="319" length="11" offset="216" timestamp="31923">
+    <text><![CDATA[addLabel();]]></text>
+  </DocumentChange>
+  <Command __id="51" _type="EclipseCommand" commandID="org.eclipse.jdt.ui.edit.text.java.extract.method" timestamp="32121" />
+  <Command __id="52" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.textEnd" timestamp="32881" />
+  <Command __id="53" _type="FileOpenCommand" docASTNodeCount="44" docActiveCodeLength="319" docExpressionCount="25" docLength="319" projectName="HelloSwing" timestamp="92790">
+    <snapshot><![CDATA[package helloswing;
+
+import java.awt.Label;
+
+import javax.swing.JFrame;
+
+public class AboutFrame extends JFrame {
+
+	public AboutFrame() {
+		super();
+		
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		addLabel();
+	}
+
+	private void addLabel() {
+		add(new Label("This is the about dialog!!"));
+	}
+}
+]]></snapshot>
+    <filePath><![CDATA[D:\Programming\RuntimeWorkspaces\runtime-Azurite\HelloSwing\src\helloswing\AboutFrame.java]]></filePath>
+  </Command>
+  <Command __id="54" _type="MoveCaretCommand" caretOffset="289" docOffset="319" timestamp="92883" />
+  <Command __id="55" _type="MoveCaretCommand" caretOffset="131" docOffset="161" timestamp="102805" />
+  <Command __id="56" _type="MoveCaretCommand" caretOffset="201" docOffset="231" timestamp="103221" />
+  <Command __id="57" _type="EclipseCommand" commandID="edu.cmu.scs.azurite.ui.commands.readPreviousLog" timestamp="106453" />
+  <DocumentChange __id="58" _type="Replace" docASTNodeCount="48" docActiveCodeLength="353" docExpressionCount="28" docLength="353" endLine="13" insertionLength="45" int_docASTNodeCount="41" int_docActiveCodeLength="308" int_docExpressionCount="23" int_docLength="308" length="11" offset="216" startLine="13" timestamp="111981">
+    <insertedText><![CDATA[add(new Label("This is the about dialog!!"));]]></insertedText>
+    <deletedText><![CDATA[addLabel();]]></deletedText>
+  </DocumentChange>
+  <Command __id="59" _type="EclipseCommand" commandID="edu.cmu.scs.azurite.ui.commands.selectiveUndoCommand" timestamp="112027" />
+  <DocumentChange __id="60" _type="Delete" docASTNodeCount="36" docActiveCodeLength="270" docExpressionCount="22" docLength="270" endLine="18" length="83" offset="265" startLine="14" timestamp="121537">
+    <text><![CDATA[
+
+	private void addLabel() {
+		add(new Label("This is the about dialog!!"));
+	}]]></text>
+  </DocumentChange>
+  <Command __id="61" _type="EclipseCommand" commandID="edu.cmu.scs.azurite.ui.commands.selectiveUndoCommand" timestamp="121555" />
+  <Command __id="62" _type="MoveCaretCommand" caretOffset="240" docOffset="270" timestamp="122501" />
+  <Command __id="63" _type="EclipseCommand" commandID="org.eclipse.ui.file.save" timestamp="124067" />
+  <Command __id="64" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.LINE_UP" repeat="3" timestamp="129224" timestamp2="129473" />
+  <Command __id="65" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.lineEnd" timestamp="129659" />
+  <DocumentChange __id="66" _type="Insert" docASTNodeCount="36" docActiveCodeLength="278" docExpressionCount="22" docLength="307" length="37" offset="261" repeat="31" timestamp="131303" timestamp2="135586">
+    <text><![CDATA[
+		
+		// Something has been changed]]></text>
+  </DocumentChange>
+  <Command __id="67" _type="InsertStringCommand" timestamp="131336">
+    <data><![CDATA[]]></data>
+  </Command>
+  <Command __id="68" _type="InsertStringCommand" timestamp="131432">
+    <data><![CDATA[]]></data>
+  </Command>
+  <Command __id="69" _type="InsertStringCommand" repeat="29" timestamp="131695" timestamp2="135604">
+    <data><![CDATA[// Something has been changed]]></data>
+  </Command>
+  <DocumentChange __id="70" _type="Insert" docASTNodeCount="36" docActiveCodeLength="278" docExpressionCount="22" docLength="323" length="16" offset="298" repeat="16" timestamp="137902" timestamp2="142063">
+    <text><![CDATA[ without saving!]]></text>
+  </DocumentChange>
+  <Command __id="71" _type="InsertStringCommand" repeat="16" timestamp="137942" timestamp2="142102">
+    <data><![CDATA[ without saving!]]></data>
+  </Command>
+  <Command __id="72" _type="FileOpenCommand" docASTNodeCount="36" docActiveCodeLength="270" docExpressionCount="22" docLength="270" projectName="HelloSwing" timestamp="166555">
+    <snapshot><![CDATA[package helloswing;
+
+import java.awt.Label;
+
+import javax.swing.JFrame;
+
+public class AboutFrame extends JFrame {
+
+	public AboutFrame() {
+		super();
+		
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		add(new Label("This is the about dialog!!"));
+	}
+}
+]]></snapshot>
+    <filePath><![CDATA[D:\Programming\RuntimeWorkspaces\runtime-Azurite\HelloSwing\src\helloswing\AboutFrame.java]]></filePath>
+  </Command>
+  <Command __id="73" _type="MoveCaretCommand" caretOffset="0" docOffset="0" timestamp="166852" />
+  <Command __id="74" _type="MoveCaretCommand" caretOffset="240" docOffset="270" timestamp="171398" />
+  <Command __id="75" _type="MoveCaretCommand" caretOffset="178" docOffset="208" timestamp="172181" />
+  <Command __id="76" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.LINE_UP" repeat="6" timestamp="173225" timestamp2="173890" />
+  <Command __id="77" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.LINE_DOWN" timestamp="174466" />
+  <Command __id="78" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.wordPrevious" repeat="5" timestamp="175533" timestamp2="176114" />
+  <Command __id="79" _type="AssistCommand" assist_type="QUICK_ASSIST" auto_activated="false" start_end="START" timestamp="177145" />
+  <Command __id="80" _type="EclipseCommand" commandID="org.eclipse.jdt.ui.edit.text.java.correction.assist.proposals" timestamp="177412" />
+  <Command __id="81" _type="AssistCommand" assist_type="QUICK_ASSIST" auto_activated="false" start_end="END" timestamp="180349" />
+  <DocumentChange __id="82" _type="Insert" docASTNodeCount="44" docActiveCodeLength="326" docExpressionCount="24" docLength="341" length="71" offset="124" repeat="6" timestamp="180561" timestamp2="180678">
+    <text><![CDATA[/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	]]></text>
+  </DocumentChange>
+  <Command __id="83" _type="InsertStringCommand" timestamp="180761">
+    <data><![CDATA[]]></data>
+  </Command>
+  <Command __id="84" _type="EclipseCommand" commandID="org.eclipse.ui.edit.text.goto.textEnd" timestamp="182082" />
+  <Command __id="85" _type="EclipseCommand" commandID="org.eclipse.ui.file.save" timestamp="191185" />
+</Events>

@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluoriteAnalyzer", "FluoriteAnalyzer\FluoriteAnalyzer.csproj", "{A019DD70-2B9A-4146-836D-B1CBBC28B930}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluoriteAnalyzerTestProject", "FluoriteAnalyzerTestProject\FluoriteAnalyzerTestProject.csproj", "{0760F5B9-EF1E-45F1-9307-4F7F70EC1EE7}"
@@ -11,6 +11,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Local.testsettings = Local.testsettings
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A748911C-2563-4A0D-9EA1-BBEAE8CA8C2B}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluoriteAnalyzerPipelinedAnalysis", "FluoriteAnalyzerPipelinedAnalysis\FluoriteAnalyzerPipelinedAnalysis.csproj", "{B7BACE76-FE18-459D-A1FB-38237A0B2DF5}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -45,6 +53,16 @@ Global
 		{0760F5B9-EF1E-45F1-9307-4F7F70EC1EE7}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{0760F5B9-EF1E-45F1-9307-4F7F70EC1EE7}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{0760F5B9-EF1E-45F1-9307-4F7F70EC1EE7}.Release|x86.ActiveCfg = Release|Any CPU
+		{B7BACE76-FE18-459D-A1FB-38237A0B2DF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B7BACE76-FE18-459D-A1FB-38237A0B2DF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B7BACE76-FE18-459D-A1FB-38237A0B2DF5}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B7BACE76-FE18-459D-A1FB-38237A0B2DF5}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B7BACE76-FE18-459D-A1FB-38237A0B2DF5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B7BACE76-FE18-459D-A1FB-38237A0B2DF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B7BACE76-FE18-459D-A1FB-38237A0B2DF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B7BACE76-FE18-459D-A1FB-38237A0B2DF5}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B7BACE76-FE18-459D-A1FB-38237A0B2DF5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B7BACE76-FE18-459D-A1FB-38237A0B2DF5}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

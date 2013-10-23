@@ -4,6 +4,11 @@ using System.Reflection;
 using System.Windows.Forms;
 using FluoriteAnalyzer.Commons;
 using FluoriteAnalyzer.PatternDetectors;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using FluoriteAnalyzer.Utils;
 
 namespace FluoriteAnalyzer.Analyses
 {
@@ -77,8 +82,8 @@ namespace FluoriteAnalyzer.Analyses
                 PatternInstance instance = item.Tag as PatternInstance;
                 foreach (var pair in instance.GetInvolvingEvents())
                 {
-                    ToolStripMenuItem menuItem = new ToolStripMenuItem(pair.Key);
-                    int targetID = pair.Value;
+                    ToolStripMenuItem menuItem = new ToolStripMenuItem(pair.Item1);
+                    int targetID = pair.Item2;
 
                     menuItem.Click += delegate(object s, EventArgs ea)
                     {
@@ -100,6 +105,46 @@ namespace FluoriteAnalyzer.Analyses
             listViewPatterns.Items.AddRange(detector.DetectAsListViewItems(LogProvider).ToArray());
 
             labelCount.Text = "Total: " + listViewPatterns.Items.Count;
+        }
+
+        private void LoadPatterns(string filePath)
+        {
+            LoadPatterns(DetectionResult.LoadFromFile(filePath));
+        }
+
+        private void LoadPatterns(DetectionResult result)
+        {
+            if (result == null)
+                throw new ArgumentNullException();
+
+            if (result.LogPath != LogProvider.LogPath)
+            {
+                MessageBox.Show("This file was not created from the current log file.");
+                return;
+            }
+
+            listViewPatterns.Items.Clear();
+            listViewPatterns.Items.AddRange(
+                AbstractPatternDetector.ConvertToListViewItems(
+                    LogProvider, result.PatternInstances).ToArray());
+        }
+
+        private void SavePatterns(string saveFilePath)
+        {
+            if (listViewPatterns.Items.Count == 0)
+            {
+                MessageBox.Show("No detected patterns to be saved!");
+                return;
+            }
+
+            DetectionResult result = new DetectionResult(
+                LogProvider.LogPath,
+                listViewPatterns.Items
+                    .Cast<ListViewItem>()
+                    .Select(x => x.Tag)
+                    .Cast<PatternInstance>());
+
+            result.SaveToFile(saveFilePath);
         }
 
         private void buttonDetectPatterns_Click(object sender, EventArgs e)
@@ -140,13 +185,13 @@ namespace FluoriteAnalyzer.Analyses
                 selectedListViewItem = listViewPatterns.Items[listViewPatterns.SelectedIndices[0]];
                 selectedPatternInstance = selectedListViewItem.Tag as PatternInstance;
 
-                if (selectedPatternInstance is OperationConflictPatternInstance)
+                if (selectedPatternInstance is IPreviewablePatternInstance)
                 {
-                    OperationConflictPatternInstance ocpi = (OperationConflictPatternInstance)selectedPatternInstance;
+                    IPreviewablePatternInstance previewable = (IPreviewablePatternInstance)selectedPatternInstance;
 
                     SnapshotCalculator snapshotCalculator = new SnapshotCalculator(LogProvider);
-                    snapshotPreview1.SetSnapshot(snapshotCalculator.CalculateSnapshotAtID(ocpi.Before.ID));
-                    snapshotPreview2.SetSnapshot(snapshotCalculator.CalculateSnapshotAtID(ocpi.After.ID));
+                    snapshotPreview1.SetSnapshot(snapshotCalculator.CalculateSnapshotAtID(previewable.FirstID));
+                    snapshotPreview2.SetSnapshot(snapshotCalculator.CalculateSnapshotAtID(previewable.SecondID));
                 }
             }
             else
@@ -170,6 +215,35 @@ namespace FluoriteAnalyzer.Analyses
                     patternInst.CopyToClipboard();
                 }
             }
+        }
+
+        private void buttonLoadResults_Click(object sender, EventArgs e)
+        {
+            var openDialog = new OpenFileDialog();
+            openDialog.Multiselect = false;
+            openDialog.Filter = "Detection Result Files|*.dtr";
+
+            DialogResult result = openDialog.ShowDialog();
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            LoadPatterns(openDialog.FileName);
+        }
+
+        private void buttonSaveResults_Click(object sender, EventArgs e)
+        {
+            var saveDialog = new SaveFileDialog();
+            saveDialog.Filter = "Detection Result Files|*.dtr";
+
+            DialogResult result = saveDialog.ShowDialog();
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            SavePatterns(saveDialog.FileName);
         }
     }
 }
