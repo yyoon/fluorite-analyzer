@@ -8,6 +8,7 @@ namespace FluoriteAnalyzer.Pipelines
     public class MergeFilterTest : BaseFilterTest
     {
         [TestMethod]
+        [DeploymentItem(@"Data\MergeFilterTest\MergeFilterBasicTest", @"Data\MergeFilterTest\MergeFilterBasicTest")]
         public void MergeFilterBasicTest()
         {
             string path = GetDataPath();

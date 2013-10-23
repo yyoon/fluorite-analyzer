@@ -8,6 +8,7 @@ namespace FluoriteAnalyzer.Pipelines
     public class UnzipFilterTest : BaseFilterTest
     {
         [TestMethod]
+        [DeploymentItem(@"Data\UnzipFilterTest\UnzipFilterBasicTest", @"Data\UnzipFilterTest\UnzipFilterBasicTest")]
         public void UnzipFilterBasicTest()
         {
             string path = GetDataPath();

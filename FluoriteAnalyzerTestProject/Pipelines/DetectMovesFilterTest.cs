@@ -8,6 +8,7 @@ namespace FluoriteAnalyzer.Pipelines
     public class DetectMovesFilterTest : BaseFilterTest
     {
         [TestMethod]
+        [DeploymentItem(@"Data\DetectMovesFilterTest\DetectMovesFilterBasicTest", @"Data\DetectMovesFilterTest\DetectMovesFilterBasicTest")]
         public void DetectMovesFilterBasicTest()
         {
             string path = GetDataPath();

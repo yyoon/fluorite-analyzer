@@ -8,6 +8,7 @@ namespace FluoriteAnalyzer.Pipelines
     public class RemoveTyposFilterTest : BaseFilterTest
     {
         [TestMethod]
+        [DeploymentItem(@"Data\RemoveTyposFilterTest\RemoveTyposFilterBasicTest", @"Data\RemoveTyposFilterTest\RemoveTyposFilterBasicTest")]
         public void RemoveTyposFilterBasicTest()
         {
             string path = GetDataPath();
