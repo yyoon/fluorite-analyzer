@@ -131,7 +131,7 @@ namespace FluoriteAnalyzer.Pipelines
                     }
                     comments.Add(GenerateCommentForFile(mergedLog, fileInfo, startID, id));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     AppendResult(
                         fileInfo.Directory.Parent.FullName, fileInfo.Directory.Name,
