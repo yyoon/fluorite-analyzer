@@ -53,27 +53,67 @@
         /// Calculates the snapshot at the given event.
         /// </summary>
         /// <param name="anEvent">The event.</param>
-        /// <returns>The entire snapshot</returns>
+        /// <returns>
+        /// The entire snapshot
+        /// </returns>
         public EntireSnapshot CalculateSnapshotAtEvent(Event anEvent)
         {
-            if (!this.LogProvider.LoggedEvents.Contains(anEvent))
+            return CalculateSnapshotAtEvent(null, null, anEvent);
+        }
+
+        /// <summary>
+        /// Calculates the snapshot at the given event.
+        /// </summary>
+        /// <param name="lastEvent">The last event associated with the last known snapshot.</param>
+        /// <param name="lastKnownSnapshot">The last known snapshot.</param>
+        /// <param name="anEvent">The event.</param>
+        /// <returns>
+        /// The entire snapshot
+        /// </returns>
+        public EntireSnapshot CalculateSnapshotAtEvent(
+            Event lastEvent,
+            EntireSnapshot lastKnownSnapshot,
+            Event anEvent)
+        {
+            if (!this.LogProvider.LoggedEvents.Contains(anEvent) ||
+                (lastEvent != null && !this.LogProvider.LoggedEvents.Contains(lastEvent)))
             {
                 throw new ArgumentException(
                     "The passed event is not originated from the " +
                     "LogProvider of this snapshot calculator");
             }
 
-            EntireSnapshot result = new EntireSnapshot();
+            if (lastEvent != null && lastKnownSnapshot == null ||
+                lastEvent == null && lastKnownSnapshot != null)
+            {
+                throw new ArgumentException(
+                    "lastEvent and lastKnownSnapshot must be either both null or both non-null.");
+            }
 
-            var docChanges = this.LogProvider.LoggedEvents
+            EntireSnapshot result = lastKnownSnapshot != null
+                ? new EntireSnapshot(lastKnownSnapshot)
+                : new EntireSnapshot();
+
+            var docChanges = this.LogProvider.LoggedEvents;
+            if (lastEvent != null)
+            {
+                docChanges = docChanges.SkipUntil(x => x == lastEvent);
+            }
+
+            docChanges = docChanges
                 .TakeUntil(x => x == anEvent)
                 .Where(x => this.IsValidFileOpenCommand(x) || x is DocumentChange);
 
-            string currentFile = null;
-            var lastDocChanges = new Dictionary<string, DocumentChange>();
+            string currentFile = result.CurrentFile;
 
-            Dictionary<string, StringBuilder> files =
-                new Dictionary<string, StringBuilder>();
+            var lastDocChanges = new Dictionary<string, DocumentChange>();
+            Dictionary<string, StringBuilder> files = new Dictionary<string, StringBuilder>();
+
+            foreach (var fileSnapshot in result.FileSnapshots.Values)
+            {
+                lastDocChanges.Add(fileSnapshot.FilePath, fileSnapshot.LastChange);
+                files.Add(fileSnapshot.FilePath, new StringBuilder(fileSnapshot.Content));
+            }
 
             // calculation loop.
             foreach (Event docChange in docChanges)
@@ -90,7 +130,7 @@
                 fileSnapshot.Content = files[filePath] != null ? files[filePath].ToString() : null;
                 fileSnapshot.LastChange = lastDocChanges[filePath];
 
-                result.FileSnapshots.Add(filePath, fileSnapshot);
+                result.FileSnapshots[filePath] = fileSnapshot;
             }
 
             return result;
