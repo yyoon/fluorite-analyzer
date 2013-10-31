@@ -117,9 +117,7 @@
     <Compile Include="Analyses\Patterns.Designer.cs">
       <DependentUpon>Patterns.cs</DependentUpon>
     </Compile>
-    <Compile Include="Commons\EntireSnapshot.cs">
-      <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
-    </Compile>
+    <Compile Include="Commons\EntireSnapshot.cs" />
     <Compile Include="Commons\SnapshotCalculator.cs" />
     <Compile Include="Events\Move.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
