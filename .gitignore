@@ -5,3 +5,4 @@ ReSharper
 *.suo
 **/packages/*
 packages.*
+StyleCop.Cache
