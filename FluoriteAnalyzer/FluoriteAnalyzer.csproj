@@ -120,9 +120,7 @@
     <Compile Include="Commons\EntireSnapshot.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="Commons\SnapshotCalculator.cs">
-      <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
-    </Compile>
+    <Compile Include="Commons\SnapshotCalculator.cs" />
     <Compile Include="Events\Move.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
