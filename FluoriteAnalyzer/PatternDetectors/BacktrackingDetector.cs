@@ -192,7 +192,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             {
                 if (!Snapshots.ContainsKey(CurrentFile))
                 {
-                    Snapshots.Add(CurrentFile, foc.Snapshot);
+                    Snapshots.Add(CurrentFile, null);
                     InsertSegments.Add(CurrentFile, new List<InsertSegment>());
                 }
             }
@@ -200,6 +200,11 @@ namespace FluoriteAnalyzer.PatternDetectors
 
         private void ProcessInsert(Event anEvent, int offset, string insertedText)
         {
+            if (Snapshots[CurrentFile] == null)
+            {
+                return;
+            }
+
             // Check if the offset and length are in valid range.
             if (Snapshots[CurrentFile] != null)
             {
@@ -298,6 +303,11 @@ namespace FluoriteAnalyzer.PatternDetectors
         {
             // Current snapshot.
             string snapshot = Snapshots[CurrentFile];
+
+            if (snapshot == null)
+            {
+                return;
+            }
 
             // Check if the offset and length are in valid range.
             if (snapshot != null)
