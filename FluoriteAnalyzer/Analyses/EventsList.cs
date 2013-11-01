@@ -30,6 +30,8 @@
             this.LogProvider = logProvider;
 
             this.SelectedEvent = null;
+
+            this.SnapshotCalculator = new SnapshotCalculator(logProvider);
         }
 
         /// <summary>
@@ -65,6 +67,14 @@
         private Event SelectedEvent { get; set; }
 
         /// <summary>
+        /// Gets or sets the snapshot calculator.
+        /// </summary>
+        /// <value>
+        /// The snapshot calculator.
+        /// </value>
+        private SnapshotCalculator SnapshotCalculator { get; set; }
+
+        /// <summary>
         /// Rebuilds the filtered events list.
         /// </summary>
         public void RebuildFilteredEventsList()
@@ -95,7 +105,7 @@
             }
 
             // Number of Items.
-            this.labelNumItems.Text = listViewEvents.Items.Count.ToString();
+            this.labelNumItems.Text = this.listViewEvents.Items.Count.ToString();
 
             // Restore the selected item to be selected.
             this.SelectClosestEventByID(lastSelectedID);
@@ -126,11 +136,11 @@
         /// </summary>
         void IRedrawable.Redraw()
         {
-            treeEvents.AfterCheck -= this.TreeEvents_AfterCheck;
+            this.treeEvents.AfterCheck -= this.TreeEvents_AfterCheck;
 
-            treeEvents.Nodes.Clear();
+            this.treeEvents.Nodes.Clear();
 
-            TreeNode root = treeEvents.Nodes.Add("All Events");
+            TreeNode root = this.treeEvents.Nodes.Add("All Events");
             TreeNode annotation = root.Nodes.Add("Annotation");
             TreeNode documentChange = root.Nodes.Add("DocumentChange");
             TreeNode command = root.Nodes.Add("Command");
@@ -161,9 +171,9 @@
 
             // Initially check everything
             this.checkDict = new Dictionary<string, bool>();
-            treeEvents.ExpandAll();
+            this.treeEvents.ExpandAll();
 
-            foreach (TreeNode node1 in treeEvents.Nodes)
+            foreach (TreeNode node1 in this.treeEvents.Nodes)
             {
                 node1.Checked = true;
                 foreach (TreeNode node2 in node1.Nodes)
@@ -177,7 +187,7 @@
                 }
             }
 
-            treeEvents.AfterCheck += this.TreeEvents_AfterCheck;
+            this.treeEvents.AfterCheck += this.TreeEvents_AfterCheck;
             this.RebuildFilteredEventsList();
         }
 
@@ -208,11 +218,11 @@
                 }
 
                 // Select the item which was found
-                ListViewItem itemFound = listViewEvents.Items
+                ListViewItem itemFound = this.listViewEvents.Items
                     .Cast<ListViewItem>()
                     .Where(x => x.Tag == eventFound).First();
                 itemFound.Selected = true;
-                listViewEvents.EnsureVisible(itemFound.Index);
+                this.listViewEvents.EnsureVisible(itemFound.Index);
 
                 this.Focus();
             }
@@ -234,7 +244,7 @@
         /// </param>
         private void TreeEvents_AfterCheck(object sender, TreeViewEventArgs e)
         {
-            treeEvents.AfterCheck -= this.TreeEvents_AfterCheck;
+            this.treeEvents.AfterCheck -= this.TreeEvents_AfterCheck;
 
             if (e.Node.Nodes.Count == 0)
             {
@@ -284,11 +294,11 @@
                 }
             }
 
-            treeEvents.Refresh();
+            this.treeEvents.Refresh();
 
             this.RebuildFilteredEventsList();
 
-            treeEvents.AfterCheck += this.TreeEvents_AfterCheck;
+            this.treeEvents.AfterCheck += this.TreeEvents_AfterCheck;
         }
 
         /// <summary>
@@ -342,19 +352,19 @@
         private void SelectEventByItemIndex(int index)
         {
             // This method should do nothing when there is no item at all.
-            if (listViewEvents.Items.Count == 0)
+            if (this.listViewEvents.Items.Count == 0)
             {
                 return;
             }
 
-            index = Utils.Clamp(index, 0, listViewEvents.Items.Count - 1);
+            index = Utils.Clamp(index, 0, this.listViewEvents.Items.Count - 1);
 
-            listViewEvents.SelectedItems.Clear();
-            listViewEvents.Items[index].Selected = true;
-            listViewEvents.Items[index].Focused = true;
+            this.listViewEvents.SelectedItems.Clear();
+            this.listViewEvents.Items[index].Selected = true;
+            this.listViewEvents.Items[index].Focused = true;
 
-            listViewEvents.EnsureVisible(index);
-            listViewEvents.Focus();
+            this.listViewEvents.EnsureVisible(index);
+            this.listViewEvents.Focus();
         }
 
         /// <summary>
@@ -365,7 +375,7 @@
         private void ButtonShowHideCode_Click(object sender, EventArgs e)
         {
             // Toggle the source code panel visibility
-            splitContainer1.Panel2Collapsed ^= true;
+            this.splitContainer1.Panel2Collapsed ^= true;
         }
 
         /// <summary>
@@ -387,18 +397,19 @@
         {
             this.SelectedListViewItem = null;
             this.SelectedEvent = null;
-            if (listViewEvents.SelectedIndices.Count > 0)
+            if (this.listViewEvents.SelectedIndices.Count > 0)
             {
-                this.SelectedListViewItem = listViewEvents.Items[listViewEvents.SelectedIndices[0]];
+                this.SelectedListViewItem = this.listViewEvents
+                    .Items[this.listViewEvents.SelectedIndices[0]];
                 this.SelectedEvent = this.SelectedListViewItem.Tag as Event;
 
                 // Show parameters
-                textParameters.Text = this.SelectedEvent.ParameterStringComplex;
+                this.textParameters.Text = this.SelectedEvent.ParameterStringComplex;
             }
             else
             {
                 // Remove parameters
-                textParameters.Text = string.Empty;
+                this.textParameters.Text = string.Empty;
             }
 
             this.DrawSnapshot();
@@ -409,15 +420,15 @@
         /// </summary>
         private void ReproduceSnapshot()
         {
-            snapshotPreview.Clear();
+            this.snapshotPreview.Clear();
 
-            if (listViewEvents.SelectedIndices.Count == 0)
+            if (this.listViewEvents.SelectedIndices.Count == 0)
             {
                 return;
             }
 
-            int selectedIndex = listViewEvents.SelectedIndices[0];
-            ListViewItem item = listViewEvents.Items[selectedIndex];
+            int selectedIndex = this.listViewEvents.SelectedIndices[0];
+            ListViewItem item = this.listViewEvents.Items[selectedIndex];
             var selectedEvent = item.Tag as Event;
             if (selectedEvent == null)
             {
@@ -425,11 +436,10 @@
             }
 
             // Do the calculation.
-            SnapshotCalculator snapshotCalculator = new SnapshotCalculator(this.LogProvider);
             EntireSnapshot entireSnapshot =
-                snapshotCalculator.CalculateSnapshotAtEvent(selectedEvent);
+                this.SnapshotCalculator.CalculateSnapshotAtEvent(selectedEvent);
 
-            snapshotPreview.SetSnapshot(entireSnapshot);
+            this.snapshotPreview.SetSnapshot(entireSnapshot);
         }
 
         /// <summary>

@@ -14,12 +14,18 @@
     internal class SnapshotCalculator
     {
         /// <summary>
+        /// The cache of the snapshots.
+        /// </summary>
+        private Dictionary<Event, EntireSnapshot> cache;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SnapshotCalculator"/> class.
         /// </summary>
         /// <param name="logProvider">The log provider.</param>
         public SnapshotCalculator(ILogProvider logProvider)
         {
             this.LogProvider = logProvider;
+            this.cache = new Dictionary<Event, EntireSnapshot>();
         }
 
         /// <summary>
@@ -58,7 +64,23 @@
         /// </returns>
         public EntireSnapshot CalculateSnapshotAtEvent(Event anEvent)
         {
-            return CalculateSnapshotAtEvent(null, null, anEvent);
+            // Check the cache first.
+            if (this.cache.ContainsKey(anEvent))
+            {
+                return this.cache[anEvent];
+            }
+
+            Event lastEvent = null;
+            EntireSnapshot lastKnownSnapshot = null;
+
+            var priorEvents = this.cache.Keys.Where(x => x.ID < anEvent.ID);
+            if (priorEvents.Count() > 0)
+            {
+                lastEvent = priorEvents.Aggregate((x, y) => x.ID > y.ID ? x : y);
+                lastKnownSnapshot = this.cache[lastEvent];
+            }
+
+            return this.CalculateSnapshotAtEvent(lastEvent, lastKnownSnapshot, anEvent);
         }
 
         /// <summary>
@@ -83,8 +105,8 @@
                     "LogProvider of this snapshot calculator");
             }
 
-            if (lastEvent != null && lastKnownSnapshot == null ||
-                lastEvent == null && lastKnownSnapshot != null)
+            if ((lastEvent != null && lastKnownSnapshot == null) ||
+                (lastEvent == null && lastKnownSnapshot != null))
             {
                 throw new ArgumentException(
                     "lastEvent and lastKnownSnapshot must be either both null or both non-null.");
@@ -132,6 +154,9 @@
 
                 result.FileSnapshots[filePath] = fileSnapshot;
             }
+
+            // Add the current result to the cache.
+            this.cache[anEvent] = result;
 
             return result;
         }
