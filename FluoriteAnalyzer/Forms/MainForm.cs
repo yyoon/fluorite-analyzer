@@ -146,8 +146,8 @@ namespace FluoriteAnalyzer.Forms
 
             eventsList = new EventsList(LogProvider);
             eventsList.Dock = DockStyle.Fill;
-            lineChart.ChartDoubleClick += eventsList.lineChart_ChartDoubleClick;
-            patterns.PatternDoubleClick += eventsList.pattern_ItemDoubleClick;
+            lineChart.ChartDoubleClick += eventsList.LineChart_ChartDoubleClick;
+            patterns.PatternDoubleClick += eventsList.Pattern_ItemDoubleClick;
             childPanels.Add(eventsList);
 
             var eventsListForm = CreateToolWindow(Resources.Form_Title_EventsList);
