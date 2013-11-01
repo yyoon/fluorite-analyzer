@@ -1,5 +1,6 @@
 ﻿namespace FluoriteAnalyzer.Commons
 {
+    using System;
     using System.Collections.Generic;
 
     /// <summary>
@@ -14,6 +15,21 @@
         {
             this.FilePaths = new List<string>();
             this.FileSnapshots = new Dictionary<string, FileSnapshot>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntireSnapshot"/> class.
+        /// </summary>
+        /// <param name="other">The existing snapshot object to copy from.</param>
+        public EntireSnapshot(EntireSnapshot other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            this.FilePaths = new List<string>(other.FilePaths);
+            this.FileSnapshots = new Dictionary<string, FileSnapshot>(other.FileSnapshots);
         }
 
         /// <summary>

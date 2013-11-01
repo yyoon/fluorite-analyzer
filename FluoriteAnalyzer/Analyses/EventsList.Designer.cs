@@ -89,7 +89,7 @@
             this.buttonGoto.TabIndex = 4;
             this.buttonGoto.Text = "&Goto ID";
             this.buttonGoto.UseVisualStyleBackColor = true;
-            this.buttonGoto.Click += new System.EventHandler(this.buttonGoto_Click);
+            this.buttonGoto.Click += new System.EventHandler(this.ButtonGoto_Click);
             // 
             // buttonShowHideCode
             // 
@@ -100,7 +100,7 @@
             this.buttonShowHideCode.TabIndex = 3;
             this.buttonShowHideCode.Text = "Show/Hide Code";
             this.buttonShowHideCode.UseVisualStyleBackColor = true;
-            this.buttonShowHideCode.Click += new System.EventHandler(this.buttonShowHideCode_Click);
+            this.buttonShowHideCode.Click += new System.EventHandler(this.ButtonShowHideCode_Click);
             // 
             // splitContainer
             // 
@@ -194,7 +194,7 @@
             this.listViewEvents.TabIndex = 0;
             this.listViewEvents.UseCompatibleStateImageBehavior = false;
             this.listViewEvents.View = System.Windows.Forms.View.Details;
-            this.listViewEvents.SelectedIndexChanged += new System.EventHandler(this.listViewEvents_SelectedIndexChanged);
+            this.listViewEvents.SelectedIndexChanged += new System.EventHandler(this.ListViewEvents_SelectedIndexChanged);
             // 
             // columnID
             // 

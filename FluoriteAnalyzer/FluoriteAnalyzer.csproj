@@ -141,7 +141,6 @@
     </Compile>
     <Compile Include="Analyses\EventsList.cs">
       <SubType>UserControl</SubType>
-      <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Analyses\EventsList.Designer.cs">
       <DependentUpon>EventsList.cs</DependentUpon>
