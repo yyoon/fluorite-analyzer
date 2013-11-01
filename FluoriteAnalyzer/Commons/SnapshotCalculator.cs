@@ -134,7 +134,9 @@
             foreach (var fileSnapshot in result.FileSnapshots.Values)
             {
                 lastDocChanges.Add(fileSnapshot.FilePath, fileSnapshot.LastChange);
-                files.Add(fileSnapshot.FilePath, new StringBuilder(fileSnapshot.Content));
+                files.Add(
+                    fileSnapshot.FilePath,
+                    fileSnapshot.Content != null ? new StringBuilder(fileSnapshot.Content) : null);
             }
 
             // calculation loop.
