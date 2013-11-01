@@ -1,4 +1,5 @@
 ﻿using DiffMatchPatch;
+using FluoriteAnalyzer.Commons;
 using FluoriteAnalyzer.Events;
 using System;
 using System.Collections.Generic;
@@ -95,12 +96,12 @@ namespace FluoriteAnalyzer.PatternDetectors
             {
                 if (dcList[i] is FileOpenCommand)
                 {
-                    ProcessFileOpenCommand(dcList, i);
+                    ProcessFileOpenCommand(dcList, i, logProvider);
                 }
                 else if (dcList[i] is Insert)
                 {
                     Insert insert = (Insert)dcList[i];
-                    ProcessInsert(insert, insert.Offset, insert.Text);
+                    ProcessInsert(insert, insert.Offset, insert.Text, logProvider);
                 }
                 else if (dcList[i] is Delete)
                 {
@@ -115,13 +116,13 @@ namespace FluoriteAnalyzer.PatternDetectors
                     {
                         if (replace.InsertedText.Length > replace.DeletedText.Length)
                         {
-                            ProcessInsert(replace, replace.Offset + replace.Length, replace.InsertedText.Substring(replace.Length));
+                            ProcessInsert(replace, replace.Offset + replace.Length, replace.InsertedText.Substring(replace.Length), logProvider);
                         }
                     }
                     else
                     {
                         ProcessDelete(replace, replace.Offset, replace.Length);
-                        ProcessInsert(replace, replace.Offset, replace.InsertedText);
+                        ProcessInsert(replace, replace.Offset, replace.InsertedText, logProvider);
                     }
                 }
                 else if (dcList[i] is Move)
@@ -134,7 +135,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             return Patterns;
         }
 
-        private void ProcessFileOpenCommand(List<Event> dcList, int i)
+        private void ProcessFileOpenCommand(List<Event> dcList, int i, ILogProvider logProvider)
         {
             FileOpenCommand foc = (FileOpenCommand)dcList[i];
             CurrentFile = foc.FilePath;
@@ -168,7 +169,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                             switch (diff.operation)
                             {
                                 case Operation.INSERT:
-                                    ProcessInsert(foc, curOffset, diff.text);
+                                    ProcessInsert(foc, curOffset, diff.text, logProvider);
 
                                     curOffset += diff.text.Length;
                                     curLength += diff.text.Length;
@@ -198,7 +199,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             }
         }
 
-        private void ProcessInsert(Event anEvent, int offset, string insertedText)
+        private void ProcessInsert(Event anEvent, int offset, string insertedText, ILogProvider logProvider)
         {
             if (Snapshots[CurrentFile] == null)
             {
@@ -216,7 +217,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             }
 
             ProcessInsertType1(anEvent, offset, insertedText);
-            ProcessInsertType2(anEvent, offset, insertedText);
+            ProcessInsertType2(anEvent, offset, insertedText, logProvider);
 
             // Update the snapshot.
             string snapshot = Snapshots[CurrentFile];
@@ -271,8 +272,14 @@ namespace FluoriteAnalyzer.PatternDetectors
             }
         }
 
-        private void ProcessInsertType2(Event anEvent, int offset, string insertedText)
+        private void ProcessInsertType2(Event anEvent, int offset, string insertedText, ILogProvider logProvider)
         {
+            // Do nothing if the insertion happened with a paste command.
+            if (logProvider.CausedByPaste(anEvent))
+            {
+                return;
+            }
+
             // See if there is are any previous deletions that contains this insertedText.
             foreach (var delete in DeleteSegments)
             {

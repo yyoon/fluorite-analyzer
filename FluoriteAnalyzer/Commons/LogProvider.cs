@@ -54,9 +54,12 @@ namespace FluoriteAnalyzer.Commons
             return GetVideoTime(timestamp);
         }
 
-        bool ILogProvider.CausedByPaste(DocumentChange dc)
+        bool ILogProvider.CausedByPaste(Event dc)
         {
-            throw new NotImplementedException();
+            int index = LoggedEvents.IndexOf(dc);
+            if (index < 0) { return false; }
+
+            return (index + 1 < LoggedEvents.Count && LoggedEvents[index + 1] is PasteCommand);
         }
 
         bool ILogProvider.CausedByAssist(DocumentChange dc)
