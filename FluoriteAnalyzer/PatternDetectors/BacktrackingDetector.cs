@@ -153,10 +153,15 @@ namespace FluoriteAnalyzer.PatternDetectors
                     {
                         // Do nothing.
                     }
+                    else if (Snapshots[CurrentFile] == null)
+                    {
+                        Snapshots[CurrentFile] = foc.Snapshot;
+                        InsertSegments[CurrentFile] = new List<InsertSegment>();
+                    }
                     else
                     {
                         // Extracts the diffs
-                        string before = Snapshots[CurrentFile] == null ? string.Empty : Snapshots[CurrentFile];
+                        string before = Snapshots[CurrentFile];
                         string after = foc.Snapshot;
 
                         diff_match_patch dmp = new diff_match_patch();
