@@ -475,6 +475,11 @@ namespace FluoriteAnalyzer.PatternDetectors
                 return false;
             }
 
+            if (insertedText.Trim().StartsWith("import"))
+            {
+                return false;
+            }
+
             return true;
         }
     }
