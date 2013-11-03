@@ -18,5 +18,6 @@ namespace FluoriteAnalyzer.Commons
         bool CausedByAssist(DocumentChange dc);
         bool CausedByAutoIndent(DocumentChange dc);
         bool CausedByInsertString(DocumentChange dc);
+        bool CausedByAutoFormatting(Event dc);
     }
 }

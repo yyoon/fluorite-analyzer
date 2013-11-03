@@ -106,7 +106,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 else if (dcList[i] is Delete)
                 {
                     Delete delete = (Delete)dcList[i];
-                    ProcessDelete(delete, delete.Offset, delete.Length);
+                    ProcessDelete(delete, delete.Offset, delete.Length, logProvider);
                 }
                 else if (dcList[i] is Replace)
                 {
@@ -121,7 +121,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                     }
                     else
                     {
-                        ProcessDelete(replace, replace.Offset, replace.Length);
+                        ProcessDelete(replace, replace.Offset, replace.Length, logProvider);
                         ProcessInsert(replace, replace.Offset, replace.InsertedText, logProvider);
                     }
                 }
@@ -181,7 +181,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                                     break;
 
                                 case Operation.DELETE:
-                                    ProcessDelete(foc, curOffset, diff.text.Length);
+                                    ProcessDelete(foc, curOffset, diff.text.Length, logProvider);
 
                                     curLength -= diff.text.Length;
                                     break;
@@ -285,6 +285,11 @@ namespace FluoriteAnalyzer.PatternDetectors
                 return;
             }
 
+            if (logProvider.CausedByAutoFormatting(anEvent))
+            {
+                return;
+            }
+
             // See if there is are any previous deletions that contains this insertedText.
             foreach (var delete in DeleteSegments)
             {
@@ -311,7 +316,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             }
         }
 
-        private void ProcessDelete(Event anEvent, int offset, int length)
+        private void ProcessDelete(Event anEvent, int offset, int length, ILogProvider logProvider)
         {
             // Current snapshot.
             string snapshot = Snapshots[CurrentFile];
@@ -334,7 +339,7 @@ namespace FluoriteAnalyzer.PatternDetectors
             // Deleted text
             string deletedText = snapshot == null ? null : snapshot.Substring(offset, length);
 
-            ProcessDeleteType1(anEvent, offset, length, deletedText);
+            ProcessDeleteType1(anEvent, offset, length, deletedText, logProvider);
             ProcessDeleteType2(anEvent, offset, length, deletedText);
 
             // Update the snapshot.
@@ -351,8 +356,13 @@ namespace FluoriteAnalyzer.PatternDetectors
             InsertSegments[CurrentFile].Clear();
         }
 
-        private void ProcessDeleteType1(Event anEvent, int offset, int length, string deletedText)
+        private void ProcessDeleteType1(Event anEvent, int offset, int length, string deletedText, ILogProvider logProvider)
         {
+            if (logProvider.CausedByAutoFormatting(anEvent))
+            {
+                return;
+            }
+
             int endOffset = offset + length;
 
             // Iterate the segments list
@@ -449,6 +459,7 @@ namespace FluoriteAnalyzer.PatternDetectors
                 return false;
             }
 
+            // Exclude "import" statements
             if (deletedText.Trim().StartsWith("import"))
             {
                 return false;

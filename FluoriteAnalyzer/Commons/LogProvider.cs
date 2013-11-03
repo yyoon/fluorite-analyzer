@@ -94,6 +94,24 @@ namespace FluoriteAnalyzer.Commons
             return (LoggedEvents[index + 1] is InsertStringCommand);
         }
 
+        bool ILogProvider.CausedByAutoFormatting(Event dc)
+        {
+            int index = LoggedEvents.IndexOf(dc);
+            if (index < 0) { return false; }
+
+            EclipseCommand cmd = LoggedEvents.GetRange(index + 1, LoggedEvents.Count - index - 1)
+                .OfType<Command>().FirstOrDefault() as EclipseCommand;
+            if (cmd != null)
+            {
+                if (cmd.CommandID == "org.eclipse.jdt.ui.edit.text.java.format")
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         #endregion
 
         private void ParseLog(string logPath)
