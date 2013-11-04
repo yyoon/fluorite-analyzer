@@ -21,6 +21,7 @@
       <AnalyzerSettings>
         <CollectionProperty Name="Hungarian">
           <Value>an</Value>
+          <Value>dc</Value>
         </CollectionProperty>
       </AnalyzerSettings>
     </Analyzer>

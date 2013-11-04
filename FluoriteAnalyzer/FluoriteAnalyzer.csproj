@@ -301,9 +301,7 @@
     <Compile Include="PatternDetectors\AbstractPatternDetector.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="PatternDetectors\BacktrackingDetector.cs">
-      <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
-    </Compile>
+    <Compile Include="PatternDetectors\BacktrackingDetector.cs" />
     <Compile Include="PatternDetectors\BacktrackingPatternInstance.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
