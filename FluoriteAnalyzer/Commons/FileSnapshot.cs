@@ -1,43 +1,81 @@
-﻿using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using FluoriteAnalyzer.Events;
-using System;
-
-namespace FluoriteAnalyzer.Commons
+﻿namespace FluoriteAnalyzer.Commons
 {
+    using System;
+    using System.Drawing;
+    using System.Linq;
+    using System.Windows.Forms;
+    using FluoriteAnalyzer.Events;
+
+    /// <summary>
+    /// A class representing the snapshot of a certain file.
+    /// </summary>
     public class FileSnapshot
     {
+        /// <summary>
+        /// The preceding context size which will be displayed right before the last change.
+        /// </summary>
+        private static readonly int PrecedingContextSize = 5;
+
+        /// <summary>
+        /// Gets or sets the file path.
+        /// </summary>
+        /// <value>
+        /// The file path.
+        /// </value>
         public string FilePath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the content of the file.
+        /// </summary>
+        /// <value>
+        /// The content.
+        /// </value>
         public string Content { get; set; }
+
+        /// <summary>
+        /// Gets or sets the last change made in this file.
+        /// </summary>
+        /// <value>
+        /// The last change.
+        /// </value>
         public DocumentChange LastChange { get; set; }
 
+        /// <summary>
+        /// Displays the current content in rich text box and highlight the last change.
+        /// </summary>
+        /// <param name="richText">The rich text.</param>
+        /// <param name="strikeoutFont">The strikeout font.</param>
         public void DisplayInRichTextBox(RichTextBox richText, Font strikeoutFont)
         {
             // Clear the text.
-            richText.Text = "";
+            richText.Text = string.Empty;
 
-            if (string.IsNullOrEmpty(Content)) { return; }
+            if (string.IsNullOrEmpty(this.Content))
+            {
+                return;
+            }
 
             // If no change was made, simply display the whole content and leave.
-            if (LastChange == null)
+            if (this.LastChange == null)
             {
-                richText.Text = Content;
+                richText.Text = this.Content;
                 return;
             }
 
             // Get the deletion offset & text / insertion offset & length.
             int deletionOffset = -1;
-            string deletedText = "";
+            string deletedText = string.Empty;
             int insertionOffset = -1;
             int insertionLength = -1;
 
-            GetOffsetAndLength(
-                ref deletionOffset, ref deletedText,
-                ref insertionOffset, ref insertionLength);
+            this.GetOffsetAndLength(
+                ref deletionOffset,
+                ref deletedText,
+                ref insertionOffset,
+                ref insertionLength);
 
             // insert the deleted text in the desired location.
-            string content = Content;
+            string content = this.Content;
             if (deletionOffset != -1)
             {
                 content = content.Insert(deletionOffset, deletedText);
@@ -79,11 +117,15 @@ namespace FluoriteAnalyzer.Commons
             }
         }
 
-        private static readonly int PRECEDING_CONTEXT_SIZE = 5;
+        /// <summary>
+        /// Moves the scroll to the given offset.
+        /// </summary>
+        /// <param name="richText">The rich text.</param>
+        /// <param name="desiredOffset">The desired offset.</param>
         private static void MoveScrollToOffset(RichTextBox richText, int desiredOffset)
         {
             // Find desired offset
-            for (int i = 0; i < PRECEDING_CONTEXT_SIZE; ++i)
+            for (int i = 0; i < PrecedingContextSize; ++i)
             {
                 int lastLineEndingIndex = richText.Text.Substring(0, desiredOffset)
                     .LastIndexOf('\n');
@@ -97,43 +139,55 @@ namespace FluoriteAnalyzer.Commons
             richText.ScrollToCaret();
         }
 
-        private void GetOffsetAndLength(ref int deletionOffset, ref string deletedText,
-            ref int insertionOffset, ref int insertionLength)
+        /// <summary>
+        /// Gets the offset and the length.
+        /// </summary>
+        /// <param name="deletionOffset">The deletion offset.</param>
+        /// <param name="deletedText">The deleted text.</param>
+        /// <param name="insertionOffset">The insertion offset.</param>
+        /// <param name="insertionLength">Length of the insertion.</param>
+        private void GetOffsetAndLength(
+            ref int deletionOffset,
+            ref string deletedText,
+            ref int insertionOffset,
+            ref int insertionLength)
         {
             deletionOffset = -1;
-            deletedText = "";
+            deletedText = string.Empty;
             insertionOffset = -1;
             insertionLength = -1;
 
-            if (LastChange is Insert)
+            if (this.LastChange is Insert)
             {
-                Insert insert = (Insert)LastChange;
+                Insert insert = (Insert)this.LastChange;
                 insertionOffset = insert.Offset;
                 insertionLength = insert.Length;
             }
-            else if (LastChange is Delete)
+            else if (this.LastChange is Delete)
             {
-                Delete delete = (Delete)LastChange;
+                Delete delete = (Delete)this.LastChange;
                 deletionOffset = delete.Offset;
                 deletedText = delete.Text;
             }
-            if (LastChange is Replace)
+
+            if (this.LastChange is Replace)
             {
-                Replace replace = (Replace)LastChange;
+                Replace replace = (Replace)this.LastChange;
                 deletionOffset = replace.Offset;
                 deletedText = replace.DeletedText;
                 insertionOffset = replace.Offset;
                 insertionLength = replace.InsertionLength;
             }
-            else if (LastChange is Move)
+            else if (this.LastChange is Move)
             {
-                Move move = (Move)LastChange;
-                if (move.DeletedFrom == FilePath)
+                Move move = (Move)this.LastChange;
+                if (move.DeletedFrom == this.FilePath)
                 {
                     deletionOffset = move.EffectiveDeletionOffset;
                     deletedText = move.DeletedText;
                 }
-                if (move.InsertedTo == FilePath)
+
+                if (move.InsertedTo == this.FilePath)
                 {
                     insertionOffset = move.InsertionOffset;
                     insertionLength = move.InsertionLength;
