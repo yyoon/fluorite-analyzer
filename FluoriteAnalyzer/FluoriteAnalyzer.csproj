@@ -143,9 +143,7 @@
     <Compile Include="Analyses\EventsList.Designer.cs">
       <DependentUpon>EventsList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Commons\ILogProvider.cs">
-      <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
-    </Compile>
+    <Compile Include="Commons\ILogProvider.cs" />
     <Compile Include="Analyses\IRedrawable.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
