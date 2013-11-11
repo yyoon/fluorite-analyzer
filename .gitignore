@@ -6,3 +6,4 @@ ReSharper
 **/packages/*
 packages.*
 StyleCop.Cache
+.sonar/
