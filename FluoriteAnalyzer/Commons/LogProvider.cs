@@ -54,9 +54,12 @@ namespace FluoriteAnalyzer.Commons
             return GetVideoTime(timestamp);
         }
 
-        bool ILogProvider.CausedByPaste(DocumentChange dc)
+        bool ILogProvider.CausedByPaste(Event dc)
         {
-            throw new NotImplementedException();
+            int index = LoggedEvents.IndexOf(dc);
+            if (index < 0) { return false; }
+
+            return (index + 1 < LoggedEvents.Count && LoggedEvents[index + 1] is PasteCommand);
         }
 
         bool ILogProvider.CausedByAssist(DocumentChange dc)
@@ -89,6 +92,24 @@ namespace FluoriteAnalyzer.Commons
             if (index + 1 >= LoggedEvents.Count) { return false; }
 
             return (LoggedEvents[index + 1] is InsertStringCommand);
+        }
+
+        bool ILogProvider.CausedByAutoFormatting(Event dc)
+        {
+            int index = LoggedEvents.IndexOf(dc);
+            if (index < 0) { return false; }
+
+            EclipseCommand cmd = LoggedEvents.GetRange(index + 1, LoggedEvents.Count - index - 1)
+                .OfType<Command>().FirstOrDefault() as EclipseCommand;
+            if (cmd != null)
+            {
+                if (cmd.CommandID == "org.eclipse.jdt.ui.edit.text.java.format")
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         #endregion

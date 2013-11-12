@@ -77,6 +77,8 @@ namespace FluoriteAnalyzer.Pipelines
 
         private void Merge(List<FileInfo> fileInfos, string mergedFilePath)
         {
+            fileInfos = fileInfos.OrderBy(x => x.Name).ToList();
+
             var mergedLog = new XmlDocument();
             mergedLog.Load(fileInfos[0].FullName);
 
@@ -129,7 +131,7 @@ namespace FluoriteAnalyzer.Pipelines
                     }
                     comments.Add(GenerateCommentForFile(mergedLog, fileInfo, startID, id));
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     AppendResult(
                         fileInfo.Directory.Parent.FullName, fileInfo.Directory.Name,

@@ -1,24 +1,71 @@
-﻿using System.Collections.Generic;
-
-namespace FluoriteAnalyzer.Commons
+﻿namespace FluoriteAnalyzer.Commons
 {
+    using System;
+    using System.Collections.Generic;
+
+    /// <summary>
+    /// Represents all snapshots of a given point in time.
+    /// </summary>
     public class EntireSnapshot
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntireSnapshot"/> class.
+        /// </summary>
         public EntireSnapshot()
         {
-            FilePaths = new List<string>();
-            FileSnapshots = new Dictionary<string, FileSnapshot>();
+            this.FilePaths = new List<string>();
+            this.FileSnapshots = new Dictionary<string, FileSnapshot>();
         }
 
-        public List<string> FilePaths { get; set; }
-        public Dictionary<string, FileSnapshot> FileSnapshots { get; set; }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EntireSnapshot"/> class.
+        /// </summary>
+        /// <param name="other">The existing snapshot object to copy from.</param>
+        public EntireSnapshot(EntireSnapshot other)
+        {
+            if (other == null)
+            {
+                throw new ArgumentNullException();
+            }
 
+            this.FilePaths = new List<string>(other.FilePaths);
+            this.FileSnapshots = new Dictionary<string, FileSnapshot>(other.FileSnapshots);
+        }
+
+        /// <summary>
+        /// Gets the file paths.
+        /// </summary>
+        /// <value>
+        /// The file paths.
+        /// </value>
+        public List<string> FilePaths { get; private set; }
+
+        /// <summary>
+        /// Gets the file snapshots.
+        /// </summary>
+        /// <value>
+        /// The file snapshots.
+        /// </value>
+        public Dictionary<string, FileSnapshot> FileSnapshots { get; private set; }
+
+        /// <summary>
+        /// Gets the current (the most recently opened / modified) file.
+        /// </summary>
+        /// <value>
+        /// The current (the most recently opened / modified) file. null if there is no file.
+        /// </value>
         public string CurrentFile
         {
             get
             {
-                if (FilePaths != null && FilePaths.Count > 0) { return FilePaths[0]; }
-                else { return null; }
+                if (this.FilePaths != null && this.FilePaths.Count > 0)
+                {
+                    return this.FilePaths[0];
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
     }

@@ -22,6 +22,16 @@ namespace FluoriteAnalyzer.PatternDetectors
         public Event Insert { get; set; }
         public Event Delete { get; set; }
 
+        protected override Event Event1
+        {
+            get { return Insert; }
+        }
+
+        protected override Event Event2
+        {
+            get { return Delete; }
+        }
+
         public override BacktrackingPatternInstance.BacktrackingType Type
         {
             get { return BacktrackingType.TYPE1; }

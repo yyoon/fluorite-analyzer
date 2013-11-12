@@ -69,6 +69,7 @@ namespace FluoriteAnalyzer.Pipelines
             // Save the results to a file.
             DetectionResult result = new DetectionResult(provider.LogPath, patterns);
             result.SaveToFile(GetSaveFileName(fileInfo.DirectoryName, fileInfo.Name));
+            result.ExportToCSV(GetSaveFileName(fileInfo.DirectoryName, fileInfo.Name, "csv"));
 
             var xmlDoc = new XmlDocument();
             xmlDoc.Load(fileInfo.FullName);
@@ -117,10 +118,8 @@ namespace FluoriteAnalyzer.Pipelines
 
             int resultingLength = i1.Length - d1.Length + i2.Length;
 
-            long endingTimestamp = i2.Timestamp2.HasValue ? i2.Timestamp2.Value : i2.Timestamp;
-
             // Apply these in the XmlElement corresponding with i1.
-            ApplyChanges(xmlDoc, i1, resultingText, resultingLength, endingTimestamp);
+            ApplyChanges(xmlDoc, i1, resultingText, resultingLength, i2.EndTimestamp);
 
             // Remove XmlElements corresponding with d1 & i2.
             xmlDoc.DocumentElement.RemoveChild(Event.FindCorrespondingXmlElementFromXmlDocument(xmlDoc, d1));
@@ -139,10 +138,8 @@ namespace FluoriteAnalyzer.Pipelines
 
             int resultingLength = i1.Length - r1.Length + r1.InsertionLength;
 
-            long endingTimestamp = r1.Timestamp2.HasValue ? r1.Timestamp2.Value : r1.Timestamp;
-
             // Apply these in the XmlElement corresponding with i1.
-            ApplyChanges(xmlDoc, i1, resultingText, resultingLength, endingTimestamp);
+            ApplyChanges(xmlDoc, i1, resultingText, resultingLength, r1.EndTimestamp);
 
             // Remove XmlElements corresponding with d1 & i2.
             xmlDoc.DocumentElement.RemoveChild(Event.FindCorrespondingXmlElementFromXmlDocument(xmlDoc, r1));

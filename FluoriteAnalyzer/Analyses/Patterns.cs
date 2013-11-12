@@ -119,8 +119,26 @@ namespace FluoriteAnalyzer.Analyses
 
             if (result.LogPath != LogProvider.LogPath)
             {
-                MessageBox.Show("This file was not created from the current log file.");
-                return;
+                if (Path.GetFileName(result.LogPath) == Path.GetFileName(LogProvider.LogPath))
+                {
+                    var dialogResult = MessageBox.Show(
+                        "This file was created from another directory." + Environment.NewLine +
+                        "Do you wish to continue loding?",
+                        "Warning",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning,
+                        MessageBoxDefaultButton.Button1);
+
+                    if (dialogResult == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("This file was not created from the current log file.");
+                    return;
+                }
             }
 
             listViewPatterns.Items.Clear();
@@ -145,6 +163,12 @@ namespace FluoriteAnalyzer.Analyses
                     .Cast<PatternInstance>());
 
             result.SaveToFile(saveFilePath);
+
+            // Also export to csv
+            string csvFilePath = Path.Combine(
+                Path.GetDirectoryName(saveFilePath),
+                Path.GetFileNameWithoutExtension(saveFilePath) + ".csv");
+            result.ExportToCSV(csvFilePath);
         }
 
         private void buttonDetectPatterns_Click(object sender, EventArgs e)

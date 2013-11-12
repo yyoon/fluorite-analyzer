@@ -49,6 +49,9 @@ namespace FluoriteAnalyzer.Events
         public string TypeString { get; private set; }
         public long Timestamp { get; private set; }
         public long? Timestamp2 { get; set; }
+
+        public long EndTimestamp { get { return Timestamp2 ?? Timestamp; } }
+
         public int RepeatCount { get; private set; }
 
         public abstract EventType EventType { get; }

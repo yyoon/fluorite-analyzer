@@ -89,8 +89,7 @@ namespace FluoriteAnalyzer.Forms
 
             foreach (Event anEvent in provider.LoggedEvents)
             {
-                long lastTimestampOfCurrentEvent = anEvent.Timestamp2.HasValue ?
-                    anEvent.Timestamp2.Value : anEvent.Timestamp;
+                long lastTimestampOfCurrentEvent = anEvent.EndTimestamp;
 
                 long currentTimespan = lastTimestampOfCurrentEvent - lastTimestamp;
                 if (currentTimespan < TIME_THRESHOLD)
