@@ -48,6 +48,7 @@
             this.countEditedFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.performPipelinedAnalysisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanPipelinedAnalysisResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cascadeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,7 +65,7 @@
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripButtonSnapLeft = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonSnapRight = new System.Windows.Forms.ToolStripButton();
-            this.cleanPipelinedAnalysisResultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fixRenamingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.toolMain.SuspendLayout();
             this.SuspendLayout();
@@ -129,6 +130,7 @@
             this.logClosingFixToolStripMenuItem,
             this.adjustTimeToolStripMenuItem,
             this.extractAnnotationsToolStripMenuItem,
+            this.fixRenamingsToolStripMenuItem,
             this.removeTyposToolStripMenuItem,
             this.detectMovesToolStripMenuItem,
             this.calculateActiveWorkingTimeToolStripMenuItem,
@@ -231,6 +233,13 @@
             this.performPipelinedAnalysisToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
             this.performPipelinedAnalysisToolStripMenuItem.Text = "Perform Pipelined Analysis";
             this.performPipelinedAnalysisToolStripMenuItem.Click += new System.EventHandler(this.performPipelinedAnalysisToolStripMenuItem_Click);
+            // 
+            // cleanPipelinedAnalysisResultsToolStripMenuItem
+            // 
+            this.cleanPipelinedAnalysisResultsToolStripMenuItem.Name = "cleanPipelinedAnalysisResultsToolStripMenuItem";
+            this.cleanPipelinedAnalysisResultsToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
+            this.cleanPipelinedAnalysisResultsToolStripMenuItem.Text = "Clean Pipelined Analysis Results";
+            this.cleanPipelinedAnalysisResultsToolStripMenuItem.Click += new System.EventHandler(this.cleanPipelinedAnalysisResultsToolStripMenuItem_Click);
             // 
             // windowToolStripMenuItem
             // 
@@ -369,12 +378,12 @@
             this.toolStripButtonSnapRight.ToolTipText = "Snap Current Window Right";
             this.toolStripButtonSnapRight.Click += new System.EventHandler(this.snapCurrentWindowRightToolStripMenuItem_Click);
             // 
-            // cleanPipelinedAnalysisResultsToolStripMenuItem
+            // fixRenamingsToolStripMenuItem
             // 
-            this.cleanPipelinedAnalysisResultsToolStripMenuItem.Name = "cleanPipelinedAnalysisResultsToolStripMenuItem";
-            this.cleanPipelinedAnalysisResultsToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.cleanPipelinedAnalysisResultsToolStripMenuItem.Text = "Clean Pipelined Analysis Results";
-            this.cleanPipelinedAnalysisResultsToolStripMenuItem.Click += new System.EventHandler(this.cleanPipelinedAnalysisResultsToolStripMenuItem_Click);
+            this.fixRenamingsToolStripMenuItem.Name = "fixRenamingsToolStripMenuItem";
+            this.fixRenamingsToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
+            this.fixRenamingsToolStripMenuItem.Text = "Fix Renamings";
+            this.fixRenamingsToolStripMenuItem.Click += new System.EventHandler(this.fixRenamingsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -440,6 +449,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButtonSnapRight;
         private System.Windows.Forms.ToolStripMenuItem juxtaposePatternsEventsWindowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cleanPipelinedAnalysisResultsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem fixRenamingsToolStripMenuItem;
     }
 }
 

@@ -238,6 +238,12 @@
     <Compile Include="Forms\CalculateActiveWorkingTime.Designer.cs">
       <DependentUpon>CalculateActiveWorkingTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FixRenamings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FixRenamings.Designer.cs">
+      <DependentUpon>FixRenamings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CountEditedFiles.cs">
       <SubType>Form</SubType>
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
@@ -419,6 +425,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CalculateActiveWorkingTime.resx">
       <DependentUpon>CalculateActiveWorkingTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FixRenamings.resx">
+      <DependentUpon>FixRenamings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CountEditedFiles.resx">
       <DependentUpon>CountEditedFiles.cs</DependentUpon>

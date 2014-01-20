@@ -28,29 +28,34 @@ namespace FluoriteAnalyzer.PatternDetectors
 
             foreach (int i in Enumerable.Range(0, renameList.Count))
             {
-                EclipseCommand renameCommand = renameList[i];
-
-                int renameIndex = list.IndexOf(renameCommand);
-                int length = 0;
-                for (int j = 1; j < LookaheadLimit; ++j)
-                {
-                    List<Event> sublist = list.GetRange(renameIndex + 1, j * 2);
-                    if (sublist.Any(x => x is EclipseCommand))
-                    {
-                        break;
-                    }
-
-                    if (IsSymmetric(sublist.Cast<DocumentChange>().ToList()))
-                    {
-                        length = j * 2;
-                        break;
-                    }
-                }
-
-                detectedPatterns.Add(new PatternInstance(renameCommand, length, "Rename Element of Length " + length));
+                DetectRenaming(list, renameList, detectedPatterns, i);
             }
 
             return detectedPatterns;
+        }
+
+        private void DetectRenaming(List<Event> list, List<EclipseCommand> renameList, List<PatternInstance> detectedPatterns, int i)
+        {
+            EclipseCommand renameCommand = renameList[i];
+
+            int renameIndex = list.IndexOf(renameCommand);
+            int length = 0;
+            for (int j = 1; j < LookaheadLimit && renameIndex + j * 2 < list.Count; ++j)
+            {
+                List<Event> sublist = list.GetRange(renameIndex + 1, j * 2);
+                if (sublist.Any(x => x is EclipseCommand))
+                {
+                    break;
+                }
+
+                if (IsSymmetric(sublist.Cast<DocumentChange>().ToList()))
+                {
+                    length = j * 2;
+                    break;
+                }
+            }
+
+            detectedPatterns.Add(new PatternInstance(renameCommand, length, "Rename Element of Length " + length));
         }
 
         private bool IsSymmetric(List<DocumentChange> sublist)
