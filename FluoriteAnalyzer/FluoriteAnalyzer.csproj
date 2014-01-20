@@ -352,6 +352,7 @@
     <Compile Include="Pipelines\FixClosingFilter.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Pipelines\FixRenamingsFilter.cs" />
     <Compile Include="Pipelines\IPipelineFilter.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
