@@ -32,6 +32,7 @@ public class HelloWorldMain {
   <Command __id="12" _type="InsertStringCommand" repeat="3" timestamp="11953" timestamp2="12623">
     <data><![CDATA[bar]]></data>
   </Command>
+  <Command __id="21" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.DELETE_PREVIOUS" timestamp="15351" />
   <Command __id="24" _type="InsertStringCommand" timestamp="15569">
     <data><![CDATA[f]]></data>
   </Command>

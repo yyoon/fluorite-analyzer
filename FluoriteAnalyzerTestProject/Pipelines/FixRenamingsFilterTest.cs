@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FluoriteAnalyzer.Pipelines
@@ -26,7 +27,12 @@ namespace FluoriteAnalyzer.Pipelines
                 string expectedFilePath = Path.Combine(path, "test_expected.xml");
                 using (StreamReader reader2 = new StreamReader(expectedFilePath))
                 {
-                    Assert.AreEqual(reader1.ReadToEnd(), reader2.ReadToEnd());
+                    String s1 = reader1.ReadToEnd();
+                    String s2 = reader2.ReadToEnd();
+
+                    s1 = Regex.Replace(s1, @"\r\n|\n\r|\n|\r", "\r\n").Trim();
+                    s2 = Regex.Replace(s2, @"\r\n|\n\r|\n|\r", "\r\n").Trim();
+                    Assert.AreEqual(s1, s2);
                 }
             }
 
