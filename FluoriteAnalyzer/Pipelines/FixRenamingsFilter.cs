@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using FluoriteAnalyzer.Commons;
+using FluoriteAnalyzer.Events;
+using FluoriteAnalyzer.PatternDetectors;
 
 namespace FluoriteAnalyzer.Pipelines
 {
@@ -60,9 +63,39 @@ namespace FluoriteAnalyzer.Pipelines
             LogProvider provider = new LogProvider();
             provider.OpenLog(fileInfo.FullName);
 
-            // TODO implement this!!
+            RenamingDetector detector = RenamingDetector.GetInstance();
+            var patterns = detector.DetectAsPatternInstances(provider);
 
-            throw new NotImplementedException();
+            // Save the results to a file.
+            DetectionResult result = new DetectionResult(provider.LogPath, patterns);
+            result.SaveToFile(GetSaveFileName(fileInfo.DirectoryName, fileInfo.Name));
+            result.ExportToCSV(GetSaveFileName(fileInfo.DirectoryName, fileInfo.Name, "csv"));
+
+            var xmlDoc = new XmlDocument();
+            xmlDoc.Load(fileInfo.FullName);
+
+            List<Event> renameEvents = provider.LoggedEvents
+                .Where(x => x is DocumentChange || RenamingDetector.IsRenameCommand(x)).ToList();
+
+            foreach (var pattern in patterns)
+            {
+                int renameIndex = renameEvents.IndexOf(pattern.PrimaryEvent);
+                for (int i = 1; i <= pattern.PatternLength; ++i)
+                {
+                    XmlElement elem = Event.FindCorrespondingXmlElementFromXmlDocument(xmlDoc, renameEvents[renameIndex + i]);
+                    xmlDoc.DocumentElement.RemoveChild(elem);
+                }
+            }
+
+            string newPath = Path.Combine(fileInfo.DirectoryName,
+                _settings.Prefix + Path.GetFileNameWithoutExtension(fileInfo.Name) + _settings.Postfix + fileInfo.Extension);
+
+            xmlDoc.Save(newPath);
+
+            AppendResult(fileInfo.DirectoryName, fileInfo.Name,
+                string.Format("{0} renamings have been fixed" + Environment.NewLine, patterns.Count()));
+
+            return new FileInfo(newPath);
         }
     }
 }

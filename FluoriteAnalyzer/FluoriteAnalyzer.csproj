@@ -331,6 +331,7 @@
     <Compile Include="PatternDetectors\ParameterTuningDetector.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="PatternDetectors\RenamingDetector.cs" />
     <Compile Include="PatternDetectors\Type1BacktrackingPatternInstance.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
