@@ -1,0 +1,49 @@
+<Events startTimestamp="1390181072107" logVersion="0.8.6.qualifier" osName="Mac OS X" osVersion="10.9.1" lineSeparator="\n">
+  <Command __id="0" _type="FileOpenCommand" docASTNodeCount="54" docActiveCodeLength="282" docExpressionCount="32" docLength="305" projectName="HelloWorld" timestamp="25">
+    <snapshot><![CDATA[package helloworld;
+
+public class HelloWorldMain {
+
+	public static void main(String[] args) {
+		System.out.println("aslkdjflksajdf");
+		System.out.println("Howdy, CMU!");
+		// Hey
+		
+		foo();
+	}
+	
+	public static void foo() {
+		System.out.println("foo");// did something.
+		System.out.println("ba");
+	}
+
+}
+]]></snapshot>
+    <filePath><![CDATA[/Users/nullstein/Programming/RuntimeWorkspaces/runtime-Azurite/HelloWorld/src/helloworld/HelloWorldMain.java]]></filePath>
+  </Command>
+  <Command __id="1" _type="MoveCaretCommand" caretOffset="185" docOffset="185" timestamp="310" />
+  <Command __id="2" _type="MoveCaretCommand" caretOffset="305" docOffset="305" timestamp="3603" />
+  <Command __id="3" _type="MoveCaretCommand" caretOffset="219" docOffset="219" timestamp="4968" />
+  <Command __id="4" _type="SelectTextCommand" caretOffset="220" docEnd="220" docOffset="220" docStart="217" end="220" start="217" timestamp="5147" />
+  <Command __id="5" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.COLUMN_PREVIOUS" timestamp="7432" />
+  <Command __id="6" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.COLUMN_NEXT" repeat="2" timestamp="7652" timestamp2="7901" />
+  <Command __id="8" _type="EclipseCommand" commandID="org.eclipse.jdt.ui.edit.text.java.rename.element" timestamp="9308" />
+  <Command __id="9" _type="EclipseCommand" commandID="eventLogger.styledTextCommand.COLUMN_NEXT" timestamp="9944" />
+  <Command __id="12" _type="InsertStringCommand" repeat="3" timestamp="11953" timestamp2="12623">
+    <data><![CDATA[bar]]></data>
+  </Command>
+  <Command __id="24" _type="InsertStringCommand" timestamp="15569">
+    <data><![CDATA[f]]></data>
+  </Command>
+  <Command __id="25" _type="InsertStringCommand" timestamp="16578">
+    <data><![CDATA[]]></data>
+  </Command>
+  <DocumentChange __id="36" _type="Replace" docASTNodeCount="54" docActiveCodeLength="285" docExpressionCount="32" docLength="308" endLine="12" insertionLength="6" int_docASTNodeCount="50" int_docActiveCodeLength="279" int_docExpressionCount="31" int_docLength="302" length="3" offset="217" startLine="12" timestamp="17993">
+    <insertedText><![CDATA[foobaf]]></insertedText>
+    <deletedText><![CDATA[foo]]></deletedText>
+  </DocumentChange>
+  <DocumentChange __id="37" _type="Replace" docASTNodeCount="54" docActiveCodeLength="288" docExpressionCount="32" docLength="311" endLine="9" insertionLength="6" int_docASTNodeCount="52" int_docActiveCodeLength="282" int_docExpressionCount="30" int_docLength="305" length="3" offset="185" startLine="9" timestamp="18002">
+    <insertedText><![CDATA[foobaf]]></insertedText>
+    <deletedText><![CDATA[foo]]></deletedText>
+  </DocumentChange>
+</Events>
