@@ -37,6 +37,7 @@ namespace FluoriteAnalyzer.Pipelines
                             .Select(new UnzipFilter().Compute)
                             .Select(new FixClosingFilter().Compute)
                             .Select(new MergeFilter().Compute)
+                            .Select(new FixRenamingsFilter().Compute)
                             .Select(new RemoveTyposFilter().Compute)
                             .Select(new DetectMovesFilter().Compute)
                             .Select(new DetectBacktrackingFilter().Compute)

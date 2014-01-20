@@ -53,6 +53,7 @@
     <Compile Include="Pipelines\MergeFilterTest.cs" />
     <Compile Include="Pipelines\RemoveTyposFilterTest.cs" />
     <Compile Include="Pipelines\DetectMovesFilterTest.cs" />
+    <Compile Include="Pipelines\FixRenamingsFilterTest.cs" />
     <Compile Include="Pipelines\UnzipFilterTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

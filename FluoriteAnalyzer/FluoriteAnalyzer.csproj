@@ -331,6 +331,7 @@
     <Compile Include="PatternDetectors\ParameterTuningDetector.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="PatternDetectors\RenamingDetector.cs" />
     <Compile Include="PatternDetectors\Type1BacktrackingPatternInstance.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
@@ -352,6 +353,7 @@
     <Compile Include="Pipelines\FixClosingFilter.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Pipelines\FixRenamingsFilter.cs" />
     <Compile Include="Pipelines\IPipelineFilter.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
