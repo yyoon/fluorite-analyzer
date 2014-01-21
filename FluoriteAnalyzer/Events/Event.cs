@@ -170,6 +170,25 @@ namespace FluoriteAnalyzer.Events
                 {
                     _dict.Add(child.Name, child.FirstChild.Value);
                 }
+                else if (child.ChildNodes.Count > 1 && child.FirstChild.NodeType == XmlNodeType.CDATA)
+                {
+                    string data = string.Empty;
+                    XmlNode curDataNode = child.FirstChild;
+                    while (curDataNode != null)
+                    {
+                        data += curDataNode.Value;
+                        if (curDataNode.NextSibling != null && curDataNode.NextSibling.NodeType == XmlNodeType.CDATA)
+                        {
+                            curDataNode = curDataNode.NextSibling;
+                        }
+                        else
+                        {
+                            curDataNode = null;
+                        }
+                    }
+
+                    _dict.Add(child.Name, data);
+                }
             }
         }
 
