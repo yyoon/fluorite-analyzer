@@ -93,6 +93,7 @@
     <Compile Include="DiffMatchPatch\DiffMatchPatch.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Events\HistorySearchCommand.cs" />
     <Compile Include="Forms\Controls\ListViewNF.cs">
       <SubType>Component</SubType>
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
