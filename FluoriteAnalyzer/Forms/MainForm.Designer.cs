@@ -41,6 +41,7 @@
             this.logClosingFixToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.adjustTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extractAnnotationsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fixRenamingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeTyposToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detectMovesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calculateActiveWorkingTimeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,7 +66,7 @@
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripButtonSnapLeft = new System.Windows.Forms.ToolStripButton();
             this.toolStripButtonSnapRight = new System.Windows.Forms.ToolStripButton();
-            this.fixRenamingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.countEventsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMain.SuspendLayout();
             this.toolMain.SuspendLayout();
             this.SuspendLayout();
@@ -136,6 +137,7 @@
             this.calculateActiveWorkingTimeToolStripMenuItem,
             this.extractOperationConflictsToolStripMenuItem,
             this.countEditedFilesToolStripMenuItem,
+            this.countEventsToolStripMenuItem,
             this.toolStripMenuItem3,
             this.performPipelinedAnalysisToolStripMenuItem,
             this.cleanPipelinedAnalysisResultsToolStripMenuItem});
@@ -186,6 +188,13 @@
             this.extractAnnotationsToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
             this.extractAnnotationsToolStripMenuItem.Text = "&Extract Annotations";
             this.extractAnnotationsToolStripMenuItem.Click += new System.EventHandler(this.extractAnnotationsToolStripMenuItem_Click);
+            // 
+            // fixRenamingsToolStripMenuItem
+            // 
+            this.fixRenamingsToolStripMenuItem.Name = "fixRenamingsToolStripMenuItem";
+            this.fixRenamingsToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
+            this.fixRenamingsToolStripMenuItem.Text = "Fix Renamings";
+            this.fixRenamingsToolStripMenuItem.Click += new System.EventHandler(this.fixRenamingsToolStripMenuItem_Click);
             // 
             // removeTyposToolStripMenuItem
             // 
@@ -378,12 +387,12 @@
             this.toolStripButtonSnapRight.ToolTipText = "Snap Current Window Right";
             this.toolStripButtonSnapRight.Click += new System.EventHandler(this.snapCurrentWindowRightToolStripMenuItem_Click);
             // 
-            // fixRenamingsToolStripMenuItem
+            // countEventsToolStripMenuItem
             // 
-            this.fixRenamingsToolStripMenuItem.Name = "fixRenamingsToolStripMenuItem";
-            this.fixRenamingsToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
-            this.fixRenamingsToolStripMenuItem.Text = "Fix Renamings";
-            this.fixRenamingsToolStripMenuItem.Click += new System.EventHandler(this.fixRenamingsToolStripMenuItem_Click);
+            this.countEventsToolStripMenuItem.Name = "countEventsToolStripMenuItem";
+            this.countEventsToolStripMenuItem.Size = new System.Drawing.Size(242, 22);
+            this.countEventsToolStripMenuItem.Text = "Count Events";
+            this.countEventsToolStripMenuItem.Click += new System.EventHandler(this.countEventsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -450,6 +459,7 @@
         private System.Windows.Forms.ToolStripMenuItem juxtaposePatternsEventsWindowToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cleanPipelinedAnalysisResultsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fixRenamingsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem countEventsToolStripMenuItem;
     }
 }
 

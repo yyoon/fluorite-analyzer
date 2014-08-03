@@ -451,6 +451,12 @@ namespace FluoriteAnalyzer.Forms
             countFiles.ShowDialog(this);
         }
 
+        private void countEventsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CountEvents countEvents = new CountEvents();
+            countEvents.ShowDialog(this);
+        }
+
         private void performPipelinedAnalysisToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var folderBrowser = new FolderBrowserDialog();
