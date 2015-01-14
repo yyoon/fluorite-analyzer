@@ -415,6 +415,12 @@ namespace FluoriteAnalyzer.Forms
             extractor.ShowDialog(this);
         }
 
+        private void fixRenamingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FixRenamings fixRenamings = new FixRenamings();
+            fixRenamings.ShowDialog(this);
+        }
+
         private void removeTyposToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RemoveTypos removeTypos = new RemoveTypos();
@@ -443,6 +449,12 @@ namespace FluoriteAnalyzer.Forms
         {
             CountEditedFiles countFiles = new CountEditedFiles();
             countFiles.ShowDialog(this);
+        }
+
+        private void countEventsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CountEvents countEvents = new CountEvents();
+            countEvents.ShowDialog(this);
         }
 
         private void performPipelinedAnalysisToolStripMenuItem_Click(object sender, EventArgs e)

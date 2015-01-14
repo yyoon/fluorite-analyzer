@@ -91,7 +91,7 @@ namespace FluoriteAnalyzer.Forms
             {
                 long lastTimestampOfCurrentEvent = anEvent.EndTimestamp;
 
-                long currentTimespan = lastTimestampOfCurrentEvent - lastTimestamp;
+                long currentTimespan = Math.Max(lastTimestampOfCurrentEvent - lastTimestamp, 0);
                 if (currentTimespan < TIME_THRESHOLD)
                 {
                     totalTime += currentTimespan;

@@ -93,6 +93,8 @@
     <Compile Include="DiffMatchPatch\DiffMatchPatch.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Events\HistorySearchCommand.cs" />
+    <Compile Include="Events\JUnitCommand.cs" />
     <Compile Include="Forms\Controls\ListViewNF.cs">
       <SubType>Component</SubType>
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
@@ -238,6 +240,18 @@
     <Compile Include="Forms\CalculateActiveWorkingTime.Designer.cs">
       <DependentUpon>CalculateActiveWorkingTime.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\CountEvents.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\CountEvents.Designer.cs">
+      <DependentUpon>CountEvents.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FixRenamings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FixRenamings.Designer.cs">
+      <DependentUpon>FixRenamings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\CountEditedFiles.cs">
       <SubType>Form</SubType>
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
@@ -331,6 +345,7 @@
     <Compile Include="PatternDetectors\ParameterTuningDetector.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="PatternDetectors\RenamingDetector.cs" />
     <Compile Include="PatternDetectors\Type1BacktrackingPatternInstance.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
@@ -352,6 +367,7 @@
     <Compile Include="Pipelines\FixClosingFilter.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
+    <Compile Include="Pipelines\FixRenamingsFilter.cs" />
     <Compile Include="Pipelines\IPipelineFilter.cs">
       <ExcludeFromStyleCop>true</ExcludeFromStyleCop>
     </Compile>
@@ -417,6 +433,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CalculateActiveWorkingTime.resx">
       <DependentUpon>CalculateActiveWorkingTime.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\CountEvents.resx">
+      <DependentUpon>CountEvents.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FixRenamings.resx">
+      <DependentUpon>FixRenamings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\CountEditedFiles.resx">
       <DependentUpon>CountEditedFiles.cs</DependentUpon>

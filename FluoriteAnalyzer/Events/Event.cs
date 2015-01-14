@@ -21,6 +21,10 @@ namespace FluoriteAnalyzer.Events
     {
         protected Dictionary<string, string> _dict;
 
+        // Holds the XmlElement children that are not in the standard format.
+        [NonSerialized]
+        protected List<XmlElement> _others;
+
         public Event(int timestamp)
         {
             Timestamp = timestamp;
@@ -158,6 +162,7 @@ namespace FluoriteAnalyzer.Events
         private void FillInDictionary(XmlElement element)
         {
             _dict = new Dictionary<string, string>();
+            _others = new List<XmlElement>();
 
             foreach (XmlAttribute attr in element.Attributes)
             {
@@ -169,6 +174,29 @@ namespace FluoriteAnalyzer.Events
                 if (child.ChildNodes.Count == 1 && child.FirstChild.NodeType == XmlNodeType.CDATA)
                 {
                     _dict.Add(child.Name, child.FirstChild.Value);
+                }
+                else if (child.ChildNodes.Count > 1 && child.FirstChild.NodeType == XmlNodeType.CDATA)
+                {
+                    string data = string.Empty;
+                    XmlNode curDataNode = child.FirstChild;
+                    while (curDataNode != null)
+                    {
+                        data += curDataNode.Value;
+                        if (curDataNode.NextSibling != null && curDataNode.NextSibling.NodeType == XmlNodeType.CDATA)
+                        {
+                            curDataNode = curDataNode.NextSibling;
+                        }
+                        else
+                        {
+                            curDataNode = null;
+                        }
+                    }
+
+                    _dict.Add(child.Name, data);
+                }
+                else
+                {
+                    _others.Add(child);
                 }
             }
         }

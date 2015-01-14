@@ -11,10 +11,10 @@ namespace FluoriteAnalyzer.Events
         {
             Offset = int.Parse(GetPropertyValueFromDict("offset"));
             Length = int.Parse(GetPropertyValueFromDict("length"));
-            DocumentLength = int.Parse(GetPropertyValueFromDict("docLength"));
-            ActiveCodeLength = int.Parse(GetPropertyValueFromDict("docActiveCodeLength"));
-            ExpressionCount = int.Parse(GetPropertyValueFromDict("docExpressionCount"));
-            ASTNodeCount = int.Parse(GetPropertyValueFromDict("docASTNodeCount"));
+            DocumentLength = int.Parse(GetPropertyValueFromDict("docLength", false, "0"));
+            ActiveCodeLength = int.Parse(GetPropertyValueFromDict("docActiveCodeLength", false, "0"));
+            ExpressionCount = int.Parse(GetPropertyValueFromDict("docExpressionCount", false, "0"));
+            ASTNodeCount = int.Parse(GetPropertyValueFromDict("docASTNodeCount", false, "0"));
         }
 
         public override EventType EventType
