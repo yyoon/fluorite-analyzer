@@ -22,6 +22,7 @@ namespace FluoriteAnalyzer.Events
         protected Dictionary<string, string> _dict;
 
         // Holds the XmlElement children that are not in the standard format.
+        [NonSerialized]
         protected List<XmlElement> _others;
 
         public Event(int timestamp)
